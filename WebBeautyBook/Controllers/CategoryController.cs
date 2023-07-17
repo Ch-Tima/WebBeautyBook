@@ -2,6 +2,7 @@
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
 {
@@ -32,11 +33,20 @@ namespace WebBeautyBook.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Insert([FromBody] Category category)
+        public async Task<IActionResult> Insert([FromBody] CategoryModel model)
         {
             try
             {
-                await _categoryService.InsertAsync(category);
+                var category = new Category()
+                {
+                    Name = model.name,
+                    CategoryId = model.categoryId,
+                };
+
+                var result = await _categoryService.InsertAsync(category);
+
+                if (!result.IsSuccess) return BadRequest(result.Message);
+
                 return new OkObjectResult(new
                 {
                     id = category.Id
@@ -56,7 +66,7 @@ namespace WebBeautyBook.Controllers
             if (result.IsSuccess)
                 return Ok();
             else
-                return new BadRequestObjectResult(result);
+                return BadRequest(result.Message);
         }
 
         [HttpDelete]

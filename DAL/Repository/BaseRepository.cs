@@ -42,9 +42,9 @@ namespace DAL.Repository
             return await entities.FindAsync(primaryKey);
         }
 
-        public async Task<T> GetFirstAsync(Expression<Func<T, bool>> expression)
+        public async Task<T?> GetFirstAsync(Expression<Func<T, bool>> expression)
         {
-            return await _db.Set<T>().FirstAsync(expression);
+            return await _db.Set<T>().FirstOrDefaultAsync(expression);
         }
 
         public virtual async Task InsertAsync(T entity)
