@@ -1,0 +1,12 @@
+<p class="text-center h2 my-5">Email Confirmation</p>
+
+<div *ngIf="isSuccess == null" class="d-flex">
+    <img class="mx-auto col-2 col-lg-1" src="../../../assets/images/green_checked.png">
+</div>
+
+<div *ngIf="isSuccess != null" class="d-flex row">
+    <img *ngIf="isSuccess" class="mx-auto col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2" src="../../../assets/images/green_checked.png">
+    <img *ngIf="!isSuccess" class="mx-auto col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2" src="../../../assets/images/red_cross.png">
+</div>
+
+<p *ngIf="errorMessage != null" class="h6 my-5 px-2 text-center text-danger">{{errorMessage}}</p>

@@ -27,15 +27,14 @@
           >
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
+          <li *ngIf="!isAuth" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/login']">Login</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
+          <li *ngIf="!isAuth" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/register']">Register</a>
+          </li>
+          <li *ngIf="isAuth" class="nav-item" [routerLinkActive]="['link-active']">
+            <button (click)="signOut()" class="btn btn-link">SignOut</button>
           </li>
         </ul>
       </div>
