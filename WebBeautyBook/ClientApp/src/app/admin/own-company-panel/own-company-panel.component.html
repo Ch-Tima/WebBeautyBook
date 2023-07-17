@@ -1,0 +1,17 @@
+<app-register-page (resultEmitter)="insertToList($event)"  defaultRole="own_company"  header="Create Own Company" [redirectSuccess]='false' [showLinkToLogin]='false'></app-register-page>
+
+<div class="col m-2 bg-light border rounded">
+
+    <p *ngIf="users.length == 0" class="text-center h5">Not Found</p>
+
+    <div *ngFor="let item of users let i = index" class="d-flex bg-primary rounded m-2 py-2">
+        <div class="col my-auto">
+            <p class="text-center m-0 h6 text-white">{{item.email}}</p>
+        </div>
+        <div class="col-2 d-flex justify-content-around">
+            <div class="row">
+              <img src="../../../assets/svg/trash.svg" style="width: 50px;">
+            </div>
+          </div>
+    </div>
+</div>

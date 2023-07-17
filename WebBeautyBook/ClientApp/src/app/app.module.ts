@@ -19,6 +19,10 @@ import { AdminPageComponent } from './admin/admin-page/admin-page.component';
 import { NavLeftMenuComponent } from './nav-left-menu/nav-left-menu.component';
 import { CategotyPanelComponent } from './admin/categoty-panel/categoty-panel.component';
 import { CategoryFormComponent } from './admin/category-form/category-form.component';
+import { OwnCompanyPanelComponent } from './admin/own-company-panel/own-company-panel.component';
+import { CompanyPanelComponent } from './admin/company-panel/company-panel.component';
+import { ListCompanyComponent } from './admin/list-company/list-company.component';
+import { CompanyFormComponent } from './admin/company-form/company-form.component';
 
 
 const routes: Routes = [
@@ -53,6 +57,10 @@ const routes: Routes = [
     NavLeftMenuComponent,
     CategotyPanelComponent,
     CategoryFormComponent,
+    OwnCompanyPanelComponent,
+    CompanyPanelComponent,
+    ListCompanyComponent,
+    CompanyFormComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

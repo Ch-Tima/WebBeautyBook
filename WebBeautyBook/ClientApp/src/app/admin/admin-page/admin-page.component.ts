@@ -24,7 +24,7 @@ export class AdminPageComponent {
     var def = new NavMenuItem("/assets/svg/categoty.svg", "Categoty", "Categoty");
     this.menu = def.value;
     this.navMenuItems.push(def);
-    this.navMenuItems.push(new NavMenuItem("/assets/svg/clients.svg", "Own company", "Manager"));
+    this.navMenuItems.push(new NavMenuItem("/assets/svg/clients.svg", "Own company", "OwnCompany"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/company.svg", "Company", "Company"));
   }
 

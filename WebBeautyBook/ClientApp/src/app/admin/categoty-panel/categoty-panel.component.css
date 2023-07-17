@@ -1,0 +1,9 @@
+.btn-plus{
+    width: 55px;
+    background: #2f59e6;
+    border-radius: 2em;
+    padding: 5px;
+    position: absolute;
+    bottom: 0em;
+    right: 25px;
+}

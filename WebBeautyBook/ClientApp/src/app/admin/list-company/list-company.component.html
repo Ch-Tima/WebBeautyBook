@@ -1,0 +1,10 @@
+<div class="col m-2 bg-light border rounded">
+    <div *ngFor="let item of listCompanies let i = index" class="d-flex bg-primary rounded m-2">
+        <div class="col my-auto">
+            <p class="text-center m-0 h6 text-white">{{item.name}}</p>
+        </div>
+        <div class="col-3 d-flex justify-content-around">
+            <img src="../../assets/images/trash.png" class="w-25 p-2 m-2">
+        </div>
+    </div>
+</div>
