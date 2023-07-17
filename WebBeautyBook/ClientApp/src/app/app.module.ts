@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -12,11 +13,17 @@ import { LoginPageComponent } from './auth/login-page/login-page.component';
 import { EmailConfirmationComponent } from './auth/email-confirmation/email-confirmation.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { AdminPageComponent } from './admin/admin-page/admin-page.component';
+import { NavLeftMenuComponent } from './nav-left-menu/nav-left-menu.component';
 
 
 const routes: Routes = [
+
   //Public
   { path: '', component: HomeComponent, pathMatch: 'full' },
+
+   //AdminPanel
+   { path: "adminPanel", component: AdminPageComponent },
   
   //Auth
   { path: "login", component: LoginPageComponent},
@@ -37,14 +44,17 @@ const routes: Routes = [
     LoginPageComponent,
     EmailConfirmationComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    AdminPageComponent,
+    NavLeftMenuComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+
   ],
   providers: [],
   bootstrap: [AppComponent]

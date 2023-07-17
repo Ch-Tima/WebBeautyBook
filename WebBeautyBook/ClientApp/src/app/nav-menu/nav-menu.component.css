@@ -1,3 +1,16 @@
+header{
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+}
+
+.w75right{
+  z-index: 100;
+  width: 85%;
+  right: 0;
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -5,11 +18,38 @@ a.navbar-brand {
 }
 
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
-@media (min-width: 768px) {
+@media (max-width: 1300px) {
+  .w75right{
+    width: 75%;
+  }
+}
+@media (max-width: 1200px) {
+  .title{
+    /*display: none;*/
+  }
+  .navbar div{
+    /* width: auto; */
+  }
+}
+@media (max-width:992px){
+  .navbar-brand{
+    white-space: nowrap !important;
+  }
+}
+@media (max-width: 768px) {
+  .w75right{
+    width: calc(75px + 1.5rem);
+  }
+  .title{
+    display: block;
+  }
+  .navbar div{
+    width: 100%;
+  }
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 

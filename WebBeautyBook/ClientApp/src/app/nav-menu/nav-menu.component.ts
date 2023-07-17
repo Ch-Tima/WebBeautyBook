@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserDataModel } from '../models/UserDataModel';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { NavbarService } from '../services/navbar.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -14,10 +15,12 @@ export class NavMenuComponent {
   userData: UserDataModel;
   isAuth: boolean;
 
-  constructor(private rout: Router, private auth: AuthService) {
+  constructor(private rout: Router, private auth: AuthService, public nav: NavbarService) {
     this.userData = new UserDataModel();
     this.isAuth = this.auth.hasToken();
- 
+    if (this.isAuth) {
+      this.getUserData();
+    }
   }
 
   collapse() {
@@ -33,4 +36,16 @@ export class NavMenuComponent {
     this.auth.signOut();
   }
   
+  private getUserData() {
+    this.auth.getUserData().subscribe(
+      result => {
+        this.userData = result;
+        this.auth.saveUserData(result);
+      }, error => {
+        alert("Error: nav-menu");
+        console.log(error);
+        this.auth.signOut();
+      });
+  }
+
 }

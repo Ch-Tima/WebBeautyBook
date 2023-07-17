@@ -1,0 +1,14 @@
+<div class="container">
+  
+    <div class="row">
+    <!--Menu-->
+    <app-nav-left-menu (resultEmitter)="navLeftMenu($event)" [list]="navMenuItems"></app-nav-left-menu>
+
+    <!--Mani-->
+    <div #main class="col main">
+        <div *ngIf="menu == 'Categoty'">Categoty</div>
+        <div *ngIf="menu == 'Manager'">Manager</div>
+        <div *ngIf="menu == 'Company'">Company</div>
+      </div>
+    </div>  
+</div>

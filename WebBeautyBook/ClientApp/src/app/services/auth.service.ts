@@ -74,7 +74,7 @@ export class AuthService {
 
   /**API request getUserData*/
   public getUserData(): Observable<UserDataModel> {
-    return this.http.get<UserDataModel>(this.baseUrl + "api/Client", {
+    return this.http.get<UserDataModel>(this.baseUrl + "api/User", {
       headers: new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem(TOKEN))
     });
   }

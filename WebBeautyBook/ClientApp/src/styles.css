@@ -14,3 +14,15 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.my-container{
+  position: absolute;
+  top: calc(75px + 1.5rem);
+  bottom: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .my-container {
+    top: calc(35px + 1.5rem);
+  }
+}
