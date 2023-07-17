@@ -27,4 +27,10 @@ export class NavMenuComponent {
   toggle() {
     this.isExpanded = !this.isExpanded;
   }
+
+
+  public signOut() {
+    this.auth.signOut();
+  }
+  
 }

@@ -9,6 +9,9 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterPageComponent } from './auth/register-page/register-page.component';
 import { LoginPageComponent } from './auth/login-page/login-page.component';
+import { EmailConfirmationComponent } from './auth/email-confirmation/email-confirmation.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -18,7 +21,9 @@ const routes: Routes = [
   //Auth
   { path: "login", component: LoginPageComponent},
   { path: "register", component: RegisterPageComponent },
-
+  { path: "forgotPassword", component: ForgotPasswordComponent },
+  { path: "resetPassword", component: ResetPasswordComponent },
+  { path: "emailConfirmation", component: EmailConfirmationComponent },
 
 ];
 
@@ -29,7 +34,10 @@ const routes: Routes = [
     NavMenuComponent,
     HomeComponent,
     RegisterPageComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    EmailConfirmationComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

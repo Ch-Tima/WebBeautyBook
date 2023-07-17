@@ -33,6 +33,9 @@
           <li *ngIf="!isAuth" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/register']">Register</a>
           </li>
+          <li *ngIf="isAuth" class="nav-item" [routerLinkActive]="['link-active']">
+            <button (click)="signOut()" class="btn btn-link">SignOut</button>
+          </li>
         </ul>
       </div>
     </div>
