@@ -6,7 +6,7 @@
 
     <!--Mani-->
     <div #main class="col main">
-        <div *ngIf="menu == 'Categoty'">Categoty</div>
+        <app-categoty-panel *ngIf="menu == 'Categoty'">Categoty</app-categoty-panel>
         <div *ngIf="menu == 'Manager'">Manager</div>
         <div *ngIf="menu == 'Company'">Company</div>
       </div>

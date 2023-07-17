@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -15,6 +15,8 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { AdminPageComponent } from './admin/admin-page/admin-page.component';
 import { NavLeftMenuComponent } from './nav-left-menu/nav-left-menu.component';
+import { CategotyPanelComponent } from './admin/categoty-panel/categoty-panel.component';
+import { CategoryFormComponent } from './admin/category-form/category-form.component';
 
 
 const routes: Routes = [
@@ -47,6 +49,8 @@ const routes: Routes = [
     ResetPasswordComponent,
     AdminPageComponent,
     NavLeftMenuComponent,
+    CategotyPanelComponent,
+    CategoryFormComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -54,7 +58,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
-
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

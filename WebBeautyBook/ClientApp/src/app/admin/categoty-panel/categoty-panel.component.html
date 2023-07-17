@@ -1,0 +1,73 @@
+<div class="container my-2 bg-light border rounded shadow">
+  <p *ngIf="list == null || list.length == 0" class="text-center">Categories not found.</p>
+  <div *ngFor="let item of list let i = index" class="row d-flex bg-primary rounded m-2">
+    <div class="col">
+        <p class="text-lg-center m-0 h6 text-white">{{item.name}}</p>
+        <p class="text-lg-center m-0 text-white">ID: {{item.id}}</p>
+        <p class="text-lg-center m-0 text-white ">
+          <small *ngIf="item.categoryId != null">Sub categoty: {{item.categoryId}}</small>
+          <small *ngIf="item.categoryId == null">Sub categoty: NULL</small>
+        </p>
+    </div>
+    <div class="col-2 d-flex justify-content-around">
+      <div class="row">
+        <img (click)="onDelete(i)" src="../../../assets/svg/trash.svg" style="width: 50px;">
+        <img (click)="onUpdate(i)" src="../../../assets/svg/edit.svg" style="width: 50px;">
+      </div>
+    </div>
+</div>
+</div>
+
+
+<!--
+
+
+PS C:\Users\chizh\source\repos\WebBeautyBook\WebBeautyBook\ClientApp> ng add @angular/material
+Skipping installation: Package already installed
+? Choose a prebuilt theme name, or "custom" for a custom theme: Deep Purple/Amber  [ Preview: https://material.angular.io?theme=deeppurple-amber ]
+? Set up global Angular Material typography styles? Yes
+? Include the Angular animations module? Do not include
+UPDATE package.json (1873 bytes)
+⠹ Installing packages (npm)...npm ERR! code ERESOLVE
+npm ERR! ERESOLVE could not resolve
+npm ERR! 
+npm ERR! While resolving: @angular/cdk@16.1.5
+npm ERR! Found: @angular/common@15.1.5
+npm ERR! node_modules/@angular/common
+npm ERR!   @angular/common@"^15.1.5" from the root project
+npm ERR!   peer @angular/common@"15.1.5" from @angular/forms@15.1.5
+npm ERR!   node_modules/@angular/forms
+npm ERR!     @angular/forms@"^15.1.5" from the root project
+npm ERR!   4 more (@angular/platform-browser, ...)
+npm ERR! 
+npm ERR! Could not resolve dependency:
+npm ERR! peer @angular/common@"^16.0.0 || ^17.0.0" from @angular/cdk@16.1.5
+npm ERR! node_modules/@angular/cdk
+npm ERR!   @angular/cdk@"~16.1.3" from the root project
+npm ERR!   peer @angular/cdk@"16.1.5" from @angular/material@16.1.5
+npm ERR!   node_modules/@angular/material
+npm ERR!     @angular/material@"~16.1.3" from the root project
+npm ERR!
+npm ERR! Conflicting peer dependency: @angular/common@16.1.5
+npm ERR! node_modules/@angular/common
+npm ERR!   peer @angular/common@"^16.0.0 || ^17.0.0" from @angular/cdk@16.1.5
+npm ERR!   node_modules/@angular/cdk
+npm ERR!     @angular/cdk@"~16.1.3" from the root project
+npm ERR!     peer @angular/cdk@"16.1.5" from @angular/material@16.1.5
+npm ERR!     node_modules/@angular/material
+npm ERR!       @angular/material@"~16.1.3" from the root project
+npm ERR!
+npm ERR! Fix the upstream dependency conflict, or retry
+npm ERR! this command with --force or --legacy-peer-deps
+npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
+npm ERR!
+npm ERR!
+npm ERR! For a full report see:
+npm ERR! C:\Users\chizh\AppData\Local\npm-cache\_logs\2023-07-17T13_57_40_130Z-eresolve-report.txt
+
+npm ERR! A complete log of this run can be found in: C:\Users\chizh\AppData\Local\npm-cache\_logs\2023-07-17T13_57_40_130Z-debug-0.log
+✖ Package install failed, see above.
+The Schematic workflow failed. See above.
+PS C:\Users\chizh\source\repos\WebBeautyBook\WebBeautyBook\ClientApp>
+
+-->

@@ -9,6 +9,10 @@ const PROXY_CONFIG = [
       //User data
       "/api/User",
 
+      //Category
+      "/api/Category",
+      "/api/Category/GetMainCategories",
+
       //Auth
       "/api/Auth",
       "/api/Auth/register",
