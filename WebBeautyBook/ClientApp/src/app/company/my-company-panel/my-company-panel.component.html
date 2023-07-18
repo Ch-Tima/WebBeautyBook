@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <div class="row">
+        <!--Menu-->
+        <app-nav-left-menu [list]="navMenuItems" (resultEmitter)="navLeftMenu($event)"></app-nav-left-menu>
+
+        <!--Mani-->
+        <div #main class="col main">
+            <p class="h5 text-center text-danger" *ngIf="errorMessage != ''">{{errorMessage}}</p>
+
+            <div class='demo-app-main'>
+                <full-calendar [options]='calendarOptions()'>
+                </full-calendar>
+              </div>
+
+            <!-- <ngx-mat-timepicker-field color="warn" [format]="24" [defaultTime]="'23:11'"></ngx-mat-timepicker-field> -->
+
+            
+            <!-- <app-employees-panel *ngIf="lastChangeMenuName == 'Employees'"></app-employees-panel>
+            <app-service-panel *ngIf="lastChangeMenuName == 'Services'"></app-service-panel> -->
+        </div>
+
+    </div>
+</div>

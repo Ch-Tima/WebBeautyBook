@@ -5,7 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatDialogModule } from "@angular/material/dialog"
-
+import { NgxMatTimepickerModule } from "ngx-mat-timepicker"
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -23,7 +24,7 @@ import { OwnCompanyPanelComponent } from './admin/own-company-panel/own-company-
 import { CompanyPanelComponent } from './admin/company-panel/company-panel.component';
 import { ListCompanyComponent } from './admin/list-company/list-company.component';
 import { CompanyFormComponent } from './admin/company-form/company-form.component';
-
+import { MyCompanyPanelComponent } from './company/my-company-panel/my-company-panel.component';
 
 const routes: Routes = [
 
@@ -31,8 +32,11 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
 
    //AdminPanel
-   { path: "adminPanel", component: AdminPageComponent },
+  { path: "adminPanel", component: AdminPageComponent },
   
+  //CompnyPanel
+  { path: "companyPanel", component: MyCompanyPanelComponent },
+
   //Auth
   { path: "login", component: LoginPageComponent},
   { path: "register", component: RegisterPageComponent },
@@ -61,6 +65,7 @@ const routes: Routes = [
     CompanyPanelComponent,
     ListCompanyComponent,
     CompanyFormComponent,
+    MyCompanyPanelComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -70,6 +75,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatDialogModule,
+    NgxMatTimepickerModule,
+    FullCalendarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
