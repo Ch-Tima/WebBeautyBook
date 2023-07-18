@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavMenuItem } from 'src/app/models/NavMenuItem';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -12,7 +14,16 @@ export class AdminPageComponent {
 
   public navMenuItems: NavMenuItem[] = [];
 
-  constructor(){
+  constructor(private auth: AuthService, private rout: Router){
+    var user = this.auth.getLocalUserDate();
+    if(user == null){
+      this.rout.navigate(["login"]);
+    }else{
+      if(user.roles.filter(role => role == 'admin').length == 0){
+        rout.navigate(["/"]);
+      }
+    }
+
     this.InitNavLeftMenuItems();
   }
 
