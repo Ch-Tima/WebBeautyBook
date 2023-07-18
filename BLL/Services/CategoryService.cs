@@ -39,28 +39,54 @@ namespace BLL.Services
             return await _categoryRepository.GetAllFindAsync(func);
         }
 
-        public async Task InsertAsync(Category category)
+        public async Task<ServiceResponse> InsertAsync(Category category)
         {
-            if (category.CategoryId != null && category.CategoryId.Equals(""))
-                category.CategoryId = null;
+            try
+            {
 
-            await _categoryRepository.InsertAsync(category);
+                if (category.CategoryId == "") category.CategoryId = null;
+
+                //Is there a subcategory
+                if (category.CategoryId != null && !(await IsExist(category.CategoryId)))
+                    return new ServiceResponse(false, "Not found sub category");
+
+                if ((await _categoryRepository.GetFirstAsync(x => x.Name == category.Name)) != null)
+                    return new ServiceResponse(false, $"Name {category.Name} is taken");
+
+                await _categoryRepository.InsertAsync(category);
+
+                return new ServiceResponse(true, "");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse(false, ex.Message);
+            }
         }
 
         public async Task DeleteAsync(string id)
         {
+            //TODO: error Cascade
             await _categoryRepository.DeleteAsync(id);
         }
 
         public async Task<ServiceResponse> UpdataAsync(Category newCategory)
         {
-            if (newCategory == null) return new ServiceResponse(false, "Parameter newCategory is null.");
-            if (newCategory.CategoryId != null && newCategory.CategoryId.Length <= 0) newCategory.CategoryId = null;
 
             try
             {
+
+                if (newCategory == null) return new ServiceResponse(false, "Parameter newCategory is null.");
+
                 if (!await IsExist(newCategory.Id))
                     return new ServiceResponse(false, $"Category with id: {newCategory.Id} not found.");
+                
+                if (newCategory.CategoryId == newCategory.Id) 
+                    return new ServiceResponse(false, "A category cannot refer to itself.");
+
+                if (newCategory.CategoryId == "") newCategory.CategoryId = null;
+
+                if (newCategory.CategoryId != null && !(await IsExist(newCategory.CategoryId)))
+                    return new ServiceResponse(false, "Not found sub category.");
 
                 await _categoryRepository.UpdateAsync(newCategory.Id, newCategory);
 
@@ -80,7 +106,7 @@ namespace BLL.Services
         {
             try
             {
-                if(await GetAsync(id) != null) return true;
+                if ((await GetAsync(id)) != null) return true;
                 else return false;
             }
             catch(Exception ex)

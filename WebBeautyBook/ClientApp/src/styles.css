@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 /* Provide sufficient contrast against white background */
 a {
@@ -13,4 +14,16 @@ code {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.my-container{
+  position: absolute;
+  top: calc(75px + 1.5rem);
+  bottom: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .my-container {
+    top: calc(35px + 1.5rem);
+  }
 }

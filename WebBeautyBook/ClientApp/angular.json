@@ -117,7 +117,8 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": true
+              "vendorChunk": true,
+              "buildOptimizer": true
             },
             "production": {
               "optimization": true,
@@ -125,15 +126,18 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
           }
         }
       }
     }
   },
-  "defaultProject": "WebBeautyBook",
   "cli": {
-    "analytics": "f266ec83-a10f-4525-bb74-b0ccad9a3b8b"
+    "analytics": "f266ec83-a10f-4525-bb74-b0ccad9a3b8b",
+    "cache": {
+      "enabled": false
+    }
   }
 }
