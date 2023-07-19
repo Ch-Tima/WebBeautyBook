@@ -25,6 +25,8 @@ import { CompanyPanelComponent } from './admin/company-panel/company-panel.compo
 import { ListCompanyComponent } from './admin/list-company/list-company.component';
 import { CompanyFormComponent } from './admin/company-form/company-form.component';
 import { MyCompanyPanelComponent } from './company/my-company-panel/my-company-panel.component';
+import { AppointmentComponent } from './company/appointment/appointment.component';
+import { EmployeesPanelComponent } from './company/employees-panel/employees-panel.component';
 
 const routes: Routes = [
 
@@ -66,6 +68,8 @@ const routes: Routes = [
     ListCompanyComponent,
     CompanyFormComponent,
     MyCompanyPanelComponent,
+    AppointmentComponent,
+    EmployeesPanelComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

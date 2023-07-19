@@ -1,7 +1,6 @@
 ﻿using BLL.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebBeautyBook.Models;
@@ -16,13 +15,15 @@ namespace WebBeautyBook.Controllers
         private readonly UserManager<BaseUser> _userManager;
         private readonly CompanyService _companyService;
         private readonly BLL.Services.WorkerService _workerService;
+        private readonly IConfiguration _configuration;
 
         public CompanyController(UserManager<BaseUser> userManager, CompanyService companyService,
-            BLL.Services.WorkerService workerService)
+            BLL.Services.WorkerService workerService, IConfiguration configuration)
         {
             _userManager = userManager;
             _companyService = companyService;
             _workerService = workerService;
+            _configuration = configuration;
         }
 
         [HttpGet("{id}")]
@@ -134,6 +135,5 @@ namespace WebBeautyBook.Controllers
 
             return result.IsSuccess ? Ok() : BadRequest(result.Message);
         }
-
     }
 }
