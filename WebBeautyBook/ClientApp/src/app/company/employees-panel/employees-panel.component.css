@@ -25,6 +25,11 @@ thead th
     background-color: #f6f8fa;
 }
 
+table tbody tr {
+    border-bottom-width: 1px;
+    border-color: #e0e6ed66 !important;
+}
+
 .btn-plus{
     width: 55px;
     background: #007bff;

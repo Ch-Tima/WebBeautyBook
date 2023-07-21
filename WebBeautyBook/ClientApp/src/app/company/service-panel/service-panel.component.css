@@ -1,0 +1,17 @@
+.btn-plus{
+    width: 55px;
+    height: 55px;
+    background: #007bff;
+    border-radius: 2em;
+    padding: 5px;
+    position: fixed;
+    bottom: 1.5em;
+    right: 1.5em;
+}
+img{
+    width: 35px;
+    height: 35px;
+}
+.img-invert{
+    filter: invert(1);
+}

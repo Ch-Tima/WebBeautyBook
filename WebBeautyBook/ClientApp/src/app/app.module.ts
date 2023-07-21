@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatDialogModule } from "@angular/material/dialog"
 import { NgxMatTimepickerModule } from "ngx-mat-timepicker"
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { MatFormFieldModule } from '@angular/material/form-field';
+//import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -27,6 +29,8 @@ import { CompanyFormComponent } from './admin/company-form/company-form.componen
 import { MyCompanyPanelComponent } from './company/my-company-panel/my-company-panel.component';
 import { AppointmentComponent } from './company/appointment/appointment.component';
 import { EmployeesPanelComponent } from './company/employees-panel/employees-panel.component';
+import { ServicePanelComponent } from './company/service-panel/service-panel.component';
+import { ServiceFormComponent } from './company/service-form/service-form.component';
 
 const routes: Routes = [
 
@@ -70,6 +74,8 @@ const routes: Routes = [
     MyCompanyPanelComponent,
     AppointmentComponent,
     EmployeesPanelComponent,
+    ServicePanelComponent,
+    ServiceFormComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -81,6 +87,8 @@ const routes: Routes = [
     MatDialogModule,
     NgxMatTimepickerModule,
     FullCalendarModule,
+    MatFormFieldModule,
+    //NgxMaterialTimepickerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,7 +6,10 @@
       "@angular/*": ["./node_modules/@angular/*"]
     },
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [
+      "@angular/localize",
+      "@types/jquery",
+    ]
   },
   "files": [
     "src/main.ts",

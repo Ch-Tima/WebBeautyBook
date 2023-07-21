@@ -33,12 +33,12 @@ export class MyCompanyPanelComponent {
   }
 
   private InitNavLeftMenuItems (){
-    var mainMenu = new NavMenuItem("/assets/svg/employees.svg", "Employees", "Employees");
+    var mainMenu = new NavMenuItem("/assets/svg/services.svg", "Services", "Services")
     this.menu = mainMenu.value;
     this.navMenuItems.push(mainMenu);
     this.navMenuItems.push(new NavMenuItem("/assets/svg/appointment.svg", "Appointment", "Appointment"));
+    this.navMenuItems.push(new NavMenuItem("/assets/svg/employees.svg", "Employees", "Employees"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/home.svg", "Main", "Main"));
-    this.navMenuItems.push(new NavMenuItem("/assets/svg/services.svg", "Services", "Services"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/clients.svg", "Clients", "Clients"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/list.svg", "History", "History"));
   }

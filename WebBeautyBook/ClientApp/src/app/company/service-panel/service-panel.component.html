@@ -1,0 +1,15 @@
+<div class="col m-2 py-2 bg-white border rounded shadow">
+
+    <p class="h4 text-center text-danger my-3" *ngIf="services.length == 0">Not Found Services</p>
+
+    <div *ngFor="let item of services let i = index" class="d-flex bg-primary rounded m-2">
+        <div class="col my-auto">
+            <p class="text-center m-0 h6 text-white">{{item.name}}</p>
+        </div>
+        <div class="col-4 col-sm-2 col-xl-1 d-flex justify-content-around">
+            <img src="../../../assets/svg/edit.svg" (click)="updateServiceForm(item)" class="my-1 text-white img-invert">
+            <img src="../../../assets/svg/trash.svg" (click)="deleteService(item)" class="my-1 text-white img-invert">
+        </div>
+    </div>
+    <img (click)="createServiceForm()" src="../../../assets/svg/plus.svg" class="btn-plus">
+</div>

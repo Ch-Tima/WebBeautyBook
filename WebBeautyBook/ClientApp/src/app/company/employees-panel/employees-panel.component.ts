@@ -23,9 +23,6 @@ export class EmployeesPanelComponent {
     }).subscribe(
       result => {
         this.workers = result;
-        for(var i = 0; i < 24; i++){
-          this.workers.push(result[0])
-        }
       }, error => {
         console.log(error);
         alert("EmployeesPanelComponent -> error -> loadWorkers()")

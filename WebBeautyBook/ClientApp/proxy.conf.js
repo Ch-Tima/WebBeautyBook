@@ -33,6 +33,9 @@ const PROXY_CONFIG = [
       "/api/Company/getAll",
       "/api/Company/getMyCompany",
       "/api/Company/getWorkers",
+
+      //Service
+      "/api/Service",
    ],
     target: target,
     secure: false,
