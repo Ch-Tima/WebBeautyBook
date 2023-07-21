@@ -8,10 +8,50 @@
     bottom: 1.5em;
     right: 1.5em;
 }
+
 img{
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
+    margin: 0em .35em;
 }
-.img-invert{
-    filter: invert(1);
+
+.list-service{
+    display: block;
+    height: 85vh;
+    overflow: auto;
+}
+
+table tbody tr td, table tfoot tr th, table thead tr th {
+    padding: .75rem 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse !important;
+}
+
+thead th 
+{ 
+    position: sticky; 
+    top: 0; 
+    background-color: #f6f8fa;
+}
+
+table tbody tr {
+    border-bottom-width: 1px;
+    border-color: #e0e6ed66 !important;
+}
+
+table tbody tr th:first-child{
+    padding: 0 1em;
+}
+
+.btn-plus{
+    width: 55px;
+    background: #007bff;
+    border-radius: 2em;
+    padding: 5px;
+    position: fixed;
+    bottom: 1.5em;
+    right: 1.5em;
 }

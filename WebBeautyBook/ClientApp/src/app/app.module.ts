@@ -31,6 +31,7 @@ import { AppointmentComponent } from './company/appointment/appointment.componen
 import { EmployeesPanelComponent } from './company/employees-panel/employees-panel.component';
 import { ServicePanelComponent } from './company/service-panel/service-panel.component';
 import { ServiceFormComponent } from './company/service-form/service-form.component';
+import { WorkerServiceFormComponent } from './company/worker-service-form/worker-service-form.component';
 
 const routes: Routes = [
 
@@ -76,6 +77,7 @@ const routes: Routes = [
     EmployeesPanelComponent,
     ServicePanelComponent,
     ServiceFormComponent,
+    WorkerServiceFormComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

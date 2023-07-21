@@ -36,6 +36,11 @@ const PROXY_CONFIG = [
 
       //Service
       "/api/Service",
+
+      //WorkerService
+      "/api/WorkerService/getWorker",
+      "/api/WorkerService/insertWorkerToService",
+      "/api/WorkerService/removeWorkerFromService",
    ],
     target: target,
     secure: false,

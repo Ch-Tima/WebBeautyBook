@@ -4,6 +4,7 @@ import { Service } from 'src/app/models/Service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ServiceFormComponent, ServiceFormDialogData, ServiceFormDialogResult } from '../service-form/service-form.component';
 import { HttpClient } from '@angular/common/http';
+import { WorkerServiceFormComponent } from '../worker-service-form/worker-service-form.component';
 
 @Component({
   selector: 'app-service-panel',
@@ -57,6 +58,15 @@ export class ServicePanelComponent {
 
   public deleteService(item: Service){
     alert("TODO")
+  }
+
+  public workerServiceFrom(item: Service){
+    this.dialogRef.open(WorkerServiceFormComponent, {
+      data: {
+        serviceId: item.id
+      },
+      width: '400px',
+    });
   }
 
   private loadServices(){
