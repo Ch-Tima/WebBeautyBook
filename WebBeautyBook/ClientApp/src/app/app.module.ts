@@ -32,6 +32,8 @@ import { EmployeesPanelComponent } from './company/employees-panel/employees-pan
 import { ServicePanelComponent } from './company/service-panel/service-panel.component';
 import { ServiceFormComponent } from './company/service-form/service-form.component';
 import { WorkerServiceFormComponent } from './company/worker-service-form/worker-service-form.component';
+import { InvitationEmployeeComponent } from './company/invitation-employee/invitation-employee.component';
+import { AcceptInvitationPageComponent } from './company/accept-invitation-page/accept-invitation-page.component';
 
 const routes: Routes = [
 
@@ -43,6 +45,7 @@ const routes: Routes = [
   
   //CompnyPanel
   { path: "companyPanel", component: MyCompanyPanelComponent },
+  { path: "acceptInvitation" , component: AcceptInvitationPageComponent },
 
   //Auth
   { path: "login", component: LoginPageComponent},
@@ -78,6 +81,8 @@ const routes: Routes = [
     ServicePanelComponent,
     ServiceFormComponent,
     WorkerServiceFormComponent,
+    InvitationEmployeeComponent,
+    AcceptInvitationPageComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

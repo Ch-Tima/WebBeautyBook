@@ -39,7 +39,7 @@
             <a class="nav-link text-dark" [routerLink]="['/adminPanel']">AdminPanel</a>
           </li>
           
-          <li *ngIf="isAuth && userData.roles.includes('own_company')" class="nav-item" [routerLinkActive]="['link-active']">
+          <li *ngIf="isAuth && userData.roles.includes('own_company') || userData.roles.includes('worker')" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="['/companyPanel']">MyCompany</a>
           </li>
           

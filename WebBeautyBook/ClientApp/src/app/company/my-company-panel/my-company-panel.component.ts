@@ -21,7 +21,7 @@ export class MyCompanyPanelComponent {
     if(user == null){
       this.rout.navigate(["login"]);
     }else{
-      if(user.roles.filter(role => role == 'own_company').length == 0){
+      if(!user.roles.includes('own_company') && !user.roles.includes('worker')){
         rout.navigate(["/"]);
       }
     }

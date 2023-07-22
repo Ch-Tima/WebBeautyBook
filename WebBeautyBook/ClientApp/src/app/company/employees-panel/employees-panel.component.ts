@@ -2,6 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Worker } from "../../models/Worker"
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { InvitationEmployeeComponent } from '../invitation-employee/invitation-employee.component';
 
 @Component({
   selector: 'app-employees-panel',
@@ -13,7 +15,7 @@ export class EmployeesPanelComponent {
 
   public workers: Worker[] = [];
 
-  constructor(private auth: AuthService, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string){
+  constructor(private auth: AuthService, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private dialogRef : MatDialog){
     this.loadWorkers();
   }
 
@@ -29,5 +31,11 @@ export class EmployeesPanelComponent {
       }
     );
   } 
+
+  public onInvitationEmployee(){
+    this.dialogRef.open(InvitationEmployeeComponent, {
+      width: "400px"
+    });
+  }
 
 }

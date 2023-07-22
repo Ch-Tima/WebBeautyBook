@@ -44,8 +44,16 @@ namespace WebBeautyBook.Controllers
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
                 return new BadRequestObjectResult($"Incorrect email or password.");
 
-            return new OkObjectResult(await GenerateJWTAsync(user, 5));
+            return new OkObjectResult(await GenerateJWTAsync(user, 7));
 
+        }
+
+        [HttpPost(template: "refreshTokens")]
+        [Authorize]
+        public async Task<IActionResult> RefreshTokens()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return new OkObjectResult(await GenerateJWTAsync(user, 7));
         }
 
         [HttpPost]
