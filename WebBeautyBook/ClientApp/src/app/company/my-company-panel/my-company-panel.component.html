@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div class="row">
+        <!--Menu-->
+        <app-nav-left-menu [list]="navMenuItems" (resultEmitter)="navLeftMenu($event)"></app-nav-left-menu>
+
+        <!--Mani-->
+        <div #main class="col main">
+            <!--Field of error for all occasions-->
+            <p class="h5 text-center text-danger" *ngIf="errorMessage != ''">{{errorMessage}}</p>
+
+            <app-appointment *ngIf="menu == 'Appointment'"></app-appointment>
+            <app-employees-panel *ngIf="menu == 'Employees'"></app-employees-panel>
+            <app-service-panel *ngIf="menu == 'Services'"></app-service-panel>
+            
+        </div>
+    </div>
+</div>

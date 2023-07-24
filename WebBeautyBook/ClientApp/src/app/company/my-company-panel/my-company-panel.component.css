@@ -1,0 +1,15 @@
+.main{
+    margin-left: 15%;
+}
+
+@media (max-width: 1300px) {
+    .main{
+        margin-left: 25%;
+    }
+}
+
+@media (max-width: 768px) {
+    .main{
+        margin-left: 75px;
+    }
+}

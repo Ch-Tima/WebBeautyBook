@@ -5,7 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatDialogModule } from "@angular/material/dialog"
-
+import { NgxMatTimepickerModule } from "ngx-mat-timepicker"
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { MatFormFieldModule } from '@angular/material/form-field';
+//import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -23,7 +26,14 @@ import { OwnCompanyPanelComponent } from './admin/own-company-panel/own-company-
 import { CompanyPanelComponent } from './admin/company-panel/company-panel.component';
 import { ListCompanyComponent } from './admin/list-company/list-company.component';
 import { CompanyFormComponent } from './admin/company-form/company-form.component';
-
+import { MyCompanyPanelComponent } from './company/my-company-panel/my-company-panel.component';
+import { AppointmentComponent } from './company/appointment/appointment.component';
+import { EmployeesPanelComponent } from './company/employees-panel/employees-panel.component';
+import { ServicePanelComponent } from './company/service-panel/service-panel.component';
+import { ServiceFormComponent } from './company/service-form/service-form.component';
+import { WorkerServiceFormComponent } from './company/worker-service-form/worker-service-form.component';
+import { InvitationEmployeeComponent } from './company/invitation-employee/invitation-employee.component';
+import { AcceptInvitationPageComponent } from './company/accept-invitation-page/accept-invitation-page.component';
 
 const routes: Routes = [
 
@@ -31,8 +41,12 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
 
    //AdminPanel
-   { path: "adminPanel", component: AdminPageComponent },
+  { path: "adminPanel", component: AdminPageComponent },
   
+  //CompnyPanel
+  { path: "companyPanel", component: MyCompanyPanelComponent },
+  { path: "acceptInvitation" , component: AcceptInvitationPageComponent },
+
   //Auth
   { path: "login", component: LoginPageComponent},
   { path: "register", component: RegisterPageComponent },
@@ -61,6 +75,14 @@ const routes: Routes = [
     CompanyPanelComponent,
     ListCompanyComponent,
     CompanyFormComponent,
+    MyCompanyPanelComponent,
+    AppointmentComponent,
+    EmployeesPanelComponent,
+    ServicePanelComponent,
+    ServiceFormComponent,
+    WorkerServiceFormComponent,
+    InvitationEmployeeComponent,
+    AcceptInvitationPageComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -70,6 +92,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatDialogModule,
+    NgxMatTimepickerModule,
+    FullCalendarModule,
+    MatFormFieldModule,
+    //NgxMaterialTimepickerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
