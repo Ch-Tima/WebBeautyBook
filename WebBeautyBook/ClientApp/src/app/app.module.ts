@@ -8,7 +8,7 @@ import { MatDialogModule } from "@angular/material/dialog"
 import { NgxMatTimepickerModule } from "ngx-mat-timepicker"
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
-//import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { DragScrollModule } from 'ngx-drag-scroll';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -34,6 +34,7 @@ import { ServiceFormComponent } from './company/service-form/service-form.compon
 import { WorkerServiceFormComponent } from './company/worker-service-form/worker-service-form.component';
 import { InvitationEmployeeComponent } from './company/invitation-employee/invitation-employee.component';
 import { AcceptInvitationPageComponent } from './company/accept-invitation-page/accept-invitation-page.component';
+import { FooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
 
@@ -83,6 +84,7 @@ const routes: Routes = [
     WorkerServiceFormComponent,
     InvitationEmployeeComponent,
     AcceptInvitationPageComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -95,7 +97,7 @@ const routes: Routes = [
     NgxMatTimepickerModule,
     FullCalendarModule,
     MatFormFieldModule,
-    //NgxMaterialTimepickerModule,
+    DragScrollModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

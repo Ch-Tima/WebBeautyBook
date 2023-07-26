@@ -31,6 +31,7 @@
     "bootstrap": "^5.2.3",
     "jquery": "^3.7.0",
     "luxon": "^3.3.0",
+    "ngx-drag-scroll": "^16.0.0",
     "ngx-mat-timepicker": "^16.0.2",
     "ngx-material-timepicker": "^13.1.1",
     "oidc-client": "^1.11.5",
