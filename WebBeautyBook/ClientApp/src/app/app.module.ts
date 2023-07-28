@@ -35,6 +35,7 @@ import { WorkerServiceFormComponent } from './company/worker-service-form/worker
 import { InvitationEmployeeComponent } from './company/invitation-employee/invitation-employee.component';
 import { AcceptInvitationPageComponent } from './company/accept-invitation-page/accept-invitation-page.component';
 import { FooterComponent } from './footer/footer.component';
+import { CompanyPageComponent } from './company-page/company-page.component'
 
 const routes: Routes = [
 
@@ -47,6 +48,7 @@ const routes: Routes = [
   //CompnyPanel
   { path: "companyPanel", component: MyCompanyPanelComponent },
   { path: "acceptInvitation" , component: AcceptInvitationPageComponent },
+  { path: "company", component: CompanyPageComponent },
 
   //Auth
   { path: "login", component: LoginPageComponent},
@@ -85,8 +87,11 @@ const routes: Routes = [
     InvitationEmployeeComponent,
     AcceptInvitationPageComponent,
     FooterComponent,
+    CompanyPageComponent,
+    
   ],
   imports: [
+    BrowserModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
@@ -100,6 +105,6 @@ const routes: Routes = [
     DragScrollModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
