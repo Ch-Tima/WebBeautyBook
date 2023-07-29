@@ -1,0 +1,134 @@
+<div class="company-container container">
+
+    <div class="center-container">
+        <div class="photos">
+            <img src="https://d375139ucebi94.cloudfront.net/region2/pl/177208/biz_photo/8e60b025e5324b0386eaa2b87455f4-lalique-biz-photo-b7b0ee0bffb5468c8e8a7dcc36cdad-booksy.jpeg?size=640x427">
+        </div>
+        <div class="services">
+            <div class="services-header">
+                <h4>Services</h4>
+                <div class="input-search">
+                    <div>
+                      <span class="input-search-img">
+                        <img src="../../assets/svg/search.svg">
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Search for service">
+                </div>                  
+            </div>
+            <div class="service-item" *ngFor="let item of services">
+                <div class="service-data">
+                    <p class="service-title">
+                        Manicure Hybrydowy Podskórkowy
+                    </p>
+                    <div class="service-right-data">
+                        <div>
+                            <p class="service-price">130,00zł</p>
+                            <p class="service-time">1h 30min</p>
+                        </div>
+                        <button class="btn btn-success">Book</button>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-container">
+        <h4 class="title">NameCompany</h4>
+
+        <div class="staffers-data">
+            <p>Staffers</p>
+            <drag-scroll #nav class="staffers-carousel">
+
+                <div class="staffers-item" drag-scroll-item>
+                    <img src="https://avatars.githubusercontent.com/u/92593259?v=4" />
+                    <p>Tymofii_1</p>
+                </div>
+
+                <div class="staffers-item" drag-scroll-item>
+                    <img src="https://avatars.githubusercontent.com/u/92593259?v=4" />
+                    <p>Tymofii_2</p>
+                </div>
+
+                <div class="staffers-item" drag-scroll-item>
+                    <img src="https://avatars.githubusercontent.com/u/92593259?v=4" />
+                    <p>Tymofii_3</p>
+                </div>
+
+                <div class="staffers-item" drag-scroll-item>
+                    <img src="https://avatars.githubusercontent.com/u/92593259?v=4" />
+                    <p>Tymofii_4</p>
+                </div>
+
+                <div class="staffers-item" drag-scroll-item>
+                    <img src="https://avatars.githubusercontent.com/u/92593259?v=4" />
+                    <p>Tymofii_5</p>
+                </div>
+                
+            </drag-scroll>
+        </div>
+        <hr>
+        
+        <div class="contacts-data">
+            <div class="contacts-item">
+                <img src="../../assets/svg/phone.svg">
+                <p>+48 321 321 321</p>
+            </div>
+            <div class="contacts-item">
+                <img src="../../assets/svg/email.svg">
+                <p>chizhevskii.tima@gmail.com</p>
+            </div>
+        </div>
+        <hr>
+
+        <div class="schedule-data">
+            <div class="schedule-item">
+                <p>Sunday</p>
+                <p>Closed</p>
+            </div>
+            <div class="schedule-item">
+                <p>Monday</p>
+                <p>10:00AM-07:00PM</p>
+            </div>
+            <div class="schedule-item">
+                <p>Tuesday</p>
+                <p>10:00AM-07:00PM</p>
+            </div>
+            <div class="schedule-item">
+                <p>Wednesday</p>
+                <p>10:00AM-07:00PM</p>
+            </div>
+            <div class="schedule-item">
+                <p>Thursday</p>
+                <p>10:00AM-07:00PM</p>
+            </div>
+            <div class="schedule-item">
+                <p>Friday</p>
+                <p>10:00AM-07:00PM</p>
+            </div>
+            <div class="schedule-item">
+                <p>Saturday</p>
+                <p>Closed</p>
+            </div>
+        </div>
+        <hr>  
+
+        <div class="social-links">
+            <a href="#">
+                <img src="../../assets/svg/instagram.svg">
+            </a>
+            <a href="#">
+                <img src="../../assets/svg/facebook.svg">
+            </a>
+            <a href="#">
+                <img src="../../assets/svg/twitter.svg">
+            </a>
+        </div>
+        <hr>
+
+    </div>
+
+</div>
+
+<app-footer></app-footer>

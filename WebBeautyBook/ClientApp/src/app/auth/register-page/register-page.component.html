@@ -1,0 +1,63 @@
+<div class="{{styleContainer}} my-2">
+    <h3>{{header}}</h3>
+    <form [formGroup]="mForm" (ngSubmit)="onSubmit()">
+      <div>
+        
+        <div class="col-md-4 mb-3">
+          <label for="email">Email</label>
+          <input formControlName="email" class="form-control" type="text" *ngIf="mForm.controls['email'].valid || !mForm.controls['email'].touched">
+          <div *ngIf="!mForm.controls['email'].valid && mForm.controls['email'].touched">
+            <input formControlName="email" class="form-control is-invalid" type="text">
+            <small style="color:red" *ngIf="mForm.controls['email'].errors?.['required'] != undefined">Email is required.</small>
+            <small style="color:red" *ngIf="mForm.controls['email'].errors?.['email'] != undefined">This isn't an email address.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="userName">UserName</label>
+          <input formControlName="userName" class="form-control" type="text">
+          <div *ngIf="mForm.controls['userName'].errors != null && mForm.controls['userName'].touched">
+            <small style="color:red" *ngIf="mForm.controls['userName'].errors['required'] != undefined">Name is required.</small>
+            <small style="color:red" *ngIf="mForm.controls['userName'].errors['maxlength'] != undefined || mForm.controls['userName'].errors['minlength'] != undefined">The 'Name' must be between 4 and 100 characters.</small>
+          </div>
+        </div>
+  
+        <div class="col-md-4 mb-3">
+          <label for="userSurname">UserSurname</label>
+          <input formControlName="userSurname" class="form-control" type="text">
+          <div *ngIf="mForm.controls['userSurname'].errors != null && mForm.controls['userSurname'].touched">
+            <small style="color:red" *ngIf="mForm.controls['userSurname'].errors['required'] != undefined">Surname is required.</small>
+            <small style="color:red" *ngIf="mForm.controls['userSurname'].errors['maxlength'] != undefined || mForm.controls['userSurname'].errors['minlength'] != undefined">The 'Surname' must be between 4 and 100 characters.</small>
+          </div>
+        </div>
+  
+        <div class="col-md-4 mb-3">
+          <label for="password">Password</label>
+          <input formControlName="password" class="form-control" type="password">
+          <div *ngIf="mForm.controls['password'].errors != null && mForm.controls['password'].touched">
+            <small style="color:red" *ngIf="mForm.controls['password'].errors['required'] != undefined">Password is required.</small>
+            <small style="color:red" *ngIf="mForm.controls['password'].errors['maxlength'] != undefined || mForm.controls['password'].errors['minlength'] != undefined">The minimum Password length is 6 characters.</small>
+          </div>
+        </div>
+  
+        <div class="col-md-4 mb-3">
+          <label for="confirmPassword">ConfirmPassword</label>
+          <input formControlName="confirmPassword" class="form-control" type="password">
+          <div *ngIf="mForm.controls['confirmPassword'].errors != null && mForm.controls['confirmPassword'].touched">
+            <small style="color:red" *ngIf="mForm.controls['confirmPassword'].errors['confirmedValidator'] != undefined">ConfirmPassword and Password do not match.</small>
+          </div>
+          
+        </div>
+      </div>
+  
+      <p *ngIf="lastErrorMessage != ''" style="color: red;">{{lastErrorMessage}}</p>
+  
+      <button *ngIf="!mForm.valid" class="btn btn-primary" type="submit" disabled>SignUp</button>
+      <button *ngIf="mForm.valid" class="btn btn-primary" type="submit">SignUp</button>
+  
+      <span *ngIf="showLinkToLogin">
+        Already have an account?
+        <a routerLink="/login">Login</a>
+      </span>
+    </form>
+  </div>

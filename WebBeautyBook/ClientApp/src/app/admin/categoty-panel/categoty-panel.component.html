@@ -1,0 +1,21 @@
+<div class="container my-2 bg-light border rounded shadow">
+  <p *ngIf="list == null || list.length == 0" class="text-center">Categories not found.</p>
+  <div *ngFor="let item of list let i = index" class="row d-flex bg-primary rounded m-2">
+    <div class="col">
+        <p class="text-lg-center m-0 h6 text-white">{{item.name}}</p>
+        <p class="text-lg-center m-0 text-white">ID: {{item.id}}</p>
+        <p class="text-lg-center m-0 text-white ">
+          <small *ngIf="item.categoryId != null">Sub categoty: {{item.categoryId}}</small>
+          <small *ngIf="item.categoryId == null">Sub categoty: NULL</small>
+        </p>
+    </div>
+    <div class="col-2 d-flex justify-content-around">
+      <div class="row">
+        <img (click)="onDelete(i)" src="../../../assets/svg/trash.svg" style="width: 50px;">
+        <img (click)="onUpdate(i)" src="../../../assets/svg/edit.svg" style="width: 50px;">
+      </div>
+    </div>
+</div>
+<img (click)="onInsert()" src="../../../assets/svg/plus.svg" class="btn-plus">
+
+</div>

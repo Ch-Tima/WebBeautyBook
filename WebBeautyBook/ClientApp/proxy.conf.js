@@ -6,7 +6,41 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const PROXY_CONFIG = [
   {
     context: [
-      "/weatherforecast",
+      //User data
+      "/api/User",
+
+      //Category
+      "/api/Category",
+      "/api/Category/GetMainCategories",
+
+      //Auth
+      "/api/Auth",
+      "/api/Auth/register",
+      "/api/Auth/login",
+      "/api/Auth/confirmEmail",
+      "/api/Auth/forgotPassword",
+      "/api/Auth/resetPassword",
+      "/api/Auth/registrationViaAdmin",
+      "/api/Auth/registrationViaCompany",
+
+      //Location
+      "/api/Location/getAll",
+      "/api/Location/getAllCountry",
+      "/api/Location/getAllCity",
+
+      //Company
+      "/api/Company",
+      "/api/Company/getAll",
+      "/api/Company/getMyCompany",
+      "/api/Company/getWorkers",
+
+      //Service
+      "/api/Service",
+
+      //WorkerService
+      "/api/WorkerService/getWorker",
+      "/api/WorkerService/insertWorkerToService",
+      "/api/WorkerService/removeWorkerFromService",
    ],
     target: target,
     secure: false,

@@ -88,7 +88,7 @@ namespace DAL.Context
             //One to Many
             builder.Entity<Service>().HasOne(s => s.Company).WithMany(c => c.Services).HasForeignKey(s => s.CompanyId);
             //CategotyId OneToMany
-            builder.Entity<Service>().HasOne(x => x.Categoty).WithMany(x => x.Services).HasForeignKey(x => x.CategotyId);
+            builder.Entity<Service>().HasOne(x => x.Category).WithMany(x => x.Services).HasForeignKey(x => x.CategoryId);
 
 
             //WorkerService

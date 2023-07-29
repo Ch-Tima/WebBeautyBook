@@ -33,20 +33,21 @@ namespace BLL.Services
             return await _workerServiceRepository.GetAllFindAsync(func);
         }
 
-        public async Task<ServiceResponse> InsertAsync(Domain.Models.WorkerService workerService)
+        public async Task<ServiceResponse> InsertAsync(string companyId, Domain.Models.WorkerService workerService)
         {
             try
             {
-                var worker = await _workerRepository.GetIncudeAsync(workerService.WorkerId);
-                var serviec = await _serviceRepository.GetAsync(workerService.ServiceId);
+                var worker = await _workerRepository.GetFirstAsync(x => x.Id == workerService.WorkerId && x.CompanyId == companyId);
+                if (worker == null)//Is this "Worker" owned by a company?
+                    return new ServiceResponse(false, $"This Worker does not belong to this company.");
 
-                if(serviec == null)
-                    return new ServiceResponse(false, "Serviec not found.");
+                var serviec = await _serviceRepository.GetFirstAsync(x => x.Id == workerService.ServiceId && x.CompanyId == companyId);
+                if(serviec == null)//Is this "Serviec" owned by a company?
+                    return new ServiceResponse(false, $"This Serviec does not belong to this company.");
 
-                if (worker == null) 
-                    return new ServiceResponse(false, "Worker not found.");
-
-                if (worker.WorkerServices.Any(x => x.ServiceId == workerService.ServiceId))
+                //find Duplicate 
+                var workerServiceDuplicate = await _workerServiceRepository.GetFirstAsync(x => x.ServiceId == workerService.ServiceId && x.WorkerId == workerService.WorkerId);
+                if (workerServiceDuplicate != null)
                     return new ServiceResponse(false, "Worker has this service.");
 
                 await _workerServiceRepository.InsertAsync(workerService);
@@ -59,14 +60,25 @@ namespace BLL.Services
             }
         }
 
-        public async Task<ServiceResponse> DeleteAsync(string workerId, string serviceId)
+        public async Task<ServiceResponse> DeleteAsync(string companyId, string workerId, string serviceId)
         {
             try
             {
-                var workerService = await _workerServiceRepository.GetFirstAsync(x => x.ServiceId == serviceId &&  x.WorkerId == workerId);
+                //find WorkerService in database
+                var workerService = await _workerServiceRepository.GetFirstIncludeAsync(x => x.ServiceId == serviceId &&  x.WorkerId == workerId);
 
-                if(workerService == null) 
-                    return new ServiceResponse(false, "WorkerService not found.");
+                if (workerService == null) 
+                    return new ServiceResponse(false, "This worker does not own this service.");
+
+                //If this service and worker belong to the company then delete
+
+                if (workerService.Worker.CompanyId != companyId)//Is this "Worker" owned by a company?
+                    return new ServiceResponse(false, $"This Worker does not belong to this company.");
+
+                if (workerService.Service.CompanyId != companyId)//Is this "Service" owned by a company?
+                    return new ServiceResponse(false, $"This Service does not belong to this company.");
+
+                //TODO: check for open Records
 
                 await _workerServiceRepository.DeleteAsync(workerService.Id);
 
