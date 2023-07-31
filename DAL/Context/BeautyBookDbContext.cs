@@ -47,6 +47,15 @@ namespace DAL.Context
             builder.Entity<Company>().HasOne(c => c.Location).WithMany(l => l.Companies).HasForeignKey(c => c.LocationId).IsRequired(false).OnDelete(DeleteBehavior.SetNull);
 
 
+            //ScheduleCompany
+            builder.Entity<CompanyOpenHours>().HasIndex(s => s.Id).IsUnique();
+            builder.Entity<CompanyOpenHours>().Property(s => s.OpenFrom).HasColumnType("Time").IsRequired();
+            builder.Entity<CompanyOpenHours>().Property(s => s.OpenUntil).HasColumnType("Time").IsRequired();
+            builder.Entity<CompanyOpenHours>().Property(s => s.DayOfWeek).HasColumnType("Tinyint").IsRequired();
+            //One to Many
+            builder.Entity<CompanyOpenHours>().HasOne(s => s.Company).WithMany(c => c.CompanyOpenHours).HasForeignKey(s => s.CompanyId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+
+
             //Comment
             builder.Entity<Comment>().HasIndex(c => c.Id).IsUnique();
             builder.Entity<Comment>().Property(c => c.Text).HasColumnType("VARCHAR").HasMaxLength(500);

@@ -127,6 +127,36 @@ namespace DAL.Initializers
                 LocationId = locationWarsaw.Id
             };
 
+            //CompanyOpenHours
+            builder.Entity<CompanyOpenHours>().HasData(new CompanyOpenHours[]
+            {
+                new CompanyOpenHours()
+                {
+                    CompanyId = companyForLog417.Id,
+                    DayOfWeek = 1,//Monday
+                    OpenFrom = new TimeSpan(10, 0, 0),
+                    OpenUntil = new TimeSpan(19, 0, 0)
+                },
+                //Tuesday close 2
+                new CompanyOpenHours()
+                {
+                    CompanyId = companyForLog417.Id,
+                    DayOfWeek = 3,//Wednesday
+                    OpenFrom = new TimeSpan(10, 0, 0),
+                    OpenUntil = new TimeSpan(19, 0, 0)
+                },
+                //Thursday close 4
+                //Friday close 5
+                new CompanyOpenHours()
+                {
+                    CompanyId = companyForLog417.Id,
+                    DayOfWeek = 6,//Saturday
+                    OpenFrom = new TimeSpan(10, 0, 0),
+                    OpenUntil = new TimeSpan(16, 30, 0)
+                },
+                //Sunday close 7
+            });
+
             //worker profile
             var workerProfileForLog417 = new Worker()
             {
