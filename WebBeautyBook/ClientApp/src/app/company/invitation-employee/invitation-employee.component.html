@@ -1,0 +1,22 @@
+<div class="container my-2">
+    <h3>Invite to company:</h3>
+    <form [formGroup]="mForm" (ngSubmit)="onSubmit()">
+
+        <div class="col-md-8 mb-6">
+            <label for="email">Email</label>
+            <input formControlName="email" class="form-control" type="text" *ngIf="mForm.controls['email'].valid || !mForm.controls['email'].touched">
+            <div *ngIf="!mForm.controls['email'].valid && mForm.controls['email'].touched">
+              <input formControlName="email" class="form-control is-invalid" type="text">
+              <small style="color:red" *ngIf="mForm.controls['email'].errors?.['required'] != undefined">Email is required.</small>
+              <small style="color:red" *ngIf="mForm.controls['email'].errors?.['email'] != undefined">This isn't an email address.</small>
+            </div>
+        </div>
+      
+        <p id="message">{{message}}</p>
+  
+        <div class="my-2" align="end">
+            <button *ngIf="mForm.valid" class="btn btn-primary" type="submit">Send</button>
+            <button *ngIf="!mForm.valid" class="btn btn-primary" type="submit" disabled>Send</button>
+        </div>
+    </form>
+  </div>

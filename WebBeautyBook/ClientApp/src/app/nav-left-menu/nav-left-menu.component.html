@@ -1,0 +1,16 @@
+
+<div class="container-fluid row">
+    <div #menu class="col-2 my-menu scroll">
+
+        <p class="name-company h5 text-center my-2 text-primary">{{headerText}}</p>
+    
+        <nav class="navbar mx-md-1 scroll-hover">
+            <ul class="navbar-nav w-100">
+                <li *ngFor="let item of list; let id = index" class="nav-item li-hover w-100 py-1" (click)="onClick($event, item.value)" id="i:{{id}}">
+                    <img src="{{item.iconPath}}">
+                    <span class="text-lightgrey px-1">{{item.title}}</span>
+                </li>
+           </ul>
+        </nav>
+    </div>
+</div>

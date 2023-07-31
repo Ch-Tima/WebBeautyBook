@@ -1,10 +1,8 @@
-﻿using Domain.Models;
+﻿using DAL.Initializers;
+using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
 
 namespace DAL.Context
 {
@@ -17,8 +15,7 @@ namespace DAL.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-
+            
             //BaseUser
             builder.Entity<BaseUser>().Property<string>(b => b.UserSurname).HasColumnType("VARCHAR").HasMaxLength(100);
             builder.Entity<BaseUser>().Property<string>(b => b.Photo).HasColumnType("VARCHAR").HasMaxLength(200)
@@ -48,6 +45,15 @@ namespace DAL.Context
 
             //One to Many (Location)
             builder.Entity<Company>().HasOne(c => c.Location).WithMany(l => l.Companies).HasForeignKey(c => c.LocationId).IsRequired(false).OnDelete(DeleteBehavior.SetNull);
+
+
+            //ScheduleCompany
+            builder.Entity<CompanyOpenHours>().HasIndex(s => s.Id).IsUnique();
+            builder.Entity<CompanyOpenHours>().Property(s => s.OpenFrom).HasColumnType("Time").IsRequired();
+            builder.Entity<CompanyOpenHours>().Property(s => s.OpenUntil).HasColumnType("Time").IsRequired();
+            builder.Entity<CompanyOpenHours>().Property(s => s.DayOfWeek).HasColumnType("Tinyint").IsRequired();
+            //One to Many
+            builder.Entity<CompanyOpenHours>().HasOne(s => s.Company).WithMany(c => c.CompanyOpenHours).HasForeignKey(s => s.CompanyId).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
 
             //Comment
@@ -88,7 +94,7 @@ namespace DAL.Context
             //One to Many
             builder.Entity<Service>().HasOne(s => s.Company).WithMany(c => c.Services).HasForeignKey(s => s.CompanyId);
             //CategotyId OneToMany
-            builder.Entity<Service>().HasOne(x => x.Categoty).WithMany(x => x.Services).HasForeignKey(x => x.CategotyId);
+            builder.Entity<Service>().HasOne(x => x.Category).WithMany(x => x.Services).HasForeignKey(x => x.CategoryId);
 
 
             //WorkerService
@@ -109,128 +115,11 @@ namespace DAL.Context
             builder.Entity<Category>().HasMany(x => x.Categories).WithOne(x => x.Categors).HasForeignKey(x => x.CategoryId);
 
             //Default Initialization
-            //Roles
-            var adminRole = new IdentityRole()
-            {
-                Name = Domain.Models.Roles.ADMIN,
-                NormalizedName = Domain.Models.Roles.ADMIN.ToUpper()
-            };
-            builder.Entity<IdentityRole>().HasData(new IdentityRole[]
-            {
-                new IdentityRole()
-                {
-                    Name = Domain.Models.Roles.CLIENT,
-                    NormalizedName = Domain.Models.Roles.CLIENT.ToUpper()
-                },
-                new IdentityRole()
-                {
-                    Name = Domain.Models.Roles.WORKER,
-                    NormalizedName = Domain.Models.Roles.WORKER.ToUpper()
-                },
-                new IdentityRole()
-                {
-                    Name = Domain.Models.Roles.MANAGER,
-                    NormalizedName = Domain.Models.Roles.MANAGER.ToUpper()
-                },
-                new IdentityRole()
-                {
-                    Name = Domain.Models.Roles.OWN_COMPANY,
-                    NormalizedName = Domain.Models.Roles.OWN_COMPANY.ToUpper()
-                },
-                adminRole
-            });
+            BeautyBookDbInitializer.Initializer(builder);
 
-            //supperAdmin
-            var supperAdmin = new BaseUser()
-            {
-                UserName = "Tima",
-                NormalizedUserName = "Tima".ToUpper(),
-                UserSurname = "Ch",
-                NormalizedEmail = "chizhevskii.tima@gmail.com".ToUpper(),
-                Email = "chizhevskii.tima@gmail.com",
-                EmailConfirmed = true
-            };
-            var hasher = new PasswordHasher<BaseUser>();
-            supperAdmin.PasswordHash = hasher.HashPassword(supperAdmin, "admin");
-
-            builder.Entity<BaseUser>().HasData(new BaseUser[] { supperAdmin });
-            builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>[]
-            {
-                new IdentityUserRole<string>()
-                {
-                    UserId = supperAdmin.Id,
-                    RoleId = adminRole.Id
-                }
-            });
-
-            //Locations
-            const string countryUkraine = "Ukraine";
-            const string countryPoland = "Poland";
-            builder.Entity<Location>().HasData(new Location[]
-            {
-                new Location()
-                {
-                    Country = countryUkraine,
-                    City = "Kyiv"
-                },
-                new Location()
-                {
-                    Country = countryUkraine,
-                    City = "Kharkiv"
-                },
-                new Location()
-                {
-                    Country = countryUkraine,
-                    City = "Odesa"
-                },
-                new Location()
-                {
-                    Country = countryPoland,
-                    City = "Warsaw"
-                },
-                new Location()
-                {
-                    Country = countryPoland,
-                    City = "Kraków"
-                }
-            });
-
-            //Categories
-            var categoryManicure = new Category() { Name = "Manicure" };
-            builder.Entity<Category>().HasData(new Category[]
-            {
-                new Category()
-                {
-                    Name = "Women's hairdressing"
-                },
-                new Category()
-                {
-                    Name = "Men's hairdressing"
-                },
-                categoryManicure,
-                new Category()
-                {
-                    Name = "Basic",
-                    CategoryId = categoryManicure.Id
-                },
-                new Category()
-                {
-                    Name = "French",
-                    CategoryId = categoryManicure.Id
-                },
-                new Category()
-                {
-                    Name = "Acrylic",
-                    CategoryId = categoryManicure.Id
-                },
-                new Category()
-                {
-                    Name = "Gel",
-                    CategoryId = categoryManicure.Id
-                }
-            });
-
+            base.OnModelCreating(builder);
         }
+
 
         public DbSet<BaseUser> BaseUsers { get; set; }
         public DbSet<Client> Clients { get; set; }

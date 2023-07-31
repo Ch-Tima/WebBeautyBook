@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { UserDataModel } from '../models/UserDataModel';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { NavbarService } from '../services/navbar.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,6 +11,17 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
+  
+  userData: UserDataModel;
+  isAuth: boolean;
+
+  constructor(private rout: Router, private auth: AuthService, public nav: NavbarService) {
+    this.userData = new UserDataModel();
+    this.isAuth = this.auth.hasToken();
+    if (this.isAuth) {
+      this.getUserData();
+    }
+  }
 
   collapse() {
     this.isExpanded = false;
@@ -15,4 +30,22 @@ export class NavMenuComponent {
   toggle() {
     this.isExpanded = !this.isExpanded;
   }
+
+
+  public signOut() {
+    this.auth.signOut();
+  }
+  
+  private getUserData() {
+    this.auth.getUserData().subscribe(
+      result => {
+        this.userData = result;
+        this.auth.saveUserData(result);
+      }, error => {
+        alert("Error: nav-menu");
+        console.log(error);
+        this.auth.signOut();
+      });
+  }
+
 }

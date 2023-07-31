@@ -1,0 +1,68 @@
+<div class="m-3">
+    <form [formGroup]="mForm" (ngSubmit)="onSubmit()">
+    
+        <label class="h5">{{header}}</label>
+
+        <div class="row form-group">
+            <div class="col-12 col-sm">
+                <label for="description">Title</label>
+                <input formControlName="name" type="text" class="form-control">
+                <div *ngIf="mForm.controls['name'].errors != null && mForm.controls['name'].touched">
+                    <small style="color:red" *ngIf="mForm.controls['name'].errors['required'] != undefined">Name is required.</small>
+                    <small style="color:red" *ngIf="mForm.controls['name'].errors['minlength'] != undefined || mForm.controls['name'].errors['maxlength'] != undefined">The "Name" must be between 3 and 100 characters.</small>
+                </div>
+            </div>
+        
+            <div class="col-12 col-sm">
+                <label for="price">Price</label>
+                <input formControlName="price" type="number" step="1" min="1" max="50000" class="form-control">
+                <div *ngIf="mForm.controls['price'].errors != null && mForm.controls['price'].touched">
+                    <small style="color:red" *ngIf="mForm.controls['price'].errors['required'] != undefined">Price is required.</small>
+                    <small style="color:red" *ngIf="mForm.controls['price'].errors['min'] != undefined || mForm.controls['price'].errors['max'] != undefined">The "Price" must be between 1 and 50000 characters.</small>
+                </div>
+            </div>
+
+        </div>
+    
+        <div class="col">
+            <label for="description">Description</label>
+            <textarea class="form-control" formControlName="description" rows="5" maxlength="400" ></textarea>
+            <div *ngIf="mForm.controls['description'].errors != null && mForm.controls['description'].touched">
+              <small style="color:red" *ngIf="mForm.controls['description'].errors['maxlength'] != undefined">The "Description" must contain no more than 500 characters.</small>
+            </div>
+        </div>
+
+    
+        <div class="col">
+            <label for="time">Time</label>
+            <!-- <ngx-mat-timepicker-field (timeChanged)="timeChanged($event)" color="primary" floatLabel="always" [format]="24" [defaultTime]="'00:05'" [controlOnly]="true" [min]="'00:05'" [max]="'12:00'"></ngx-mat-timepicker-field> -->
+            <input class="form-control" style="max-width: 200px;" formControlName="time" [ngxMatTimepicker]="picker" [format]="24" [min]="'00:05'" readonly="readonly">  
+            <ngx-mat-timepicker color="accent" #picker ></ngx-mat-timepicker>  
+        </div>
+    
+    
+        <div>
+            <label>Categories</label>
+            <div class="d-flex">
+                <select id="mainCategory" (change)="setSubCategory($event)" class="form-control" style="max-width: 200px; margin-right: 5px;">
+                    <option *ngIf="!data.isUpdateMode" selected disabled>nono</option>
+                    <option *ngFor="let item of categories; let last = last" value="{{item.id}}">{{item.name}}
+                        <ng-container *ngIf="last && data.isUpdateMode">
+                            {{ onFinishFor() }}
+                       </ng-container>
+                    </option>
+                </select>
+                <select hidden id="subCategory" (change)="setSubCategory($event)" class="form-control" style="max-width: 200px; margin-left: 5px;">
+                    
+                </select>
+            </div>
+        </div>
+    
+        <small *ngIf="errorMessage != ''" style="color:red">{{errorMessage}}</small>
+
+        <div class="mx-1 my-2" align="end">
+            <button class="btn btn-primary" type="submit" *ngIf="mForm.valid">{{data.isUpdateMode ? 'Update' : 'Create' }}</button>
+            <button class="btn btn-primary" *ngIf="!mForm.valid" disabled>{{data.isUpdateMode ? 'Update' : 'Create' }}</button>
+        </div>
+    </form>
+</div>

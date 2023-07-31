@@ -1,4 +1,5 @@
-﻿using DAL.Context;
+﻿using BLL.Providers;
+using DAL.Context;
 using DAL.Repository;
 using Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,11 +33,13 @@ namespace BLL.Infrastructure
             services.AddTransient<WorkerRepository>();
             services.AddTransient<CategoryRepository>();
             services.AddTransient<CompanyRepository>();
+            services.AddTransient<CompanyOpenHoursRepository>();
 
             services.AddMemoryCache();
 
+
             //Set settings Identity
-            services.AddDefaultIdentity<BaseUser>(opt =>
+            services.AddIdentity<BaseUser, IdentityRole>(opt =>
             {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = false;
@@ -47,7 +50,8 @@ namespace BLL.Infrastructure
 
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<BeautyBookDbContext>()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders()
+            .AddInvitationToCompanyTokenProvider();
 
 
             //JWT
@@ -70,6 +74,12 @@ namespace BLL.Infrastructure
                 };
             });
 
+        }
+        public static IdentityBuilder AddInvitationToCompanyTokenProvider(this IdentityBuilder builder)
+        {
+            var userType = builder.UserType;
+            var totpProvider = typeof(InvitationToCompanyTokenProvider<>).MakeGenericType(userType);
+            return builder.AddTokenProvider(InvitationToCompanyTokenProviderOptions.TokenProvider, totpProvider);
         }
     }
 }
