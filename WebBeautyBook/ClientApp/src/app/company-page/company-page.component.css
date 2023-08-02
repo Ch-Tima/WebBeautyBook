@@ -119,14 +119,22 @@ img{
 .staffers-item img{
     max-width: 60px;
     max-height: 60px;
-    margin: 0 2px;
+    margin: 0 auto;
     border-radius: 100%;
+    display: block;
 }
 
 .staffers-item p{
     text-align: center;
     margin: 0;
     font-size: 14px;
+}
+
+.staffers-name{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
 }
 
 /*contacts-data*/

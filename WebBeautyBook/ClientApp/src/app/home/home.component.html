@@ -1,23 +1,23 @@
 
 <div class="container">
     
-
-
     <!--Carousel Recommended (top 12)-->
     <div #carouselRecommended class="container-recommended">
         <p class="h4">Recommended</p>
         <drag-scroll #nav class="recommended" [scrollbar-hidden]="true">
             <div class="recommended-item" drag-scroll-item *ngFor="let item of topCompany; let i = index">
-                <div (click)="openCompanyProfile('id')">
-                    <img class="recommended-img" src="https://d2zdpiztbgorvt.cloudfront.net/region1/us/441745/biz_photo/7bcbf5ed54a04300afe676c26181f5-omar-kingsmen-barber-lounge-biz-photo-e610d4cd481044398abcf631d44a54-booksy.jpeg?size=640x427">
-                    <div class="grade">
-                        <p>4.9</p>
+                <a href="/company?id={{item.id}}">
+                    <div (click)="openCompanyProfile('id')">
+                        <img class="recommended-img" src="https://d2zdpiztbgorvt.cloudfront.net/region1/us/441745/biz_photo/7bcbf5ed54a04300afe676c26181f5-omar-kingsmen-barber-lounge-biz-photo-e610d4cd481044398abcf631d44a54-booksy.jpeg?size=640x427">
+                        <div class="grade">
+                            <p>0.0</p>
+                        </div>
                     </div>
-                </div>
+                </a>
                 <div class="container-data">
                     <div class="data-company">
-                        <p class="name">Ciach&Style Barbershop</p>
-                        <p class="location">Kościuszki, 14, 68-300, Lubsko</p>
+                        <p class="name">{{item.name}}</p>
+                        <p class="location">{{item.location.city}} {{item.address}}</p>
                     </div>
                     <img class="like" (click)="onClickLike('id', $event)" src="../../assets/svg/heart.svg">
                 </div>

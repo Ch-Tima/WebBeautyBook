@@ -18,7 +18,18 @@ namespace DAL.Repository
                 .Include(x => x.Location)
                 .Include(x => x.Workers)
                 .Include(x => x.Services)
+                .Include(x => x.CompanyOpenHours)
                 .FirstAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<Company>> GetAllIncludeAsync()
+        {
+            return await _db.Companies
+                .Include(x => x.Location)
+                .Include(x => x.Workers)
+                .Include(x => x.Services)
+                .Include(x => x.CompanyOpenHours)
+                .ToListAsync();
         }
 
         /*        public async Task<IEnumerable<Company>> GetAllIncludeAsync()

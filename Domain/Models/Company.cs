@@ -23,6 +23,7 @@ namespace Domain.Models
             Id = Guid.NewGuid().ToString();
             Workers = new List<Worker>();
             Services = new List<Service>();
+            CompanyOpenHours = new List<CompanyOpenHours>();
         }
 
     }

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json.Linq;
 using System.Text;
 using WebBeautyBook.Models;
 
@@ -18,24 +17,20 @@ namespace WebBeautyBook.Controllers
     {
 
         private readonly UserManager<BaseUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly CompanyService _companyService;
         private readonly BLL.Services.WorkerService _workerService;
-        private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailService;
 
-        public CompanyController(UserManager<BaseUser> userManager, CompanyService companyService, BLL.Services.WorkerService workerService, 
-            IConfiguration configuration, RoleManager<IdentityRole> roleManager, IEmailSender emailSender)
+        public CompanyController(UserManager<BaseUser> userManager, CompanyService companyService, 
+            BLL.Services.WorkerService workerService, IEmailSender emailSender)
         {
             _userManager = userManager;
             _companyService = companyService;
             _workerService = workerService;
-            _configuration = configuration;
-            _roleManager = roleManager;
             _emailService = emailSender;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Get(string id)
         {
             if (id == null) return BadRequest("Id cannot null");
@@ -44,12 +39,11 @@ namespace WebBeautyBook.Controllers
 
             if (company == null) return BadRequest("Comapny not found");
 
-
             return Ok(company);
         }
 
         [HttpGet("getAll")]
-        public async Task<IEnumerable<Company>> GetAll() => await _companyService.GetAllAsync();
+        public async Task<IEnumerable<Company>> GetAll() => await _companyService.GetAllIncludeAsync();
 
         [HttpGet("getMyCompany")]
         [Authorize(Roles = Roles.OWN_COMPANY + "," + Roles.WORKER)]

@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { DragScrollComponent } from 'ngx-drag-scroll';
-import * as $ from "jquery";
 import { HttpClient } from '@angular/common/http';
 import { Category } from '../models/Category';
-import { error } from 'console';
+import { Company } from '../models/Company';
+import * as $ from "jquery";
 
 @Component({
   selector: 'app-home',
@@ -12,14 +12,12 @@ import { error } from 'console';
 })
 export class HomeComponent {
 
-  public topCompany: any[] = []
+  public topCompany: Company[] = []
   public categories: any[] = []
   @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent | undefined;
 
   public constructor(private http: HttpClient){
-    for(var i = 0; i < 11; i++){
-      this.topCompany.push(i)
-    }
+    this.loadCopmanies();
     this.loadCategories();
   }
 
@@ -49,6 +47,17 @@ export class HomeComponent {
 
   public openCompanyProfile(id:string){
     console.log(id);
+  }
+
+  private loadCopmanies(){
+    this.http.get<Company[]>("api/Company/getAll").subscribe(
+      result => {
+        this.topCompany = result;
+        console.log(result);
+      }, error => {
+        console.log(error);
+      }
+    )
   }
 
   public onClickLike(id:string, event: any){
