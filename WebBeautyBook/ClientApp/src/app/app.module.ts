@@ -23,6 +23,8 @@ import { OwnCompanyPanelComponent } from './admin/own-company-panel/own-company-
 import { CompanyPanelComponent } from './admin/company-panel/company-panel.component';
 import { ListCompanyComponent } from './admin/list-company/list-company.component';
 import { CompanyFormComponent } from './admin/company-form/company-form.component';
+import { LocationPanelComponent } from './admin/location-panel/location-panel.component';
+import { LocationFormComponent } from './admin/location-form/location-form.component';
 
 
 const routes: Routes = [
@@ -61,6 +63,8 @@ const routes: Routes = [
     CompanyPanelComponent,
     ListCompanyComponent,
     CompanyFormComponent,
+    LocationPanelComponent,
+    LocationFormComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

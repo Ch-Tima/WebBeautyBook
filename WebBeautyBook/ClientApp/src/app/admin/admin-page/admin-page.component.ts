@@ -32,11 +32,12 @@ export class AdminPageComponent {
   }
 
   private InitNavLeftMenuItems (){
-    var def = new NavMenuItem("/assets/svg/categoty.svg", "Categoty", "Categoty");
+    var def = new NavMenuItem("/assets/svg/location.svg", "Location", "Location");
     this.menu = def.value;
     this.navMenuItems.push(def);
     this.navMenuItems.push(new NavMenuItem("/assets/svg/clients.svg", "Own company", "OwnCompany"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/company.svg", "Company", "Company"));
+    this.navMenuItems.push(new NavMenuItem("/assets/svg/categoty.svg", "Categoty", "Categoty"));
   }
 
 }
