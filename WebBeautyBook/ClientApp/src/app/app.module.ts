@@ -38,6 +38,7 @@ import { InvitationEmployeeComponent } from './company/invitation-employee/invit
 import { AcceptInvitationPageComponent } from './company/accept-invitation-page/accept-invitation-page.component';
 import { FooterComponent } from './footer/footer.component';
 import { CompanyPageComponent } from './company-page/company-page.component'
+import { FilterPipe } from './filterPipes/FilterPipe'
 
 const routes: Routes = [
 
@@ -92,6 +93,7 @@ const routes: Routes = [
     AcceptInvitationPageComponent,
     FooterComponent,
     CompanyPageComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,

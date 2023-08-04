@@ -14,6 +14,8 @@ export class CompanyPageComponent {
 
   public company: Company = new Company;
   public workers: Worker[] = []
+  public searchText:any;
+
   private companyId:string|null;
 
   constructor(private http: HttpClient, private auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router){
@@ -40,7 +42,6 @@ export class CompanyPageComponent {
     this.http.get<Company>(`api/Company?id=${this.companyId}`).subscribe(
       result => {
         this.company = result
-        console.log(this.company)
       }, error => {
         console.log(error)
         this.rout.navigate(["/"])
@@ -52,7 +53,6 @@ export class CompanyPageComponent {
     this.http.get<Worker[]>(`api/Worker/getWorkersByCompanyId/${this.companyId}`).subscribe(
       result => {
         this.workers = result;
-        console.log(this.workers);
       }, error => {
         console.log(error);
         console.log("error -> loadWorkers");

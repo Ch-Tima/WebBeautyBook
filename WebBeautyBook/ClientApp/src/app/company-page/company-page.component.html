@@ -13,12 +13,12 @@
                         <img src="../../assets/svg/search.svg">
                       </span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Search for service">
+                    <input type="text" class="form-control" placeholder="Search for service" [(ngModel)]="searchText">
                 </div>                  
             </div>
 
             <ng-container *ngIf="company != undefined">
-                <div class="service-item" *ngFor="let item of company.services">
+                <div class="service-item" *ngFor="let item of company.services | filter:searchText:'name'">
                     <div class="service-data">
                         <p class="service-title">{{item.name}}</p>
                         <div class="service-right-data">
@@ -32,7 +32,6 @@
                     <hr>
                 </div>
             </ng-container>
-
         </div>
     </div>
 
