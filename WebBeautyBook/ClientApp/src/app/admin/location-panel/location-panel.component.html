@@ -1,0 +1,32 @@
+<div>
+    <div class="bg-white rounded shadow tabel-responsive list-workers">
+        <table>
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>Cityies</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (locations$ | async); let i = index">
+                    <td class="d-flex">
+                        <p>{{item.country}}</p>
+                    </td>
+                    <td>
+                        <select class="form-select" id="{{item.country}}">
+                            <option value="{{city.city}}" *ngFor="let city of item.cities">{{city.city}}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="control-td">
+                            <img (click)="openFormUpdateLocation(i)" src="../../../assets/svg/edit.svg">
+                            <img (click)="delete()" src="../../../assets/svg/trash.svg">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <img (click)="openFormCreateLocation()" src="../../../assets/svg/plus.svg" class="btn-plus">
+</div>

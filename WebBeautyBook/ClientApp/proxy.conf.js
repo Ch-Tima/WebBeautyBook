@@ -28,6 +28,7 @@ const PROXY_CONFIG = [
       "/api/Auth/registrationViaCompany",
 
       //Location
+      "/api/Location",
       "/api/Location/getAll",
       "/api/Location/getAllCountry",
       "/api/Location/getAllCity",

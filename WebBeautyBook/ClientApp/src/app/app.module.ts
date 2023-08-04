@@ -26,6 +26,8 @@ import { OwnCompanyPanelComponent } from './admin/own-company-panel/own-company-
 import { CompanyPanelComponent } from './admin/company-panel/company-panel.component';
 import { ListCompanyComponent } from './admin/list-company/list-company.component';
 import { CompanyFormComponent } from './admin/company-form/company-form.component';
+import { LocationPanelComponent } from './admin/location-panel/location-panel.component';
+import { LocationFormComponent } from './admin/location-form/location-form.component';
 import { MyCompanyPanelComponent } from './company/my-company-panel/my-company-panel.component';
 import { AppointmentComponent } from './company/appointment/appointment.component';
 import { EmployeesPanelComponent } from './company/employees-panel/employees-panel.component';
@@ -78,6 +80,8 @@ const routes: Routes = [
     CompanyPanelComponent,
     ListCompanyComponent,
     CompanyFormComponent,
+    LocationPanelComponent,
+    LocationFormComponent,
     MyCompanyPanelComponent,
     AppointmentComponent,
     EmployeesPanelComponent,
@@ -88,7 +92,6 @@ const routes: Routes = [
     AcceptInvitationPageComponent,
     FooterComponent,
     CompanyPageComponent,
-    
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
 {
@@ -38,9 +39,20 @@ namespace WebBeautyBook.Controllers
 
         [HttpPut]
         [Authorize(Roles = Roles.ADMIN)]
-        public async Task<IActionResult> Insert()
+        public async Task<IActionResult> Insert([FromBody] LocationViewModel model)
         {
-            return Ok();
+            var location = new Location()
+            {
+                City = model.City,
+                Country = model.Country
+            };
+
+            var result = await _locationService.InsertAsync(location);
+            
+            if (!result.IsSuccess)
+                return BadRequest(result.Message);
+
+            return new OkObjectResult(location);
         }
 
         [HttpDelete]
@@ -52,8 +64,20 @@ namespace WebBeautyBook.Controllers
 
         [HttpPost]
         [Authorize(Roles = Roles.ADMIN)]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Update([FromBody] LocationViewModel model, string Id)
         {
+            var location = new Location()
+            {
+                Id = Id,
+                City = model.City,
+                Country = model.Country
+            };
+
+            var result = await _locationService.UpdataAsync(location);
+
+            if (!result.IsSuccess)
+                return BadRequest(result.Message);
+
             return Ok();
         }
 
