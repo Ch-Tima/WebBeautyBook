@@ -14,8 +14,8 @@
        
         public List<WorkerService>  WorkerServices { get; set; }
 
-        public string CategotyId { get; set; }
-        public Category? Categoty { get; set; }
+        public string CategoryId { get; set; }
+        public Category? Category { get; set; }
 
 
         public Service()

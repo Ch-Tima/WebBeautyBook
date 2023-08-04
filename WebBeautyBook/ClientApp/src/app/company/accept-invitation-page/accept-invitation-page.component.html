@@ -1,0 +1,7 @@
+<p class="h4 text-center" style="color: red;" *ngIf="message != ''">{{message}}</p>
+
+<div class="d-flex row">
+    <img *ngIf="status == 0" class="mx-auto col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2" src="../../../assets/images/loading.png">
+    <img *ngIf="status == 1" class="mx-auto col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2" src="../../../assets/images/green_checked.png">
+    <img *ngIf="status == -1" class="mx-auto col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2" src="../../../assets/images/red_cross.png">
+</div>

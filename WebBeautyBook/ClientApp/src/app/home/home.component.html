@@ -1,14 +1,72 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+
+<div class="container">
+    
+    <!--Carousel Recommended (top 12)-->
+    <div #carouselRecommended class="container-recommended">
+        <p class="h4">Recommended</p>
+        <drag-scroll #nav class="recommended" [scrollbar-hidden]="true">
+            <div class="recommended-item" drag-scroll-item *ngFor="let item of topCompany; let i = index">
+                <a href="/company?id={{item.id}}">
+                    <div (click)="openCompanyProfile('id')">
+                        <img class="recommended-img" src="https://d2zdpiztbgorvt.cloudfront.net/region1/us/441745/biz_photo/7bcbf5ed54a04300afe676c26181f5-omar-kingsmen-barber-lounge-biz-photo-e610d4cd481044398abcf631d44a54-booksy.jpeg?size=640x427">
+                        <div class="grade">
+                            <p>0.0</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="container-data">
+                    <div class="data-company">
+                        <p class="name">{{item.name}}</p>
+                        <p class="location">{{item.location.city}} {{item.address}}</p>
+                    </div>
+                    <img class="like" (click)="onClickLike('id', $event)" src="../../assets/svg/heart.svg">
+                </div>
+            </div>
+        </drag-scroll>
+
+        <img class="carousel-cont-prevrol" (click)="moveNext()" src="../../assets/svg/arrow-left.svg">
+        <img class="carousel-control-next" (click)="movePrevrol()" src="../../assets/svg/arrow-left.svg">
+
+    </div>
+
+    <!--Enable Location Services?-->
+    <div #enableLocationServices class="enable-location" id="enable-location">
+        <div class="location-data">
+            <div class="location-text">
+                <h4>Want to enable location services?</h4>
+                <p>Turn on location services to find the best salons in your area.</p>
+            </div>
+            <div class="location-btn">
+                <button (click)="turnOnLocation()" class="btn btn-success">Yes</button>
+                <button (click)="turnOffLocation()" class="btn btn-outline-success">No</button>
+            </div>
+        </div>
+        <img src="../../assets/images/placeholder.png">
+    </div>
+
+    <!--All categories-->
+    <div #allCategories>
+        <div class="container-category">
+            
+            <div class="item-category" *ngFor="let item of categories">
+                <div class="content-category">
+                    <a href="#" class="title-category">{{item.name}}</a>
+                    <ul>
+                        <li *ngFor="let subItem of item.categories">
+                            <a href="#">{{subItem.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Ad for our android app-->
+    <div #adForOurAndroidApp>
+
+    </div>
+
+</div>
+
+<app-footer></app-footer>

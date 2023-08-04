@@ -1,9 +1,12 @@
-﻿using BLL.Services;
+﻿using BLL.Providers;
+using BLL.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
@@ -16,16 +19,18 @@ namespace WebBeautyBook.Controllers
         private readonly UserManager<BaseUser> _userManager;
         private readonly CompanyService _companyService;
         private readonly BLL.Services.WorkerService _workerService;
+        private readonly IEmailSender _emailService;
 
-        public CompanyController(UserManager<BaseUser> userManager, CompanyService companyService,
-            BLL.Services.WorkerService workerService)
+        public CompanyController(UserManager<BaseUser> userManager, CompanyService companyService, 
+            BLL.Services.WorkerService workerService, IEmailSender emailSender)
         {
             _userManager = userManager;
             _companyService = companyService;
             _workerService = workerService;
+            _emailService = emailSender;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> Get(string id)
         {
             if (id == null) return BadRequest("Id cannot null");
@@ -34,12 +39,11 @@ namespace WebBeautyBook.Controllers
 
             if (company == null) return BadRequest("Comapny not found");
 
-
             return Ok(company);
         }
 
         [HttpGet("getAll")]
-        public async Task<IEnumerable<Company>> GetAll() => await _companyService.GetAllAsync();
+        public async Task<IEnumerable<Company>> GetAll() => await _companyService.GetAllIncludeAsync();
 
         [HttpGet("getMyCompany")]
         [Authorize(Roles = Roles.OWN_COMPANY + "," + Roles.WORKER)]
@@ -111,12 +115,12 @@ namespace WebBeautyBook.Controllers
             return new OkObjectResult(company);
         }
 
-        [HttpPost]
+        [HttpPost(template: "invitationToCompany")]
         [Authorize(Roles = Roles.OWN_COMPANY)]
-        public async Task<IActionResult> InsertWorkerToCompany(string email)
+        public async Task<IActionResult> InvitationToCompany([FromBody]string email)
         {
             var own = await _userManager.GetUserAsync(User);
-            var workerOwn = await _workerService.GetAsync(own.WorkerId);
+            var workerOwn = await _workerService.GetIncudeAsync(own.WorkerId);
 
             if (workerOwn == null)
                 return BadRequest("Most likely, you do not belong to any company.");
@@ -126,14 +130,89 @@ namespace WebBeautyBook.Controllers
             if (futureWorker == null)
                 return BadRequest($"User not found with email: {email}.");
 
-            if (!await _userManager.IsInRoleAsync(futureWorker, Roles.WORKER))//Does the user have permission
-                return BadRequest($"This user does not have {Roles.WORKER} permission.");
+            if (futureWorker.WorkerId != null)
+                return BadRequest("This user belongs to another company.");
 
-            //TODO send invitation in company
-            var result = await _workerService.InsertAsync(workerOwn.CompanyId, futureWorker);
 
-            return result.IsSuccess ? Ok() : BadRequest(result.Message);
+
+            //create token
+            var token = await _userManager.GenerateUserTokenAsync(user: futureWorker, tokenProvider: InvitationToCompanyTokenProviderOptions.TokenProvider, purpose: $"JoiningTheCompany{workerOwn.CompanyId}");
+
+            var param = new Dictionary<string, string>
+            {
+                {"token", WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token)) },
+                {"companyId", WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(workerOwn.CompanyId)) }
+            };
+            var invitationToCompany = QueryHelpers.AddQueryString(Request.Scheme + "://" + Request.Host.Value + "/acceptInvitation", param);
+            
+            //Send email
+            var msgHtml = $"<label>Dear {futureWorker.UserName} {futureWorker.UserSurname}!</label><br>" +
+                $"<p>You are invited by the company {workerOwn.Company.Name} to become their employee:</p>" +
+                $"<em>&emsp;<a href='{invitationToCompany}'>Accept invitation</a></em>" +
+                $"<p>If you click on \"Accept invitation\" you will be automatically added to {workerOwn.Company.Name} as a worker! If you think this message is an error, you can add it to spam.</p>";
+
+            await _emailService.SendEmailAsync(futureWorker.Email, "Invitation to company", msgHtml);
+
+            //($"We sent an invitation to the company for the user {futureWorker.UserName}.");
+
+            return new JsonResult($"We sent an invitation to the company for the user {futureWorker.UserName}.")
+            {
+                StatusCode = 200,
+            };
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token">toke - The company invitation is encrypted with <see cref="WebEncoders.Base64UrlEncode"></see> with UTF-8 format</param>
+        /// <param name="companyId">companyId - encrypted in the same way as the token, needed to check the token for "purpose" and add the user to the company</param>
+        /// <returns></returns>
+        [HttpPost(template: "acceptInvitationToCompany")]
+        [Authorize]
+        public async Task<IActionResult> AcceptInvitationToCompany(string token, string companyId)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user.WorkerId != null)//check if the user belongs to some company
+                    return BadRequest("You are already in the company.");
+
+                //decode companyId
+                companyId = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(companyId));
+                var company = await _companyService.GetAsync(companyId);//find company
+                if(company == null)
+                    return BadRequest("This companyId is invalid.");
+
+                //verify token
+                var result = await _userManager.VerifyUserTokenAsync(
+                    user: user, 
+                    tokenProvider: InvitationToCompanyTokenProviderOptions.TokenProvider,
+                    purpose: $"JoiningTheCompany{companyId}",
+                    token: Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token)));
+
+                if (!result)
+                    return BadRequest("This token is invalid.");
+
+                //add role for user "WORKER"
+                var roleResult = await _userManager.AddToRoleAsync(user, Roles.WORKER);
+                if (!roleResult.Succeeded)
+                    return BadRequest("Role assigment error.");
+
+                //add user to company
+                var resultWorker = await _workerService.InsertAsync(companyId, user);
+
+                //if it was not possible to add a user to the company, then delete the role "worker"
+                if (!resultWorker.IsSuccess)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, Roles.WORKER);
+                    return BadRequest(resultWorker.Message);
+                }
+
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

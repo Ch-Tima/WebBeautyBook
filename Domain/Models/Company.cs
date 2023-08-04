@@ -1,4 +1,5 @@
-﻿namespace Domain.Models
+﻿
+namespace Domain.Models
 {
     public class Company
     {
@@ -15,12 +16,14 @@
 
         public List<Worker> Workers { get; set; }
         public List<Service> Services { get; set; }
+        public List<CompanyOpenHours> CompanyOpenHours { get; set; }
 
         public Company()
         {
             Id = Guid.NewGuid().ToString();
             Workers = new List<Worker>();
             Services = new List<Service>();
+            CompanyOpenHours = new List<CompanyOpenHours>();
         }
 
     }

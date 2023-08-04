@@ -1,0 +1,31 @@
+<div class="p-2" disable>
+
+    <div>
+        <label>selectedWorkers:</label>
+        <div class="mx-2">
+            <p *ngIf="selectedWorkers.length == 0">empty</p>
+            <div class="row bg-light border my-1" *ngFor="let item of selectedWorkers">
+                <p class="col m-0">{{item.baseUser.email}}</p>  
+                <button (click)="removeWorkerFromService(item)" class="col-2 m-0 btn btn-danger">-</button>  
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-2">
+
+    <div>
+        <label>workers:</label>
+        <div class="mx-2">
+            <div class="row bg-light border my-1" *ngFor="let item of workers">
+                <p class="col m-0">{{item.baseUser.email}}</p>  
+                <button (click)="insertWorkerToService(item)" class="col-2 m-0 btn btn-success">+</button>  
+            </div>
+        </div>
+    </div>
+
+    <p class="text-danger" *ngIf="errorMessage != null && errorMessage.length > 0">{{errorMessage}}</p>
+
+    <div mat-dialog-actions align="end">
+        <button class="btn btn-primary" mat-button mat-dialog-close>Close</button>
+    </div>
+</div>

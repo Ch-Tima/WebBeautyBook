@@ -23,6 +23,14 @@ export class AuthService {
   public login(data: LoginModel): Observable<JWT> {
     return this.http.post<JWT>(this.baseUrl + "api/Auth/login", data);
   }
+
+  /**API request login*/
+  public refreshTokens(): Observable<JWT> {
+    return this.http.post<JWT>(this.baseUrl + "api/Auth/refreshTokens", {}, {
+      headers: this.getHeadersWithToken()
+    });
+  }
+
   /**API request register*/
   public register(data: RegisterModel): Observable<any> {
     return this.http.post<any>(this.baseUrl + "api/Auth/register", data);

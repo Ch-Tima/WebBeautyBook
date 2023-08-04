@@ -24,6 +24,7 @@ builder.Services.AddTransient<WorkerService>();
 builder.Services.AddTransient<WorkerServiceService>();
 builder.Services.AddTransient<CategoryService>();
 builder.Services.AddTransient<CompanyService>();
+builder.Services.AddTransient<CompanyOpenHoursService>();
 
 
 //Fixes looping navigation fields.
@@ -80,15 +81,10 @@ app.UseSwaggerUI(opt =>
     opt.SwaggerEndpoint($"/swagger/{apiVersion}/swagger.json", "BeautyBookApi");
 });
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-            Path.Combine(app.Environment.ContentRootPath, "wwwroot")),
-    RequestPath = "/wwwroot"
-});
+app.UseStaticFiles();
 
-app.UseAuthentication();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseEndpoints(endpoints =>

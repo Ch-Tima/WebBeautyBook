@@ -6,6 +6,10 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const PROXY_CONFIG = [
   {
     context: [
+      '/wwwroot',
+      "/wwwroot/images",
+      "/wwwroot/images/profile.png",
+      
       //User data
       "/api/User",
 
@@ -34,6 +38,17 @@ const PROXY_CONFIG = [
       "/api/Company/getAll",
       "/api/Company/getMyCompany",
       "/api/Company/getWorkers",
+
+      //Service
+      "/api/Service",
+
+      //WorkerService
+      "/api/WorkerService/insertWorkerToService",
+      "/api/WorkerService/removeWorkerFromService",
+
+      //Worker
+      "/api/Worker/getWorkersByServiceId",
+      "/api/Worker/getWorkersByCompanyId",
    ],
     target: target,
     secure: false,

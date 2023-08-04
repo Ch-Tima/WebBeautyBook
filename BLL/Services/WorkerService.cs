@@ -8,20 +8,25 @@ namespace BLL.Services
     {
         private readonly WorkerRepository _repositoryWorker;
         private readonly BaseUserService _baseUserService;
-        //private readonly CompanyService _companyService;
+        private readonly CompanyRepository _companyRepository;
 
-        public WorkerService(WorkerRepository repositoryWorker, BaseUserService baseUserService/*, CompanyService companyService*/)
+        public WorkerService(WorkerRepository repositoryWorker, BaseUserService baseUserService, CompanyRepository companyRepository)
         {
             _repositoryWorker = repositoryWorker;
             _baseUserService = baseUserService;
-            //_companyService = companyService;
+            _companyRepository = companyRepository;
         }
 
         public async Task<Worker?> GetAsync(string id)
         {
             if(id == null) return null;
-
             return await _repositoryWorker.GetAsync(id);
+        }
+
+        public async Task<Worker?> GetIncudeAsync(string id)
+        {
+            if (id == null) return null;
+            return await _repositoryWorker.GetIncudeAsync(id);
         }
 
         public async Task<IEnumerable<Worker>> GetAllIncludeFindAsync(Expression<Func<Worker, bool>> func)
@@ -38,8 +43,8 @@ namespace BLL.Services
         {
             try
             {
-               /* if ((await _companyService.GetAsync(companyId)) == null)
-                    return new ServiceResponse(false, $"Company with id: {companyId} was not found.");*/
+               if ((await _companyRepository.GetAsync(companyId)) == null)
+                    return new ServiceResponse(false, $"Company with id: {companyId} was not found.");
 
                 if (baseUser == null || (await _baseUserService.GetAsync(baseUser.Id)) == null)
                     return new ServiceResponse(false, "User not found.");
