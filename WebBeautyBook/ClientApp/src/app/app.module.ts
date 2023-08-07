@@ -38,7 +38,8 @@ import { InvitationEmployeeComponent } from './company/invitation-employee/invit
 import { AcceptInvitationPageComponent } from './company/accept-invitation-page/accept-invitation-page.component';
 import { FooterComponent } from './footer/footer.component';
 import { CompanyPageComponent } from './company-page/company-page.component'
-import { FilterPipe } from './filterPipes/FilterPipe'
+import { FilterPipe } from './filterPipes/FilterPipe';
+import { ImageSliderComponent } from './image-slider/image-slider.component'
 
 const routes: Routes = [
 
@@ -94,6 +95,7 @@ const routes: Routes = [
     FooterComponent,
     CompanyPageComponent,
     FilterPipe,
+    ImageSliderComponent,
   ],
   imports: [
     BrowserModule,

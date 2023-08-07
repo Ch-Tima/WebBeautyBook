@@ -22,12 +22,11 @@ img{
 .center-container{
     display: block;
     margin-right: 1.35em;
+    width: 720px;
 }
 
-.photos img{
-    max-width: 100%;
-    height: auto;
-    border-radius: .5em;
+.image-slider{
+    height: 470px;
 }
 
 /*services*/
@@ -138,9 +137,6 @@ img{
 }
 
 /*contacts-data*/
-.contacts-data{
-
-}
 .contacts-item{
     display: flex;
 }
@@ -180,13 +176,12 @@ img{
     .company-container{
         display: block;
     }
-
-    .center-container{
-        margin: 2em 0 1em 0;
+    .image-slider{
+        height: 425px;
     }
-    .center-container img{
-        margin: 0 auto;
-        display: block;
+    .center-container{
+        width: auto;
+        margin: 0;
     }
 
     .right-container{
@@ -201,5 +196,19 @@ img{
         max-height: 50px;
         margin: 0 2px;
         border-radius: 100%;
+    }
+    .image-slider{
+        height: 360px;
+    }
+    .services-header{
+        justify-content: center;
+    }
+    .services-header h4{
+        display: none;
+    }
+}
+@media(max-width: 400px){
+    .image-slider{
+        height: 200px;
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace Domain.Models
+﻿namespace Domain.Models
 {
     public class Company
     {
@@ -17,6 +16,7 @@ namespace Domain.Models
         public List<Worker> Workers { get; set; }
         public List<Service> Services { get; set; }
         public List<CompanyOpenHours> CompanyOpenHours { get; set; }
+        public List<CompanyImage> CompanyImages { get; set; }
 
         public Company()
         {
@@ -24,6 +24,7 @@ namespace Domain.Models
             Workers = new List<Worker>();
             Services = new List<Service>();
             CompanyOpenHours = new List<CompanyOpenHours>();
+            CompanyImages = new List<CompanyImage>();
         }
 
     }

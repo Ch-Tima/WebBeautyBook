@@ -1,3 +1,4 @@
+import { CompanyImage } from "./CompanyImage"
 import { CompanyOpenHours } from "./CompanyOpenHours"
 import { Location } from "./Location"
 import { Service } from "./Service"
@@ -16,5 +17,6 @@ export class Company{
     location: Location = new Location;
     services: Service[] = [];
     companyOpenHours: CompanyOpenHours[] = [];
+    companyImages: CompanyImage[] = []
 
 }

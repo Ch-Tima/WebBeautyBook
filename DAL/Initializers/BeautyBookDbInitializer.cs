@@ -108,6 +108,7 @@ namespace DAL.Initializers
             };
             var hasher = new PasswordHasher<BaseUser>();
             logologi417.PasswordHash = hasher.HashPassword(logologi417, logologi417Email);
+            builder.Entity<BaseUser>().HasData(new BaseUser[] { logologi417 });
             builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>[]{
                 new IdentityUserRole<string>()
                 {
@@ -115,6 +116,7 @@ namespace DAL.Initializers
                     RoleId = _ownRole.Id
                 }
             });
+            
 
             //company
             var companyForLog417 = new Company()
@@ -126,6 +128,29 @@ namespace DAL.Initializers
                 IsVisibility = false,
                 LocationId = locationWarsaw.Id
             };
+            builder.Entity<Company>().HasData(new Company[] { companyForLog417 });
+
+            //worker profile
+            var workerProfileForLog417 = new Worker()
+            {
+                BaseUserId = logologi417.Id,
+                CompanyId = companyForLog417.Id,
+            };
+            logologi417.WorkerId = workerProfileForLog417.Id;
+            builder.Entity<Worker>().HasData(new Worker[] { workerProfileForLog417 });
+
+            //CompanyImage
+            var img1 = new CompanyImage()
+            {
+                CompanyId = companyForLog417.Id,
+                Path = "/images/image.png"
+            };
+            var img2 = new CompanyImage()
+            {
+                CompanyId = companyForLog417.Id,
+                Path = "/images/test.png"
+            };
+            builder.Entity<CompanyImage>().HasData(new CompanyImage[] { img1, img2 });
 
             //CompanyOpenHours
             builder.Entity<CompanyOpenHours>().HasData(new CompanyOpenHours[]
@@ -156,18 +181,6 @@ namespace DAL.Initializers
                 },
                 //Sunday close 7
             });
-
-            //worker profile
-            var workerProfileForLog417 = new Worker()
-            {
-                BaseUserId = logologi417.Id,
-                CompanyId = companyForLog417.Id,
-            };
-            
-            logologi417.WorkerId = workerProfileForLog417.Id;
-            builder.Entity<BaseUser>().HasData(new BaseUser[] { logologi417 });
-            builder.Entity<Company>().HasData(new Company[] { companyForLog417 });
-            builder.Entity<Worker>().HasData(new Worker[] { workerProfileForLog417 });
         }
 
         private static void Loaction(ModelBuilder builder)

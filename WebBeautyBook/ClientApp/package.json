@@ -28,6 +28,7 @@
     "@fullcalendar/interaction": "^6.1.8",
     "@fullcalendar/list": "^6.1.8",
     "@fullcalendar/timegrid": "^6.1.8",
+    "angular-responsive-carousel": "^2.1.2",
     "bootstrap": "^5.2.3",
     "jquery": "^3.7.0",
     "luxon": "^3.3.0",

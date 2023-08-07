@@ -55,6 +55,11 @@ namespace DAL.Context
             //One to Many
             builder.Entity<CompanyOpenHours>().HasOne(s => s.Company).WithMany(c => c.CompanyOpenHours).HasForeignKey(s => s.CompanyId).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
+            //CompanyImage
+            builder.Entity<CompanyImage>().HasIndex(ci => ci.Id).IsUnique();
+            builder.Entity<CompanyImage>().Property(ci => ci.Path).HasColumnType("VARCHAR").HasMaxLength(500).IsRequired();
+            builder.Entity<CompanyImage>().HasOne(ci => ci.Company).WithMany(c => c.CompanyImages).HasForeignKey(ci => ci.CompanyId).OnDelete(DeleteBehavior.Cascade).IsRequired();
+
 
             //Comment
             builder.Entity<Comment>().HasIndex(c => c.Id).IsUnique();
@@ -132,5 +137,6 @@ namespace DAL.Context
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<WorkerService> WorkersService { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CompanyImage> CompanyImages { get; set; }
     }
 }
