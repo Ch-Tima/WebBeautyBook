@@ -24,14 +24,6 @@ namespace WebBeautyBook.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("getWorker/{serviceId}")]
-        [AllowAnonymous]
-        public async Task<IEnumerable<Worker>> GetWorker(string serviceId)
-        {
-            var result = await _workerService.GetAllIncludeFindAsync(x => x.WorkerServices.Any(r => r.ServiceId == serviceId));
-            return result;
-        }
-
         [HttpPost("insertWorkerToService")]
         [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.MANAGER}")]
         public async Task<IActionResult> InsertWorkerToService([FromBody] WorkerServiceModel model)

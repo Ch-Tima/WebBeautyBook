@@ -29,6 +29,11 @@ namespace BLL.Services
             return await _companyRepository.GetAllAsync();
         }
 
+        public async Task<IEnumerable<Company>> GetAllIncludeAsync()
+        {
+            return await _companyRepository.GetAllIncludeAsync();
+        }
+
         public async Task<Company> GetFirstAsync(Expression<Func<Company, bool>> expression)
         {
             return await _companyRepository.GetFirstAsync(expression);

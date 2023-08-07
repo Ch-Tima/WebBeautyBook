@@ -1,0 +1,211 @@
+/*Carousel Recommended (top 12)*/
+.container-recommended{
+    position: relative;
+}
+
+.recommended-img{
+    width: 275px;
+    border-radius: 0.35em;
+    box-shadow: 2px 10px 15px grey;
+}
+
+.recommended-item{
+    margin: 0 .5em;
+    position: relative;
+}
+
+.container-data{
+    display: flex;
+    margin: 0.75em 8px 0 8px;
+}
+
+.data-company{
+    width: 100%;
+}
+
+.data-company p{
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.data-company .location{
+    font-size: 12px;
+    color: #767676;
+}
+
+.like{
+    width: 30px;
+    filter: opacity(0.8);
+}
+
+.grade{
+    background-color: #000000af;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 13;
+    width: 50px;
+    border-radius: 0 0.35em;
+}
+.grade p{
+    color: white;
+    text-align: center;
+    margin: 5px 2px;
+    user-select: none;
+}
+
+.carousel-cont-prevrol{
+    left: -25px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+.carousel-control-next{
+    right: -25px;
+}
+
+.carousel-cont-prevrol, .carousel-control-next {
+    position: absolute;
+    top: 25%;
+    padding: .25em;
+    z-index: 10;
+    width: 65px;
+    border-radius: 100%;
+    opacity: 1;
+    filter: opacity(0.85) blur(0.035em) drop-shadow(2px 4px 6px black) grayscale(1);
+}
+
+
+/*Enable Location Services?*/
+
+.enable-location{
+    background-color: aliceblue;
+    border-radius: .375em;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    margin-top: 5em;
+    display: flex;
+    padding: 1em;
+}
+
+.location-data{
+    width: 100%;
+    margin: auto 0;
+}
+
+.location-btn button{
+    margin: 2px 8px;
+    width: 125px;
+}
+
+.enable-location img{
+    max-width: 175px;
+    margin: .5em;
+}
+
+@media (min-width: 1200px) {
+    .enable-location{
+        justify-content: space-around;
+    }
+    .location-data{
+        width: auto;
+    }
+}
+@media (max-width: 768px) {
+    .enable-location img{
+        max-width: 100px;
+        height: 100px;
+        margin: .25em;
+    }
+    .location-text h4{
+        font-size: 17px;
+    }
+    .location-text p{
+        font-size: 13px;
+    }
+}
+@media (max-width: 576px) {
+    .enable-location img{ 
+        display: none;
+    }
+    .location-btn button{
+        margin: 2px 8px;
+        width: 80px;
+    }
+}
+
+/*All categories*/
+.container-category{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background-color: white;
+    border-radius: .375em;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    padding: .5em .25em;
+    margin-top: 3.5em;
+    user-select: none;
+}
+
+.item-category{
+    flex: none;
+    width: calc(100% / 3);
+    min-height: 100px;
+    padding: .5em;
+}
+
+.content-category{
+    width: 50%;
+    margin: 0 auto;
+}
+
+.item-category ul, li{
+    list-style: none;
+    padding-left: .25em;
+}
+
+.item-category ul a{
+    color: #198754;
+    text-decoration: none;
+}
+
+.item-category ul a:hover{
+    color: #198754;
+    text-decoration: revert;
+}
+
+.title-category {
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+}
+.title-category:hover{
+    color: #198754;
+    text-decoration: revert;
+}
+
+.title-category{
+    margin: 0;
+}
+
+@media (max-width: 960px) {
+
+    .item-category{
+        width: calc(100% / 2);
+    }
+
+}
+
+@media (max-width: 576px) {
+    .item-category{
+        width: 100%;
+    }
+    .content-category{
+        width: 100%;
+    }
+}
+
+
+/*Ad for our android app*/

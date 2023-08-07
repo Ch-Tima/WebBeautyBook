@@ -1,0 +1,113 @@
+<div class="company-container container-md">
+
+    <div class="center-container">
+        <div class="image-slider">
+            <app-image-slider [slides]="company.companyImages"></app-image-slider>
+        </div>
+        <div class="services">
+            <div class="services-header">
+                <h4>Services</h4>
+                <div class="input-search">
+                    <div>
+                      <span class="input-search-img">
+                        <img src="../../assets/svg/search.svg">
+                      </span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Search for service" [(ngModel)]="searchText">
+                </div>                  
+            </div>
+
+            <ng-container *ngIf="company != undefined">
+                <div class="service-item" *ngFor="let item of company.services | filter:searchText:'name'">
+                    <div class="service-data">
+                        <p class="service-title">{{item.name}}</p>
+                        <div class="service-right-data">
+                            <div>
+                                <p class="service-price">{{item.price}}$</p>
+                                <p class="service-time">{{item.time.substring(0, item.time.lastIndexOf(":")).substring(item.time[0] == '0' ? 1: 0).replace(':', "h ").concat('m')}}</p>
+                            </div>
+                            <button class="btn btn-success">Book</button>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="right-container">
+        <h4 class="title" *ngIf="company">{{company.name}}</h4>
+
+        <div class="staffers-data">
+            <p>Staffers</p>
+            <drag-scroll #nav class="staffers-carousel">
+                <div class="staffers-item" drag-scroll-item *ngFor="let item of workers">
+                    <img src="https://localhost:7082{{item.baseUser.photo}}" />
+                    <p class="staffers-name">{{item.baseUser.userName}} {{item.baseUser.userSurname}}</p>
+                </div> 
+            </drag-scroll>
+        </div>
+        <hr>
+        
+        <div class="contacts-data">
+            <div class="contacts-item" *ngIf="company.phonenumber != ''">
+                <img src="../../assets/svg/phone.svg">
+                <p>{{company.phonenumber}}</p>
+            </div>
+            <div class="contacts-item" *ngIf="company.email != ''">
+                <img src="../../assets/svg/email.svg">
+                <p>{{company.email}}</p>
+            </div>
+        </div>
+        <hr>
+
+        <div class="schedule-data" *ngIf="company != undefined">
+            <div class="schedule-item">
+                <p>Monday</p>
+                <p id="mo">{{getOpenHours(1)}}</p>
+            </div>
+            <div class="schedule-item">
+                <p>Tuesday</p>
+                <p id="tu">{{getOpenHours(2)}}</p>
+            </div>
+            <div class="schedule-item">
+                <p>Wednesday</p>
+                <p id="we">{{getOpenHours(3)}}</p>
+            </div>
+            <div class="schedule-item">
+                <p>Thursday</p>
+                <p id="th">{{getOpenHours(4)}}</p>
+            </div>
+            <div class="schedule-item">
+                <p>Friday</p>
+                <p id="fr">{{getOpenHours(5)}}</p>
+            </div>
+            <div class="schedule-item">
+                <p>Saturday</p>
+                <p id="sa">{{getOpenHours(6)}}</p>
+            </div>
+            <div class="schedule-item">
+                <p>Sunday</p>
+                <p id="su">{{getOpenHours(7)}}</p>
+            </div>
+        </div>
+        <hr>  
+
+        <div class="social-links">
+            <a href="#">
+                <img src="../../assets/svg/instagram.svg">
+            </a>
+            <a href="#">
+                <img src="../../assets/svg/facebook.svg">
+            </a>
+            <a href="#">
+                <img src="../../assets/svg/twitter.svg">
+            </a>
+        </div>
+        <hr>
+
+    </div>
+
+</div>
+
+<app-footer></app-footer>

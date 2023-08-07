@@ -15,12 +15,16 @@
 
         public List<Worker> Workers { get; set; }
         public List<Service> Services { get; set; }
+        public List<CompanyOpenHours> CompanyOpenHours { get; set; }
+        public List<CompanyImage> CompanyImages { get; set; }
 
         public Company()
         {
             Id = Guid.NewGuid().ToString();
             Workers = new List<Worker>();
             Services = new List<Service>();
+            CompanyOpenHours = new List<CompanyOpenHours>();
+            CompanyImages = new List<CompanyImage>();
         }
 
     }

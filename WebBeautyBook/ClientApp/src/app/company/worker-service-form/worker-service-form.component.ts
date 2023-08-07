@@ -83,13 +83,14 @@ export class WorkerServiceFormComponent {
 
   //load workers who own this service
   private loadWorkersToSrvice(serviceId: string){
-    this.http.get<Worker[]>(`api/WorkerService/getWorker/${serviceId}`).subscribe(
+    this.http.get<Worker[]>(`api/Worker/getWorkersByServiceId/${serviceId}`).subscribe(
       result => {
         this.selectedWorkers = result;
         //load all workers
         this.loadWorkers();
       }, error => {
         alert(error);
+        console.log("loadWorkersToSrvice");
       }
     );
   }

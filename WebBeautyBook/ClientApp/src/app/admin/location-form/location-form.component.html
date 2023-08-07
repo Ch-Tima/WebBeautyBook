@@ -1,0 +1,24 @@
+<p *ngIf="header != ''" class="h5 text-center my-1">{{header}}</p>
+<form mat-dialog-content [formGroup]="mForm" (ngSubmit)="onSubmit()">
+    <div class="form-group my-2">
+        <input class="form-control" formControlName="country" placeholder="country" type="text" list="listCountry">
+        <datalist id="listCountry">
+            <option value="{{item.country}}" *ngFor="let item of (location$ | async)">
+        </datalist>
+    </div>
+    <div class="form-group my-2">
+      <input class="form-control" formControlName="city" placeholder="city" type="text">
+    </div>
+
+    <small class="text-danger">{{errorMessages}}</small>
+
+    <div mat-dialog-actions align="end" *ngIf="!data.isUpdateMode">
+        <button *ngIf="mForm.valid" class="btn btn-primary w-25" type="submit">add</button>
+        <button *ngIf="!mForm.valid" class="btn btn-primary w-25" type="submit" disabled>add</button>
+    </div>
+
+    <div *ngIf="data.isUpdateMode" mat-dialog-actions align="end">
+      <button mat-button cdkFocusInitial *ngIf="mForm.valid" class="btn btn-primary mx-1" type="submit">update</button>
+      <button mat-button cdkFocusInitial *ngIf="!mForm.valid" class="btn btn-primary mx-1" type="submit" disabled>update</button>
+    </div>
+</form>    

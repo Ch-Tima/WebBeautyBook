@@ -1,4 +1,7 @@
+import { CompanyImage } from "./CompanyImage"
+import { CompanyOpenHours } from "./CompanyOpenHours"
 import { Location } from "./Location"
+import { Service } from "./Service"
 
 export class Company{
 
@@ -10,5 +13,10 @@ export class Company{
     address : string = ''
     isVisibility: boolean = false
     locationId:string = ''
+    
     location: Location = new Location;
+    services: Service[] = [];
+    companyOpenHours: CompanyOpenHours[] = [];
+    companyImages: CompanyImage[] = []
+
 }

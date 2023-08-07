@@ -33,6 +33,8 @@ namespace BLL.Infrastructure
             services.AddTransient<WorkerRepository>();
             services.AddTransient<CategoryRepository>();
             services.AddTransient<CompanyRepository>();
+            services.AddTransient<CompanyOpenHoursRepository>();
+            services.AddTransient<CompanyImagesRepository>();
 
             services.AddMemoryCache();
 
