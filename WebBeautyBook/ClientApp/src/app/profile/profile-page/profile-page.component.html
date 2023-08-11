@@ -1,0 +1,8 @@
+<app-nav-left-menu (resultEmitter)="navLeftMenu($event)" [list]="navMenuItems"></app-nav-left-menu>
+<div class="container">
+    <div #main class="main">
+
+        <app-account-settings *ngIf="menu == 'Settings'"></app-account-settings>
+
+    </div>
+</div>

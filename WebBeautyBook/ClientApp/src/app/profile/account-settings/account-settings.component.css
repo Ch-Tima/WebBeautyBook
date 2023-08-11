@@ -1,0 +1,51 @@
+.container{
+    background-color: aliceblue;
+    border-radius: 0.375em;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+    padding: .5em 1em;
+}
+.title{
+    margin-bottom: .35em;
+}
+
+.form{
+    width: 100%;
+}
+
+.form form{
+    width: 100%;
+}
+
+/* btns */
+.btns{
+    width: 100%;
+    margin: .5em 0;
+    display: inline-grid;
+}
+.btns button{
+    margin: .25em 0;
+    width: 175px;
+}
+.btns .ChangePassword{
+    display: grid;
+}
+.btns .ChangePassword .msg{
+    color: green;
+}
+.btns .submit{
+    margin: 0 auto;
+    display: grid;
+    width: auto;
+} 
+.submit button{
+    margin: 0 auto;
+}
+.submit .error{
+    color: red;
+}
+
+.icon{
+    max-width: 80px;
+    height: auto;
+    user-select: none;
+}
