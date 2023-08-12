@@ -34,6 +34,16 @@ namespace BLL.Services
             return await _companyRepository.GetAllIncludeAsync();
         }
 
+        /// <summary>
+        /// ! TODO !
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Company>> GetTopTen(string? location)
+        {
+            return (await _companyRepository.GetFindIncludeAsync(x => true)).Take(10);
+        }
+
         public async Task<Company> GetFirstAsync(Expression<Func<Company, bool>> expression)
         {
             return await _companyRepository.GetFirstAsync(expression);

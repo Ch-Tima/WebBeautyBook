@@ -1,6 +1,7 @@
 ﻿using DAL.Context;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DAL.Repository
 {
@@ -25,6 +26,18 @@ namespace DAL.Repository
         public async Task<IEnumerable<Company>> GetAllIncludeAsync()
         {
             return await _db.Companies
+                .Include(x => x.Location)
+                .Include(x => x.Workers)
+                .Include(x => x.Services)
+                .Include(x => x.CompanyOpenHours)
+                .Include(x => x.CompanyImages)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Company>> GetFindIncludeAsync(Expression<Func<Company, bool>> expression)
+        {
+            return await _db.Companies
+                .Where(expression)
                 .Include(x => x.Location)
                 .Include(x => x.Workers)
                 .Include(x => x.Services)

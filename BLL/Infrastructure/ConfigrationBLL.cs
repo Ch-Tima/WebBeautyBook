@@ -35,6 +35,7 @@ namespace BLL.Infrastructure
             services.AddTransient<CompanyRepository>();
             services.AddTransient<CompanyOpenHoursRepository>();
             services.AddTransient<CompanyImagesRepository>();
+            services.AddTransient<CompanyLikeRepository>();
 
             services.AddMemoryCache();
 

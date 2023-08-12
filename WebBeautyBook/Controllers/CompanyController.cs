@@ -43,7 +43,18 @@ namespace WebBeautyBook.Controllers
         }
 
         [HttpGet("getAll")]
-        public async Task<IEnumerable<Company>> GetAll() => await _companyService.GetAllIncludeAsync();
+        public async Task<IEnumerable<Company>> GetAll() => await _companyService.GetAllAsync();
+
+        /// <summary>
+        /// ! TODO !
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        [HttpGet("getTopTen")]
+        public async Task<IEnumerable<Company>> GetTopTen(string? location)
+        {
+            return await _companyService.GetTopTen(location);
+        }
 
         [HttpGet("getMyCompany")]
         [Authorize(Roles = Roles.OWN_COMPANY + "," + Roles.WORKER)]

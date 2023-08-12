@@ -7,7 +7,7 @@
         <drag-scroll #nav class="recommended" [scrollbar-hidden]="true">
             <div class="recommended-item" drag-scroll-item *ngFor="let item of topCompany; let i = index">
                 <a href="/company?id={{item.id}}">
-                    <div (click)="openCompanyProfile('id')">
+                    <div>
                         <img class="recommended-img" src="https://d2zdpiztbgorvt.cloudfront.net/region1/us/441745/biz_photo/7bcbf5ed54a04300afe676c26181f5-omar-kingsmen-barber-lounge-biz-photo-e610d4cd481044398abcf631d44a54-booksy.jpeg?size=640x427">
                         <div class="grade">
                             <p>0.0</p>
@@ -19,7 +19,7 @@
                         <p class="name">{{item.name}}</p>
                         <p class="location">{{item.location.city}} {{item.address}}</p>
                     </div>
-                    <img class="like" (click)="onClickLike('id', $event)" src="../../assets/svg/heart.svg">
+                    <img id="{{item.id}}" *ngIf="auth.hasToken()" class="like" (click)="onClickLike(item.id, $event)" onPressed="false" src="../../assets/svg/heart.svg">
                 </div>
             </div>
         </drag-scroll>
