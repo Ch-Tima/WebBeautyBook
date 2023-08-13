@@ -4,24 +4,10 @@
     <!--Carousel Recommended (top 12)-->
     <div #carouselRecommended class="container-recommended">
         <p class="h4">Recommended</p>
-        <drag-scroll #nav class="recommended" [scrollbar-hidden]="true">
-            <div class="recommended-item" drag-scroll-item *ngFor="let item of topCompany; let i = index">
-                <a href="/company?id={{item.id}}">
-                    <div>
-                        <img class="recommended-img" src="https://d2zdpiztbgorvt.cloudfront.net/region1/us/441745/biz_photo/7bcbf5ed54a04300afe676c26181f5-omar-kingsmen-barber-lounge-biz-photo-e610d4cd481044398abcf631d44a54-booksy.jpeg?size=640x427">
-                        <div class="grade">
-                            <p>0.0</p>
-                        </div>
-                    </div>
-                </a>
-                <div class="container-data">
-                    <div class="data-company">
-                        <p class="name">{{item.name}}</p>
-                        <p class="location">{{item.location.city}} {{item.address}}</p>
-                    </div>
-                    <img id="{{item.id}}" *ngIf="auth.hasToken()" class="like" (click)="onClickLike(item.id, $event)" onPressed="false" src="../../assets/svg/heart.svg">
-                </div>
-            </div>
+        <drag-scroll #nav [scrollbar-hidden]="true">
+            <ng-container *ngFor="let item of topCompany; let i = index">
+                <app-company-card drag-scroll-item [company]="item"></app-company-card>
+            </ng-container>
         </drag-scroll>
 
         <img class="carousel-cont-prevrol" (click)="moveNext()" src="../../assets/svg/arrow-left.svg">

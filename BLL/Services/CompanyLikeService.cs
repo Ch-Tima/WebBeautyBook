@@ -14,9 +14,9 @@ namespace BLL.Services
             _company = company;
         }
 
-        public async Task<IEnumerable<CompanyLike>> GetAllMineAsync(string userId)
+        public async Task<IEnumerable<CompanyLike>> GetMineAsync(string userId)
         {
-            return await _companyLike.GetAllFindAsync(x => x.UserId == userId);
+            return await _companyLike.GetAllFindIncludeAsync(x => x.UserId == userId);
         }
 
         public async Task<ServiceResponse> AddAsync(CompanyLike companyLike)

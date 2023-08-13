@@ -61,38 +61,14 @@ export class HomeComponent {
     )
   }
 
-  public onClickLike(id:string, event: any){
-    var status = $(event.srcElement).attr("onPressed")
-    if(status == "false"){
-      this.http.post(`api/CompanyLike?companyId=${id}`, "", {
-        headers: this.auth.getHeadersWithToken()
-      }).subscribe(r => {
-        $(event.srcElement).prop("src", "../../assets/svg/heart-red.svg")
-        $(event.srcElement).attr("onPressed", "true")
-      }, e => {
-        alert(e.error);
-      })
-    }else{
-      this.http.delete(`api/CompanyLike?companyId=${id}`, {
-        headers: this.auth.getHeadersWithToken()
-      }).subscribe(r => {
-        $(event.srcElement).prop("src", "../../assets/svg/heart.svg")
-        $(event.srcElement).attr("onPressed", "false")
-      }, e => {
-        alert(e.error);
-      })
-    }
-
-  }
-
   private getAllMienLikes(){
     this.http.get<CompanyLike[]>("api/CompanyLike", {
       headers: this.auth.getHeadersWithToken()
     }).toPromise().then(result => {
       result?.forEach(item => {
-        var heartImg = $(`#${item.companyId}`)
-        heartImg.prop("src", "../../assets/svg/heart-red.svg")
-        heartImg.attr("onPressed", "true")
+        //find and set isFavorite true
+        var t = this.topCompany.find(x => x.id == item.companyId);
+        if(t != undefined) t.isFavorite = true;
       })
     }).catch(e => {
       console.log(e);

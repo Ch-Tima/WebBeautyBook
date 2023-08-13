@@ -23,7 +23,7 @@ namespace WebBeautyBook.Controllers
         [HttpGet]
         public async Task<IEnumerable<CompanyLike>> GetAllMine()
         {
-            return await _companyLikeService.GetAllMineAsync(_userManager.GetUserId(User));
+            return await _companyLikeService.GetMineAsync(_userManager.GetUserId(User));
         }
 
         [HttpPost]

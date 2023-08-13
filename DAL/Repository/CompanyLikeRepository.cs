@@ -1,5 +1,7 @@
 ﻿using DAL.Context;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DAL.Repository
 {
@@ -8,5 +10,17 @@ namespace DAL.Repository
         public CompanyLikeRepository(BeautyBookDbContext db) : base(db)
         {
         }
+
+        public async Task<IEnumerable<CompanyLike>> GetAllFindIncludeAsync(Expression<Func<CompanyLike, bool>> expression)
+        {
+            return await _db.CompanyLikes
+                .Include(x => x.User)
+                .Include(x => x.Company)
+                .Include(x => x.Company.Location)
+                .Include(x => x.Company.CompanyImages)
+                .Include(x => x.Company.CompanyOpenHours)
+                .Where(expression).ToListAsync();
+        }
+
     }
 }

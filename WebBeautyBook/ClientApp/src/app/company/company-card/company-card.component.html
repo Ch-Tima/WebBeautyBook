@@ -1,0 +1,28 @@
+<div *ngIf="company != undefined;else load">
+    <div class="card" >
+        <a href="/company?id={{company.id}}">
+            <div>
+                <img class="card-img" src="https://localhost:7082/{{company.companyImages[0].path}}">
+                <div class="grade">
+                    <p>0.0</p>
+                </div>
+            </div>
+        </a>
+        <div class="container-data">
+            <div class="data-company">
+                <p class="name">{{company.name}}</p>
+                <p class="location">{{company.location.city}} {{company.address}}</p>
+            </div>
+            <ng-container *ngIf="auth.hasToken()">
+                <img *ngIf="!company.isFavorite; else favorite" class="like" (click)="onClickLike(company, $event)" onPressed="false" src="../../assets/svg/heart.svg">
+                <ng-template #favorite>
+                    <img class="like" (click)="onClickLike(company, $event)" onPressed="true" src="../../../assets/svg/heart-red.svg">
+                </ng-template>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template #load>
+    <p>Loading...</p>
+</ng-template>
