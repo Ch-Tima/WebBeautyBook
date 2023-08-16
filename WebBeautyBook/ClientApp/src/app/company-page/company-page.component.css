@@ -29,6 +29,15 @@ img{
     height: 470px;
 }
 
+.sliders-heart img{
+    width: 50px;
+    position: relative;
+    bottom: 5rem;
+    z-index: 88;
+    right: 3rem;
+    float: right;
+}
+
 /*services*/
 .services{
     margin: 15px 10px 0 10px;
@@ -205,6 +214,9 @@ img{
     }
     .services-header h4{
         display: none;
+    }
+    .sliders-heart img{
+        width: 45px;
     }
 }
 @media(max-width: 400px){

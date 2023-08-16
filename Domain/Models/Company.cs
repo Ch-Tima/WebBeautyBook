@@ -17,6 +17,7 @@
         public List<Service> Services { get; set; }
         public List<CompanyOpenHours> CompanyOpenHours { get; set; }
         public List<CompanyImage> CompanyImages { get; set; }
+        public List<CompanyLike> LikedByUsers { get; set; }
 
         public Company()
         {
@@ -25,6 +26,7 @@
             Services = new List<Service>();
             CompanyOpenHours = new List<CompanyOpenHours>();
             CompanyImages = new List<CompanyImage>();
+            LikedByUsers = new List<CompanyLike>();
         }
 
     }

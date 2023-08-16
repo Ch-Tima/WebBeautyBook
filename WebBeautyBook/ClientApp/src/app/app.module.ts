@@ -41,7 +41,9 @@ import { CompanyPageComponent } from './company-page/company-page.component'
 import { FilterPipe } from './filterPipes/FilterPipe';
 import { ImageSliderComponent } from './image-slider/image-slider.component';
 import { ProfilePageComponent } from './profile/profile-page/profile-page.component';
-import { AccountSettingsComponent } from './profile/account-settings/account-settings.component'
+import { AccountSettingsComponent } from './profile/account-settings/account-settings.component';
+import { FavouritesComponent } from './profile/favourites/favourites.component';
+import { CompanyCardComponent } from './company/company-card/company-card.component'
 
 const routes: Routes = [
 
@@ -103,6 +105,8 @@ const routes: Routes = [
     ImageSliderComponent,
     ProfilePageComponent,
     AccountSettingsComponent,
+    FavouritesComponent,
+    CompanyCardComponent,
   ],
   imports: [
     BrowserModule,

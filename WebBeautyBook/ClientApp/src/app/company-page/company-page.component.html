@@ -3,6 +3,14 @@
     <div class="center-container">
         <div class="image-slider">
             <app-image-slider [slides]="company.companyImages"></app-image-slider>
+            <div class="sliders-heart">
+                <ng-container *ngIf="auth.hasToken()">
+                    <img *ngIf="!company.isFavorite; else favorite" class="like" (click)="onClickLike($event)" onPressed="false" src="../../assets/svg/heart.svg">
+                    <ng-template #favorite>
+                        <img class="like" (click)="onClickLike($event)" onPressed="true" src="../../../assets/svg/heart-red.svg">
+                    </ng-template>
+                </ng-container>
+            </div>
         </div>
         <div class="services">
             <div class="services-header">

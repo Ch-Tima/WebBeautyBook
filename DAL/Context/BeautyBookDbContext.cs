@@ -46,7 +46,6 @@ namespace DAL.Context
             //One to Many (Location)
             builder.Entity<Company>().HasOne(c => c.Location).WithMany(l => l.Companies).HasForeignKey(c => c.LocationId).IsRequired(false).OnDelete(DeleteBehavior.SetNull);
 
-
             //ScheduleCompany
             builder.Entity<CompanyOpenHours>().HasIndex(s => s.Id).IsUnique();
             builder.Entity<CompanyOpenHours>().Property(s => s.OpenFrom).HasColumnType("Time").IsRequired();
@@ -59,6 +58,11 @@ namespace DAL.Context
             builder.Entity<CompanyImage>().HasIndex(ci => ci.Id).IsUnique();
             builder.Entity<CompanyImage>().Property(ci => ci.Path).HasColumnType("VARCHAR").HasMaxLength(500).IsRequired();
             builder.Entity<CompanyImage>().HasOne(ci => ci.Company).WithMany(c => c.CompanyImages).HasForeignKey(ci => ci.CompanyId).OnDelete(DeleteBehavior.Cascade).IsRequired();
+
+            //CompanyLike
+            builder.Entity<CompanyLike>().HasIndex(cl => cl.Id).IsUnique();
+            builder.Entity<CompanyLike>().HasOne(cl => cl.User).WithMany(u => u.FavoriteCompanies).HasForeignKey(u => u.UserId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<CompanyLike>().HasOne(cl => cl.Company).WithMany(c => c.LikedByUsers).HasForeignKey(u => u.CompanyId).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
 
             //Comment
@@ -138,5 +142,6 @@ namespace DAL.Context
         public DbSet<WorkerService> WorkersService { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CompanyImage> CompanyImages { get; set; }
+        public DbSet<CompanyLike> CompanyLikes { get; set; }
     }
 }

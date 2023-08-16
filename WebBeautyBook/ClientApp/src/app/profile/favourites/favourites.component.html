@@ -1,0 +1,17 @@
+<ng-container *ngIf="likes != undefined;else loading">
+    
+    <ng-container *ngIf="likes.length != 0; else empty">
+        <div *ngFor="let item of likes" class="list">
+            <app-company-card (clickLike)="remove($event)" [company]="item.company"></app-company-card>
+        </div>
+    </ng-container>
+
+    <ng-template #empty>
+        <h3 class="text-center">Not Found</h3>
+    </ng-template>
+
+</ng-container>
+
+<ng-template #loading>
+    <h3 class="text-center">Loading...</h3>
+</ng-template>

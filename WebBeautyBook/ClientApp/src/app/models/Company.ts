@@ -14,9 +14,12 @@ export class Company{
     isVisibility: boolean = false
     locationId:string = ''
     
-    location: Location = new Location;
-    services: Service[] = [];
-    companyOpenHours: CompanyOpenHours[] = [];
+    location: Location = new Location
+    services: Service[] = []
+    companyOpenHours: CompanyOpenHours[] = []
     companyImages: CompanyImage[] = []
 
+    /** isFavorite — local property is always "false" by default.
+     * @remarks API does not return this property! */ 
+    isFavorite:boolean = false
 }
