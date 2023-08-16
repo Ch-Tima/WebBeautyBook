@@ -1,6 +1,4 @@
-﻿
-
-using DAL.Repository;
+﻿using DAL.Repository;
 using Domain.Models;
 
 namespace BLL.Services
@@ -22,9 +20,24 @@ namespace BLL.Services
             return await _baseUserRepository.GetAsync(id);
         }
 
-        public async Task UpdateAsync(BaseUser baseUser)
+        public async Task<ServiceResponse> UpdateAsync(BaseUser baseUser)
         {
-           await _baseUserRepository.UpdateAsync(baseUser.Id, baseUser);
+            try
+            {
+                if(baseUser.PhoneNumber != null)
+                {
+                    var duplicatePhoneNumber = await _baseUserRepository.GetFirstAsync(x => x.PhoneNumber == baseUser.PhoneNumber && x.Id != baseUser.Id);
+                    if(duplicatePhoneNumber != null)
+                        return new ServiceResponse(false, "This phone number is already in use.");
+                }
+
+                await _baseUserRepository.UpdateAsync(baseUser.Id, baseUser);
+                return new ServiceResponse(true, "Ok");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse(false, ex.Message);
+            }
         }
 
     }

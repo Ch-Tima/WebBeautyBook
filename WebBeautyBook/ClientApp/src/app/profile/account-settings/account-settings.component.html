@@ -1,0 +1,69 @@
+<div class="container">
+    <h2 class="title">Account & Settings</h2>
+
+    <h4>Account Details</h4>
+
+    <div class="form" #userDataForm>
+        <!--enctype="multipart/form-data"-->
+        <form *ngIf="user$ | async; else loading" [formGroup]="mForm" (ngSubmit)="submit()">
+
+            <div class="row">
+                <div class="form-group col-lg-5 my-1">
+                    <label>First name</label>
+                    <input formControlName="name" class="form-control" type="text" placeholder="First name">
+                    <div *ngIf="!mForm.controls['name'].valid && mForm.controls['name'].touched">
+                        <small class="form-text text-danger" *ngIf="mForm.controls['name'].errors?.['required'] != undefined">First name is required.</small>
+                        <small class="form-text text-danger" *ngIf="mForm.controls['name'].errors?.['maxlength'] != undefined || mForm.controls['name'].errors?.['minlength'] != undefined">The 'First name' must be between 4 and 100 characters.</small>
+                    </div>
+                </div>
+                <div class="form-group col-lg-5 my-1">
+                    <label>Last name</label>
+                    <input formControlName="surname" class="form-control" type="text" placeholder="Last name">
+                    <div *ngIf="!mForm.controls['surname'].valid && mForm.controls['surname'].touched">
+                        <small class="form-text text-danger" *ngIf="mForm.controls['surname'].errors?.['required'] != undefined">Last name is required.</small>
+                        <small class="form-text text-danger" *ngIf="mForm.controls['surname'].errors?.['maxlength'] != undefined || mForm.controls['surname'].errors?.['minlength'] != undefined">The 'Last name' must be between 4 and 100 characters.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-lg-5 my-1">
+                    <label>Phone number</label>
+                    <input class="form-control" type="tel" placeholder="+01234567890" formControlName="phoneNumber">
+                    <div *ngIf="!mForm.controls['phoneNumber'].valid && mForm.controls['phoneNumber'].touched">
+                        <small class="form-text text-danger" *ngIf="mForm.controls['phoneNumber'].errors?.['pattern'] != undefined">This is not a phone number.</small>
+                    </div>
+                </div>
+                <div class="form-group col custom-file my-1" style="margin: auto 0;">
+                    <div class="row">
+                        <div class="col-3">
+                            <img class="icon" *ngIf="url == null else imgView" src="https://localhost:7082{{mForm.controls['photo'].getRawValue()}}" />
+                            <ng-template #imgView><img class="icon" *ngIf="url != null" src="{{url}}"/></ng-template>
+                        </div>
+                        <div class="col" style="margin: auto 0;">
+                            <input (change)="onFileChange($event)" class="custom-file-input" type="file" #file accept="image/png, image/jpeg, image/jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btns">
+                <div class="ChangePassword">
+                    <button (click)="changePassword()" type="button" class="btn btn-primary" id="ChangePassword">Change Password</button>
+                    <!-- <small class="msg">Check your email and follow the instructions to reset your password and sign in again.</small> -->
+                </div>
+                <div class="submit" *ngIf="isChangeFrom">
+                    <button *ngIf="mForm.valid" class="btn btn-success" type="submit">Submit</button>
+                    <button *ngIf="!mForm.valid" class="btn btn-success" disabled>Submit</button>
+                    <small class="error" *ngIf="error.length > 0">{{error}}</small>
+                </div>
+            </div>
+
+        </form>
+        
+        <ng-template #loading>
+            <h4>Loading User...</h4>
+        </ng-template>
+    </div>
+
+</div>

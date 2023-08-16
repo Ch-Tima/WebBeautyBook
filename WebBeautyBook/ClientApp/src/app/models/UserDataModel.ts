@@ -4,6 +4,7 @@ export class UserDataModel {
     surname: string = "";
     email: string = "";
     photo: string = "";
+    phoneNumber:string = "";
     roles: string[] = [];
     companyId: string|null = null;
   }

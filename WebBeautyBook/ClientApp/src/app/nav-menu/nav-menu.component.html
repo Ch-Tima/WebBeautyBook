@@ -35,8 +35,8 @@
             <a class="nav-link text-dark" [routerLink]="['/register']">Register</a>
           </li>
 
-          <li *ngIf="isAuth && userData.roles.includes('client')" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/adminPanel']">Profile</a>
+          <li *ngIf="isAuth" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/profile']">Profile</a>
           </li>
 
           <li *ngIf="isAuth && userData.roles.includes('admin')" class="nav-item" [routerLinkActive]="['link-active']">

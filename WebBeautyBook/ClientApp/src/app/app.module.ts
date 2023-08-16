@@ -39,7 +39,9 @@ import { AcceptInvitationPageComponent } from './company/accept-invitation-page/
 import { FooterComponent } from './footer/footer.component';
 import { CompanyPageComponent } from './company-page/company-page.component'
 import { FilterPipe } from './filterPipes/FilterPipe';
-import { ImageSliderComponent } from './image-slider/image-slider.component'
+import { ImageSliderComponent } from './image-slider/image-slider.component';
+import { ProfilePageComponent } from './profile/profile-page/profile-page.component';
+import { AccountSettingsComponent } from './profile/account-settings/account-settings.component'
 
 const routes: Routes = [
 
@@ -60,6 +62,9 @@ const routes: Routes = [
   { path: "forgotPassword", component: ForgotPasswordComponent },
   { path: "resetPassword", component: ResetPasswordComponent },
   { path: "emailConfirmation", component: EmailConfirmationComponent },
+
+  //Profile
+  { path: 'profile', component: ProfilePageComponent },
 
 ];
 
@@ -96,6 +101,8 @@ const routes: Routes = [
     CompanyPageComponent,
     FilterPipe,
     ImageSliderComponent,
+    ProfilePageComponent,
+    AccountSettingsComponent,
   ],
   imports: [
     BrowserModule,

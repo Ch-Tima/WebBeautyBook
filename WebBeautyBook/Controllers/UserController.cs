@@ -1,7 +1,10 @@
-﻿using Domain.Models;
+﻿using BLL.Services;
+using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebBeautyBook.Helpers;
+using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
 {
@@ -13,30 +16,83 @@ namespace WebBeautyBook.Controllers
 
         private readonly UserManager<BaseUser> _userManager;
         private readonly BLL.Services.WorkerService _workerService;
+        private readonly BaseUserService _baseUserService;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public UserController(UserManager<BaseUser> userManager, BLL.Services.WorkerService workerService)
+        public UserController(UserManager<BaseUser> userManager, BLL.Services.WorkerService workerService, BaseUserService baseUserService, IWebHostEnvironment appEnvironment)
         {
             _userManager = userManager;
             _workerService = workerService;
+            _baseUserService = baseUserService;
+            _appEnvironment = appEnvironment;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetMyProfile()
         {
             var user = await _userManager.GetUserAsync(User);
-
             if (user == null) return new BadRequestObjectResult("User not found!");
+            return new OkObjectResult(await DeleteSensitiveData(user));
+        }
 
-            return new OkObjectResult(new
+        [HttpPost]
+        public async Task<IActionResult> Update([FromForm]UserUpdateModel model)
+        {
+            try
             {
-                name = user.UserName,
-                surname = user.UserSurname,
-                email = user.Email,
-                photo = user.Photo,
-                roles = await _userManager.GetRolesAsync(user),
-                workerId = user.WorkerId,
-                companyId = user.WorkerId != null ? (await _workerService.GetAsync(user.WorkerId))?.CompanyId : null
-            });
+                var user = await _userManager.GetUserAsync(User);
+
+                user.PhoneNumber = model.PhoneNumber;
+                user.UserName = model.Name;
+                user.UserSurname = model.Surname;
+
+                if (model.File != null)
+                {
+                    //save new user icon
+                    var name = $"{Guid.NewGuid()}.png";
+                    var resultSaveImage = await model.File.Save($"{_appEnvironment.WebRootPath}/images/userIcons/{name}");
+
+                    if (!resultSaveImage.IsSuccess)
+                        return StatusCode(500, resultSaveImage.Message);
+
+                    if (user.Photo.IndexOf("userIcons") != -1)//remove the old icon if it's not the default icon
+                        FilesHelper.Delete($"{_appEnvironment.WebRootPath}/{user.Photo}");
+
+                    user.Photo = $"/images/userIcons/{name}";//set new path to image
+                }
+
+                var resultUpdate = await _baseUserService.UpdateAsync(user);
+
+                if(!resultUpdate.IsSuccess)
+                    return BadRequest(resultUpdate.Message);
+
+                return new OkObjectResult(await DeleteSensitiveData(user));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }   
+        }
+
+
+        /// <summary>
+        /// Based on <see cref="BaseUser">BaseUser</see>, it generates a new model without special fields.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private async Task<UserResponseModel> DeleteSensitiveData(BaseUser user)
+        {
+            return new UserResponseModel()
+            {
+                Name = user.UserName,
+                Surname = user.UserSurname,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Photo = user.Photo,
+                Roles = await _userManager.GetRolesAsync(user),
+                WorkerId = user.WorkerId,
+                CompanyId = user.WorkerId != null ? (await _workerService.GetAsync(user.WorkerId))?.CompanyId : null
+            };
         }
 
     }
