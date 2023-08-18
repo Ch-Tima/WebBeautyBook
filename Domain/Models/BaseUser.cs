@@ -11,10 +11,12 @@ namespace Domain.Models
         public Worker? Worker { get; set; }
 
         public List<CompanyLike> FavoriteCompanies { get; set; }
+        public List<Appointment> Appointments { get; set; }
 
         public BaseUser() : base()
         {
             FavoriteCompanies = new List<CompanyLike>();
+            Appointments = new List<Appointment>();
         }
 
     }

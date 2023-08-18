@@ -10,14 +10,15 @@
 
         public string CompanyId { get; set; }
         public Company Company { get; set; }
-        public List<Schedule> Schedules { get; set; }
-        public List<WorkerService> WorkerServices { get; set; }
+
+        public List<Assignment> Assignments { get; set; }
+        public List<Reservation> Reservations { get; set; }
 
         public Worker()
         {
             Id = Guid.NewGuid().ToString();
-            Schedules = new List<Schedule>();
-            WorkerServices = new List<WorkerService>();
+            Assignments = new List<Assignment>();
+            Reservations = new List<Reservation>();
         }
     }
 }

@@ -12,7 +12,7 @@
         public string CompanyId { get; set; }
         public Company Company { get; set; }
        
-        public List<WorkerService>  WorkerServices { get; set; }
+        public List<Assignment> Assignments { get; set; }
 
         public string CategoryId { get; set; }
         public Category? Category { get; set; }

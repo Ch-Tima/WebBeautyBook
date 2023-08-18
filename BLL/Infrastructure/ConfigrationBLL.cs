@@ -23,13 +23,12 @@ namespace BLL.Infrastructure
 
             //Add Repository
             services.AddTransient<BaseUserRepository>();
-            services.AddTransient<ClientRepository>();
             services.AddTransient<CommentRepository>();
             services.AddTransient<LocationRepository>();
-            services.AddTransient<RecordRepository>();
-            services.AddTransient<ScheduleRepository>();
+            services.AddTransient<AppointmentRepository>();
+            services.AddTransient<ReservationRepository>();
             services.AddTransient<ServiceRepository>();
-            services.AddTransient<WorkerServiceRepository>();
+            services.AddTransient<AssignmentRepository>();
             services.AddTransient<WorkerRepository>();
             services.AddTransient<CategoryRepository>();
             services.AddTransient<CompanyRepository>();

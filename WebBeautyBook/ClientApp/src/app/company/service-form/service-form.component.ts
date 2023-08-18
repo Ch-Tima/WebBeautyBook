@@ -41,7 +41,7 @@ export class ServiceFormComponent{
       this.mForm.setValue({
         name: data.value.name,
         description: data.value.description,
-        time: data.value.time.substring(0, data.value.time.lastIndexOf(":")),
+        time: data.value.time.length > 6 ? data.value.time.substring(0, data.value.time.lastIndexOf(":")) : data.value.time,
         price: data.value.price,
         categoryId: data.value.categoryId
       });

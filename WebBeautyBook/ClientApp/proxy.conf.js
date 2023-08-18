@@ -43,8 +43,8 @@ const PROXY_CONFIG = [
       "/api/Service",
 
       //WorkerService
-      "/api/WorkerService/insertWorkerToService",
-      "/api/WorkerService/removeWorkerFromService",
+      "/api/Assignment/insertWorkerToService",
+      "/api/Assignment/removeWorkerFromService",
 
       //Worker
       "/api/Worker/getWorkersByServiceId",

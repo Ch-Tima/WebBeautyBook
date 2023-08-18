@@ -14,23 +14,21 @@ namespace WebBeautyBook.Controllers
 
         private readonly UserManager<BaseUser> _userManager;
         private readonly ServiceService _serviceService;
-        private readonly BLL.Services.WorkerService _workerService;
-        private readonly WorkerServiceService _workerServiceService;
+        private readonly WorkerService _workerService;
 
         public ServiceController(UserManager<BaseUser> userManager, ServiceService serviceService,
-            BLL.Services.WorkerService workerService, WorkerServiceService workerServiceService)
+            WorkerService workerService)
         {
             _userManager = userManager;
             _serviceService = serviceService;
             _workerService = workerService;
-            _workerServiceService = workerServiceService;
         }
 
         [HttpGet("getCompanyServices/{compamyId}")]
         [AllowAnonymous]
         public async Task<IEnumerable<Service>> GetCompanyService(string compamyId)
         {
-            return await _serviceService.GetAllFindAsync(x => x.CompanyId == compamyId && x.WorkerServices.Count > 0);
+            return await _serviceService.GetAllFindAsync(x => x.CompanyId == compamyId && x.Assignments.Count > 0);
         }
 
         [HttpGet("getCompanyServicesPrivate/{compamyId}")]
