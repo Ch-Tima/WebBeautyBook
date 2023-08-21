@@ -5,6 +5,10 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS } from '../event-utils';
+import { MatDialog } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
+import { ReservationDialogComponent } from '../reservation-dialog/reservation-dialog.component';
 
 @Component({
   selector: 'app-appointment',
@@ -12,6 +16,7 @@ import { INITIAL_EVENTS } from '../event-utils';
   styleUrls: ['./appointment.component.css']
 })
 export class AppointmentComponent {
+  
   calendarOptions = signal<CalendarOptions>({
     plugins: [
       interactionPlugin,
@@ -25,19 +30,26 @@ export class AppointmentComponent {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+    initialEvents: INITIAL_EVENTS,
     weekends: true,
     editable: true,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    // select: this.handleDateSelect.bind(this),
-    // eventClick: this.handleEventClick.bind(this),
-    // eventsSet: this.handleEvents.bind(this)
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
   });
+
+  constructor(private http: HttpClient, public auth: AuthService, private dialogRef : MatDialog){
+
+  }
+
+  public addReservation(){
+    const reservationDialog = this.dialogRef.open(ReservationDialogComponent, {
+      width: "500px",
+      height: "250px"
+    });
+    reservationDialog.afterClosed().subscribe(result => {
+      console.log("afterClosed");
+    });
+  }
+
 }

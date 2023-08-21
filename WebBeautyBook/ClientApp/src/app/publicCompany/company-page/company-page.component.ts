@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Company } from '../models/Company';
-import { Worker } from '../models/Worker';
-import { CompanyLike } from '../models/CompanyLike';
+import { Company } from '../../models/Company';
+import { Worker } from '../../models/Worker';
+import { CompanyLike } from '../../models/CompanyLike';
 import * as $ from 'jquery';
+import { Service } from '../../models/Service';
+import { MatDialog } from '@angular/material/dialog';
+import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
 
 @Component({
   selector: 'app-company-page',
@@ -16,11 +19,12 @@ export class CompanyPageComponent {
 
   public company: Company = new Company;
   public workers: Worker[] = []
+  public services: Service[] = []
   public searchText:any;
 
   private companyId:string|null;
 
-  constructor(private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router){
+  constructor(private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router, private dialogRef : MatDialog){
     this.companyId = this.activeRoute.snapshot.queryParams['id'];
 
     if(this.companyId == null || this.companyId == undefined || this.companyId == ''){
@@ -61,6 +65,17 @@ export class CompanyPageComponent {
     }
   }
 
+  public booking(id:string){
+    if(!this.auth.hasToken()){
+      this.rout.navigate(["login"]);
+      return;
+    }
+    const appointmentDialog = this.dialogRef.open(AppointmentDialogComponent, {
+      width: "500px",
+      data: id
+    });
+  }
+
   private async getAllMienLikes(){
     await this.http.get<CompanyLike[]>("api/CompanyLike", {
       headers: this.auth.getHeadersWithToken()
@@ -76,32 +91,26 @@ export class CompanyPageComponent {
   }
 
   private async loadCompany(){
-    console.log("s -> loadCompany");
     await this.http.get<Company>(`api/Company?id=${this.companyId}`).subscribe(
       async (result) => {
         this.company = result;
-        console.log("r -> loadCompany");
-        await this.getAllMienLikes();
+        if(this.auth.hasToken()) await this.getAllMienLikes();
       }, error => {
         console.log(error);
         this.rout.navigate(["/"]);
       }
     )
-    console.log("e -> loadCompany");
   }
 
   private async loadWorkers(){
-    console.log("s -> loadWorkers");
     await this.http.get<Worker[]>(`api/Worker/getWorkersByCompanyId/${this.companyId}`).subscribe(
       result => {
         this.workers = result;
-        console.log("r -> loadWorkers");
       }, error => {
         console.log(error);
         console.log("error -> loadWorkers");
       }
     )
-    console.log("e -> loadWorkers");
   }
 
 }

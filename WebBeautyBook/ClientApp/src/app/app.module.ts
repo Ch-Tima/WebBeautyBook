@@ -37,13 +37,15 @@ import { WorkerServiceFormComponent } from './company/worker-service-form/worker
 import { InvitationEmployeeComponent } from './company/invitation-employee/invitation-employee.component';
 import { AcceptInvitationPageComponent } from './company/accept-invitation-page/accept-invitation-page.component';
 import { FooterComponent } from './footer/footer.component';
-import { CompanyPageComponent } from './company-page/company-page.component'
+import { CompanyPageComponent } from './publicCompany/company-page/company-page.component'
 import { FilterPipe } from './filterPipes/FilterPipe';
 import { ImageSliderComponent } from './image-slider/image-slider.component';
 import { ProfilePageComponent } from './profile/profile-page/profile-page.component';
 import { AccountSettingsComponent } from './profile/account-settings/account-settings.component';
 import { FavouritesComponent } from './profile/favourites/favourites.component';
-import { CompanyCardComponent } from './company/company-card/company-card.component'
+import { CompanyCardComponent } from './company/company-card/company-card.component';
+import { AppointmentDialogComponent } from './publicCompany/appointment-dialog/appointment-dialog.component';
+import { ReservationDialogComponent } from './company/reservation-dialog/reservation-dialog.component';
 
 const routes: Routes = [
 
@@ -107,6 +109,8 @@ const routes: Routes = [
     AccountSettingsComponent,
     FavouritesComponent,
     CompanyCardComponent,
+    AppointmentDialogComponent,
+    ReservationDialogComponent,
   ],
   imports: [
     BrowserModule,

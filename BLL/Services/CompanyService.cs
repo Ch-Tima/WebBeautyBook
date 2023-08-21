@@ -8,10 +8,13 @@ namespace BLL.Services
     {
         private readonly CompanyRepository _companyRepository;
         private readonly WorkerService _workerService;
-        public CompanyService(CompanyRepository companyRepository, WorkerService workerService)
+        private readonly ServiceRepository _serviceRepository;
+
+        public CompanyService(CompanyRepository companyRepository, WorkerService workerService, ServiceRepository serviceRepository)
         {
             _companyRepository = companyRepository;
             _workerService = workerService;
+            _serviceRepository = serviceRepository;
         }
 
         public async Task<Company> GetAsync(string id)
@@ -19,7 +22,24 @@ namespace BLL.Services
             return await _companyRepository.GetAsync(id);
         }
 
-        public async Task<Company> GetIncludeAsync(string id)
+        /// <summary>
+        /// This method is intended for public use in the "authorization not required" API.
+        /// </summary>
+        /// <param name="id">Company primary key</param>
+        /// <returns><see cref="Company"/> with navigation fields.</returns>
+        public async Task<Company> GetIncludeForClientAsync(string id)
+        {
+            var company = await _companyRepository.GetIncludeAsync(id);
+            company.Services = (await _serviceRepository.GetAllFindAsync(x => x.Assignments.Count > 0)).ToList();
+            return company;
+        }
+
+        /// <summary>
+        /// This method is the opposite of <see cref="GetIncludeForClientAsync(string)"/> method, it has no limitation.
+        /// </summary>
+        /// <param name="id">Company primary key</param>
+        /// <returns><see cref="Company"/> with navigation fields.</returns>
+        public async Task<Company> GetIncludeForCompanyAsync(string id)
         {
             return await _companyRepository.GetIncludeAsync(id);
         }

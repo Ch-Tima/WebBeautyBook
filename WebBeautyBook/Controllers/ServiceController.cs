@@ -24,16 +24,9 @@ namespace WebBeautyBook.Controllers
             _workerService = workerService;
         }
 
-        [HttpGet("getCompanyServices/{compamyId}")]
-        [AllowAnonymous]
-        public async Task<IEnumerable<Service>> GetCompanyService(string compamyId)
-        {
-            return await _serviceService.GetAllFindAsync(x => x.CompanyId == compamyId && x.Assignments.Count > 0);
-        }
-
-        [HttpGet("getCompanyServicesPrivate/{compamyId}")]
+        [HttpGet("getServicesForCompany/{compamyId}")]
         [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.MANAGER}, {Roles.WORKER}")]
-        public async Task<IActionResult> GetCompanyServicesPrivate(string compamyId)
+        public async Task<IActionResult> GetServicesForCompany(string compamyId)
         {
             var user = await _userManager.GetUserAsync(User);
             var worker = await _workerService.GetAsync(user.WorkerId);

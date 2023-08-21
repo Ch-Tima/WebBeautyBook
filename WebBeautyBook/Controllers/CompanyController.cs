@@ -35,7 +35,7 @@ namespace WebBeautyBook.Controllers
         {
             if (id == null) return BadRequest("Id cannot null");
 
-            var company = await _companyService.GetIncludeAsync(id);
+            var company = await _companyService.GetIncludeForClientAsync(id);
 
             if (company == null) return BadRequest("Comapny not found");
 

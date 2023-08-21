@@ -72,7 +72,7 @@ export class ServicePanelComponent {
   private loadServices(){
     this.services = [];
     var companyId = this.auth.getLocalUserDate()?.companyId;
-    this.http.get<Service[]>(this.baseUrl + `api/Service/getCompanyServicesPrivate/${companyId}`, {
+    this.http.get<Service[]>(this.baseUrl + `api/Service/getServicesForCompany/${companyId}`, {
       headers: this.auth.getHeadersWithToken()
     }).subscribe(
       result => {
