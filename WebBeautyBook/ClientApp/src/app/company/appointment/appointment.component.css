@@ -1,3 +1,7 @@
+.calendar{
+    height: 85vh;
+}
+
 .btn-plus {
     width: 55px;
     background: #007bff;

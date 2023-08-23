@@ -49,6 +49,9 @@ const PROXY_CONFIG = [
       //Worker
       "/api/Worker/getWorkersByServiceId",
       "/api/Worker/getWorkersByCompanyId",
+
+      //Reservation
+      "/api/Reservation",
    ],
     target: target,
     secure: false,

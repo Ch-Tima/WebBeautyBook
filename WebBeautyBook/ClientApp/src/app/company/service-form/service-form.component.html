@@ -35,9 +35,9 @@
     
         <div class="col">
             <label for="time">Time</label>
-            <!-- <ngx-mat-timepicker-field (timeChanged)="timeChanged($event)" color="primary" floatLabel="always" [format]="24" [defaultTime]="'00:05'" [controlOnly]="true" [min]="'00:05'" [max]="'12:00'"></ngx-mat-timepicker-field> -->
             <input class="form-control" style="max-width: 200px;" formControlName="time" [ngxMatTimepicker]="picker" [format]="24" [min]="'00:05'" readonly="readonly">  
-            <ngx-mat-timepicker color="accent" #picker ></ngx-mat-timepicker>  
+            <ngx-mat-timepicker color="accent" #picker ></ngx-mat-timepicker>
+
         </div>
     
     

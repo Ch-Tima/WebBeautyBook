@@ -82,7 +82,7 @@ namespace DAL.Context
             builder.Entity<Reservation>().Property(s => s.Date).HasColumnType("date").IsRequired();
             builder.Entity<Reservation>().Property(s => s.TimeStart).HasColumnType("Time").IsRequired();
             builder.Entity<Reservation>().Property(s => s.TimeEnd).HasColumnType("Time").IsRequired();
-            builder.Entity<Reservation>().Property(s => s.Description).HasColumnType("VARCHAR").HasMaxLength(250);
+            builder.Entity<Reservation>().Property(s => s.Description).HasColumnType("VARCHAR").HasMaxLength(250).IsRequired(false);
             builder.Entity<Reservation>().HasOne(r => r.Worker).WithMany(w => w.Reservations).HasForeignKey(r => r.WorkerId).OnDelete(DeleteBehavior.Cascade);
 
             //Service
