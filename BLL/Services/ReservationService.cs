@@ -34,15 +34,17 @@ namespace BLL.Services
         {
             try
             {
+                //find worker profile
                 var worker = await _workerRepository.GetAsync(reservation.WorkerId);
-
                 if (worker == null) 
                     return new ServiceResponse(false, "Most likely you do not belong to any company.");
 
-                if(reservation.TimeStart > reservation.TimeEnd)
+                //swap, if TimeEnd more than TimeStart
+                if (reservation.TimeStart > reservation.TimeEnd)
                     (reservation.TimeStart, reservation.TimeEnd) = (reservation.TimeEnd, reservation.TimeStart);
 
-                var reservations = await _reservationRepository.GetAllFindAsync(x => x.WorkerId == reservation.WorkerId && x.Date.Date == x.Date.Date);
+                //search for intersections in time
+                var reservations = await _reservationRepository.GetAllFindAsync(x => x.WorkerId == reservation.WorkerId && x.Date.Date == reservation.Date.Date);
                 if (reservations != null && HasOverlappingReservations(reservations.ToList(), reservation))
                     return new ServiceResponse(false, "The Reservation cannot overlap with another reservation.");
 
@@ -61,11 +63,37 @@ namespace BLL.Services
             await _reservationRepository.DeleteAsync(id);
         }
 
-        public async Task UpdataAsync(Reservation newReservation)
+        public async Task<ServiceResponse> UpdataAsync(Reservation reservation)
         {
-            if (newReservation == null) return;
+            try
+            {
+                //find worker profile
+                var worker = await _workerRepository.GetAsync(reservation.WorkerId);
+                if (worker == null)
+                    return new ServiceResponse(false, "Most likely you do not belong to any company.");
 
-            await _reservationRepository.UpdateAsync(newReservation.Id, newReservation);
+
+                //find reservation
+                if (!await IsExistAsync(reservation.Id))
+                    return new ServiceResponse(false, "Not found reservation.");
+
+                //swap, if TimeEnd more than TimeStart
+                if (reservation.TimeStart > reservation.TimeEnd)
+                    (reservation.TimeStart, reservation.TimeEnd) = (reservation.TimeEnd, reservation.TimeStart);
+
+                //search for intersections in time
+                var reservations = await _reservationRepository.GetAllFindAsync(x => x.WorkerId == reservation.WorkerId && x.Date.Date == reservation.Date.Date && x.Id != reservation.Id);
+                if (reservations != null && HasOverlappingReservations(reservations.ToList(), reservation))
+                    return new ServiceResponse(false, "The Reservation cannot overlap with another reservation.");
+
+                await _reservationRepository.UpdateAsync(reservation.Id, reservation);
+
+                return new ServiceResponse(true, "Ok");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse(false, ex.Message);
+            }
         }
 
         /// <summary>
@@ -83,6 +111,18 @@ namespace BLL.Services
                         return true;//Overlapping reservation detected
 
             return false;//No overlapping reservation found.
+        }
+
+        private async Task<bool> IsExistAsync(string id)
+        {
+            if(id == null) 
+                return false;
+
+            var item = await _reservationRepository.GetAsync(id);
+            if (item == null) 
+                return false;
+
+            return true;
         }
 
     }

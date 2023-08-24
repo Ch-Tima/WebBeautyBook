@@ -3,10 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule, provideAnimations } from "@angular/platform-browser/animations";
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DragScrollModule } from 'ngx-drag-scroll';
 import { NgxMatTimepickerModule } from "ngx-mat-timepicker"
+import { ToastrModule, provideToastr } from 'ngx-toastr';
 //@angular/material
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from "@angular/material/card";
@@ -53,6 +54,7 @@ import { CompanyCardComponent } from './company/company-card/company-card.compon
 import { AppointmentDialogComponent } from './publicCompany/appointment-dialog/appointment-dialog.component';
 import { ReservationDialogComponent } from './company/reservation-dialog/reservation-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
+import { DatePipe } from '@angular/common';
 
 const routes: Routes = [
 
@@ -131,13 +133,17 @@ const routes: Routes = [
     NgxMatTimepickerModule,
     FullCalendarModule,
     DragScrollModule,
-
+    ToastrModule.forRoot(),
     //mat for timepicker and datepicker
     MatFormFieldModule, MatInputModule, MatDatepickerModule, 
     MatNativeDateModule, MatCardModule, MatButtonModule
 
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    provideAnimations(),
+    provideToastr()
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

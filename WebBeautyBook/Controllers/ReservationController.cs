@@ -29,12 +29,11 @@ namespace WebBeautyBook.Controllers
         public async Task<IEnumerable<Reservation>> GetMy()
         {
             var user = await _userManager.GetUserAsync(User);
-
             return await _reservationService.GetAllFindAsync(x => x.WorkerId == user.WorkerId);
         }
 
         [HttpPut]
-        public async Task<IActionResult> AddReservation([FromBody] ReservationViewModel viewModel)
+        public async Task<IActionResult> Add([FromBody] ReservationViewModel viewModel)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -53,6 +52,27 @@ namespace WebBeautyBook.Controllers
                 return BadRequest(result.Message);
 
             return Ok(reservation);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] ReservationViewModel viewModel, [FromQuery] string id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var result = await _reservationService.UpdataAsync(new Reservation()
+            {
+                Id = id,
+                WorkerId = user.WorkerId,
+                Description = viewModel.Description,
+                Date = viewModel.Date.Date.ToLocalTime(),
+                TimeStart= viewModel.TimeStart.ToTimeSpan(),
+                TimeEnd = viewModel.TimeEnd.ToTimeSpan(),
+            });
+
+            if (!result.IsSuccess)
+                return BadRequest(result.Message);
+
+            return Ok();
         }
 
     }

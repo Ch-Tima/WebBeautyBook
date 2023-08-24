@@ -5,6 +5,7 @@ namespace WebBeautyBook.Models
 {
     public class ReservationViewModel
     {
+
         [Required(ErrorMessage = $"The {nameof(Date)} is required.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -22,5 +23,6 @@ namespace WebBeautyBook.Models
 
         [MaxLength(500, ErrorMessage = $"The {nameof(Description)} must contain no more than 500 characters.")]
         public string? Description { get; set; }
+
     }
 }
