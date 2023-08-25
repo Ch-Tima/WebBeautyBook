@@ -1,11 +1,8 @@
 ﻿using BLL.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
@@ -64,7 +61,7 @@ namespace WebBeautyBook.Controllers
                 Id = id,
                 WorkerId = user.WorkerId,
                 Description = viewModel.Description,
-                Date = viewModel.Date.Date.ToLocalTime(),
+                Date = viewModel.Date.ToLocalTime().DateTime,
                 TimeStart= viewModel.TimeStart.ToTimeSpan(),
                 TimeEnd = viewModel.TimeEnd.ToTimeSpan(),
             });

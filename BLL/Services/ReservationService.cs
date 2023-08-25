@@ -72,7 +72,6 @@ namespace BLL.Services
                 if (worker == null)
                     return new ServiceResponse(false, "Most likely you do not belong to any company.");
 
-
                 //find reservation
                 if (!await IsExistAsync(reservation.Id))
                     return new ServiceResponse(false, "Not found reservation.");

@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 import { ReservationDialogComponent } from '../reservation-dialog/reservation-dialog.component';
-import { Company } from 'src/app/models/Company';
 import { Reservation } from 'src/app/models/Reservation';
 import { DatePipe } from '@angular/common';
 import { title } from 'process';
@@ -42,7 +41,10 @@ export class AppointmentComponent {
     slotMinTime: '00:00:00',
     slotMaxTime: '24:00:00',
     allDaySlot: false,//hide slot 'allDay'
-    eventAllow: (item) => item.start.getDate() !== item.end.getDate() ? false : true,//prevent partial transfer to a new day
+    eventAllow: (item) => {
+      //console.log(`${item.start.getDate()} | ${item.end.getDate()}`);
+      return item.start.getDate() !== item.end.getDate() ? false : true;//prevent partial transfer to a new day
+    },
     initialView: 'dayGridMonth',
     initialEvents: [],
     weekends: true,
@@ -90,7 +92,7 @@ export class AppointmentComponent {
       color: "#50505080",
       start: `${onlyDate}T${item.timeStart}`,
       end: `${onlyDate}T${item.timeEnd}`,
-      title: item.description,
+      title: item.description??'reservation',
       workerId: item.workerId,
     };
     this.events = [...this.events, newEvent];
@@ -99,47 +101,37 @@ export class AppointmentComponent {
 
   private eventChangeItem(item: EventChangeArg){
 
-    var newItem = new Reservation()
     if(item.event.start == null || item.event.end == null){
       this.toastr.error('Error event time')
       item.revert();
       return;
     }
-    var newDate = item.event.start.getTime() > item.event.end.getTime() ? item.event.start.toISOString().substr(0, 10) : item.event.end.toISOString().substr(0, 10);
-    var timeStart = this.datePipe.transform(item.event.start, 'HH:mm')??'';
-    var timeEnd = this.datePipe.transform(item.event.end, 'HH:mm')??'';
 
-    newItem.date = new Date(newDate);
-    newItem.id = item.event.id;
-    newItem.workerId = item.event.extendedProps['workerId'];
-    newItem.timeStart = timeStart;
-    newItem.timeEnd = timeEnd;
-    newItem.description = title;
+    const newItem: Reservation = {
+      id: item.event.id,
+      date: new Date(item.event.start.toDateString()),
+      workerId: item.event.extendedProps['workerId'],
+      worker: undefined,
+      timeStart: this.datePipe.transform(item.event.start, 'HH:mm')??'',
+      timeEnd: this.datePipe.transform(item.event.end, 'HH:mm')??'',
+      description: title
+    };
 
     this.http.post(`api/Reservation?id=${newItem.id}`, newItem, {
       headers: this.auth.getHeadersWithToken()
     }).subscribe(
       result => {
-        this.toastr.success('Reservation changed');
+        this.toastr.success('Reservation changed', undefined, { timeOut: 1000 });
       }, error => {
         console.log(error);
         if(error.error.errors != undefined){ //erorr from model
-          this.toastr.error(`${Object.values<any>(error.error.errors)[0][0]}`);
+          this.toastr.error(`${Object.values<any>(error.error.errors)[0][0]}`, undefined, { closeButton: true });
         }else{ //error from controller
-          this.toastr.warning(`${error.error}`);
+          this.toastr.warning(`${error.error}`, undefined, { closeButton: true });
         }
         item.revert();
       }
     );
   }
 
-
 }
-
-/*
-
-angular ts fullCalendare
-
-при перемещение элемента в рамках одного дня меняется день
-
-*/
