@@ -34,7 +34,8 @@
     <textarea maxlength="250" class="form-control" matInput formControlName="description" placeholder="description"></textarea>
 
     <div class="container-btn" align="end">
-      <button class="btn btn-primary" type="submit" [disabled]="mForm.invalid">Add</button>
+      <button class="btn btn-danger mx-1" *ngIf="data.isUpdateMode" (click)="remove()">Remove</button>
+      <button class="btn btn-primary mx-1" type="submit" [disabled]="mForm.invalid">{{data.isUpdateMode ? 'Update' : 'Add'}}</button>
     </div>
 
     <p class="text-danger text-center m-0 p-0" *ngIf="error != undefined">{{error}}</p>

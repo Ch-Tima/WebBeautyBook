@@ -72,5 +72,17 @@ namespace WebBeautyBook.Controllers
             return Ok();
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] string id)
+        {
+            var result = await _reservationService.DeleteAsync(id);
+
+            if (!result.IsSuccess)
+                return BadRequest(result.Message);
+
+            return Ok();
+
+        }
+
     }
 }

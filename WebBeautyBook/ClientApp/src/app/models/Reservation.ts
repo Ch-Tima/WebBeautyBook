@@ -3,7 +3,7 @@ export class Reservation {
     public date: Date|undefined;
     public timeStart: string|undefined;
     public timeEnd: string|undefined;
-    public description: string = '';
+    public description: string|null = null;
 
     public workerId: string|undefined;
     public worker: Worker|undefined;

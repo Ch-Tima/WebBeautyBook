@@ -58,9 +58,20 @@ namespace BLL.Services
             }
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task<ServiceResponse> DeleteAsync(string id)
         {
-            await _reservationRepository.DeleteAsync(id);
+            try
+            {
+                if (!await IsExistAsync(id)) return new ServiceResponse(false, "Not found reservation.");
+                
+                await _reservationRepository.DeleteAsync(id);
+
+                return new ServiceResponse(true, "Ok");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse(false, ex.Message);
+            }
         }
 
         public async Task<ServiceResponse> UpdataAsync(Reservation reservation)
@@ -112,6 +123,11 @@ namespace BLL.Services
             return false;//No overlapping reservation found.
         }
 
+        /// <summary>
+        /// Searches for the element with the given <paramref name="id"/> and returns bool values.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Returns true if the element is found, false otherwise.</returns>
         private async Task<bool> IsExistAsync(string id)
         {
             if(id == null) 

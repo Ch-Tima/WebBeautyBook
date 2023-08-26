@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CalendarOptions, EventApi, EventChangeArg} from '@fullcalendar/core';
+import { CalendarOptions, EventApi, EventChangeArg, EventClickArg} from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -7,12 +7,12 @@ import listPlugin from '@fullcalendar/list';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
-import { ReservationDialogComponent } from '../reservation-dialog/reservation-dialog.component';
+import { ReservationDialogComponent, ReservationDialogDate, ReservationDialogResult } from '../reservation-dialog/reservation-dialog.component';
 import { Reservation } from 'src/app/models/Reservation';
 import { DatePipe } from '@angular/common';
-import { title } from 'process';
 import { WorkerEventInput } from 'src/app/models/WorkerEventInput';
 import { ToastrService } from 'ngx-toastr';
+import { EventImpl } from '@fullcalendar/core/internal';
 
 @Component({
   selector: 'app-appointment',
@@ -40,23 +40,20 @@ export class AppointmentComponent {
     },
     slotMinTime: '00:00:00',
     slotMaxTime: '24:00:00',
-    allDaySlot: false,//hide slot 'allDay'
-    eventAllow: (item) => {
-      //console.log(`${item.start.getDate()} | ${item.end.getDate()}`);
-      return item.start.getDate() !== item.end.getDate() ? false : true;//prevent partial transfer to a new day
-    },
+    allDaySlot: false, //hide slot 'allDay'
+    eventAllow: (item) => item.start.getDate() !== item.end.getDate() ? false : true, //prevent partial transfer to a new day
+    eventClick: (item) => this.onReservationClick(item),
+    eventChange: item => this.eventChangeItem(item),
     initialView: 'dayGridMonth',
     initialEvents: [],
     weekends: true,
     editable: true,
-    eventChange: (item) => this.eventChangeItem(item),
     snapDuration: '00:05:00',
     defaultAllDay: false,
     defaultAllDayEventDuration: null,
-    //timeZone: 'UTC'
   };
 
-  private events: WorkerEventInput[] = [];
+  public events: WorkerEventInput[] = [];
 
   constructor(private toastr: ToastrService, private http: HttpClient, public auth: AuthService, private dialogRef : MatDialog, private datePipe: DatePipe){
     this.getMyReservations();
@@ -65,12 +62,13 @@ export class AppointmentComponent {
   public addReservation(){
     const reservationDialog = this.dialogRef.open(ReservationDialogComponent, {
       width: "500px",
+      data: { isUpdateMode: false } as ReservationDialogDate
     });
     reservationDialog.afterClosed().subscribe(result => {
-      console.log(result);
-      if(result != null || result != undefined)
-      {
-        this.addEvent((result as Reservation));
+      if(result == null) return;
+      var reservation = (result as ReservationDialogResult).value;
+      if(reservation != null || reservation != undefined){
+        this.addEvent(reservation);
       }
     });
   }
@@ -78,11 +76,9 @@ export class AppointmentComponent {
   public getMyReservations(){
     this.http.get<Reservation[]>("api/Reservation/GetMy", {
       headers: this.auth.getHeadersWithToken()
-    }).subscribe(result => {
-      result.forEach(item => this.addEvent(item));//add new items
-    }, error => {
-      console.log(error);
-    });
+    }).subscribe(
+      result => result.forEach(item => this.addEvent(item)), //add new items
+      error => console.log(error));
   }
 
   private addEvent(item: Reservation){
@@ -99,25 +95,21 @@ export class AppointmentComponent {
     this.calendar.events = this.events;
   }
 
-  private eventChangeItem(item: EventChangeArg){
+  private removeEventById(id: string){
+    this.events = this.events.filter(x => x.id != id);
+    this.calendar.events = this.events;
+  }
 
-    if(item.event.start == null || item.event.end == null){
+  private eventChangeItem(item: EventChangeArg){
+    var reservation = this.converEventToReservation(item.event);
+
+    if(reservation == null){
       this.toastr.error('Error event time')
       item.revert();
       return;
     }
 
-    const newItem: Reservation = {
-      id: item.event.id,
-      date: new Date(item.event.start.toDateString()),
-      workerId: item.event.extendedProps['workerId'],
-      worker: undefined,
-      timeStart: this.datePipe.transform(item.event.start, 'HH:mm')??'',
-      timeEnd: this.datePipe.transform(item.event.end, 'HH:mm')??'',
-      description: title
-    };
-
-    this.http.post(`api/Reservation?id=${newItem.id}`, newItem, {
+    this.http.post(`api/Reservation?id=${reservation.id}`, reservation, {
       headers: this.auth.getHeadersWithToken()
     }).subscribe(
       result => {
@@ -132,6 +124,44 @@ export class AppointmentComponent {
         item.revert();
       }
     );
+  }
+
+  private onReservationClick(item: EventClickArg){
+    const reservationDialog = this.dialogRef.open(ReservationDialogComponent, {
+      width: "500px",
+      data: {
+        isUpdateMode: true,
+        value: this.converEventToReservation(item.event)
+      } as ReservationDialogDate
+    });
+    reservationDialog.afterClosed().subscribe(data => {
+      var result = data as ReservationDialogResult;
+      if(result == null || result == undefined) return;
+
+      if(!result.isSuccess || result.action == 'close') return;
+
+      if(result.action == 'update'){
+        
+      }
+      if(result.action == 'remove'){
+        this.removeEventById(item.event.id);
+      }
+
+    });
+  }
+
+  private converEventToReservation(event: EventImpl):Reservation|null{
+    if(event.start == null || event.end == null) return null;
+    var item: Reservation = {
+      id: event.id,
+      date: new Date(event.start.toDateString()),
+      workerId: event.extendedProps['workerId'],
+      worker: undefined,
+      timeStart: this.datePipe.transform(event.start, 'HH:mm')??'',
+      timeEnd: this.datePipe.transform(event.end, 'HH:mm')??'',
+      description: event.title.length == 0 ? null : event.title
+    };
+    return item;
   }
 
 }
