@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
 import { WorkerEventInput } from 'src/app/models/WorkerEventInput';
 import { ToastrService } from 'ngx-toastr';
 import { EventImpl } from '@fullcalendar/core/internal';
+import { timeStamp } from 'console';
 
 @Component({
   selector: 'app-appointment',
@@ -21,6 +22,8 @@ import { EventImpl } from '@fullcalendar/core/internal';
 })
 export class AppointmentComponent {
   
+  public events: WorkerEventInput[] = [];
+
   public calendar: CalendarOptions = {
     plugins: [
       interactionPlugin,
@@ -36,24 +39,22 @@ export class AppointmentComponent {
     slotLabelFormat: {
       timeStyle: 'short',
       hour12: false,
-      //timeZone: 'UTC'
     },
     slotMinTime: '00:00:00',
     slotMaxTime: '24:00:00',
     allDaySlot: false, //hide slot 'allDay'
-    eventAllow: (item) => item.start.getDate() !== item.end.getDate() ? false : true, //prevent partial transfer to a new day
-    eventClick: (item) => this.onReservationClick(item),
+    eventAllow: item => item.start.getDate() !== item.end.getDate() ? false : true, //prevent partial transfer to a new day
+    eventClick: item => this.onReservationClick(item),
     eventChange: item => this.eventChangeItem(item),
+    eventRemove: item => console.log('remove'),
     initialView: 'dayGridMonth',
-    initialEvents: [],
+    events: this.events,
     weekends: true,
     editable: true,
     snapDuration: '00:05:00',
     defaultAllDay: false,
     defaultAllDayEventDuration: null,
   };
-
-  public events: WorkerEventInput[] = [];
 
   constructor(private toastr: ToastrService, private http: HttpClient, public auth: AuthService, private dialogRef : MatDialog, private datePipe: DatePipe){
     this.getMyReservations();
@@ -114,6 +115,15 @@ export class AppointmentComponent {
     }).subscribe(
       result => {
         this.toastr.success('Reservation changed', undefined, { timeOut: 1000 });
+        var w = this.events.find(x => x.id == item.event.id);
+        if(w != undefined){
+          w.start = item.event.start??undefined;
+          w.end = item.event.end??undefined;
+        }else{
+          console.log("error");
+          item.revert();
+        }
+
       }, error => {
         console.log(error);
         if(error.error.errors != undefined){ //erorr from model
@@ -140,8 +150,20 @@ export class AppointmentComponent {
 
       if(!result.isSuccess || result.action == 'close') return;
 
-      if(result.action == 'update'){
-        
+      if(result.action == 'update' && result.value != null){
+        var workerEI = this.events.find(x => x.id == result.value?.id)
+
+        console.log()
+
+        if(workerEI == undefined) return;
+        var onlyDate = this.datePipe.transform(result.value.date?.toLocaleDateString(), 'yyyy-MM-dd');
+        workerEI.title = result.value.description ?? 'reservation';
+        workerEI.start = `${onlyDate}T${result.value.timeStart}`;
+        workerEI.end = `${onlyDate}T${result.value.timeEnd}`;
+        workerEI.workerId = result.value.workerId;
+
+        this.calendar.events = [...this.events];
+
       }
       if(result.action == 'remove'){
         this.removeEventById(item.event.id);

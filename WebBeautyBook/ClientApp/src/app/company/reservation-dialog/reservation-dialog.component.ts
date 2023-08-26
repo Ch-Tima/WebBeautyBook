@@ -65,7 +65,20 @@ export class ReservationDialogComponent {
   }
 
   private update(){
+    this.http.post(`api/Reservation?id=${this.data.value?.id}`, this.mForm.value, {
+      headers: this.auth.getHeadersWithToken()
+    }).subscribe(result => {
 
+      var v = this.mForm.value as Reservation;
+      v.id = this.data.value?.id;
+      v.workerId = this.data.value?.workerId;
+
+      this.dialg.close({
+        isSuccess: true,
+        action: 'update',
+        value: v
+      } as ReservationDialogResult);
+    }, error => this.showError(error));
   }
 
   private showError(error:any){
