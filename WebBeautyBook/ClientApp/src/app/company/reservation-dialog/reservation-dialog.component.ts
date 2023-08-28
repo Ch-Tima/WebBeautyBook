@@ -31,7 +31,11 @@ export class ReservationDialogComponent {
   public onSubmit() {
     if(this.mForm.invalid) return;
     this.error = undefined;
-    this.data.isUpdateMode ? this.update() : this.create();
+    if(this.data.isUpdateMode ){
+      this.update()
+    }else{
+      this.create();
+    }
   }
 
   public remove(){

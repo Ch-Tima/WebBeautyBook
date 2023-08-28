@@ -1,4 +1,6 @@
-﻿using BLL.Services;
+﻿using BLL;
+using BLL.Services;
+using DAL.Repository;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,11 +17,13 @@ namespace WebBeautyBook.Controllers
 
         private readonly ReservationService _reservationService;
         private readonly UserManager<BaseUser> _userManager;
+        private readonly WorkerService _workerService;
 
-        public ReservationController(ReservationService reservationService, UserManager<BaseUser> userManager)
+        public ReservationController(ReservationService reservationService, UserManager<BaseUser> userManager, WorkerService workerService)
         {
             _reservationService = reservationService;
             _userManager = userManager;
+            _workerService = workerService;
         }
 
         [HttpGet(nameof(GetMy))]
@@ -27,6 +31,18 @@ namespace WebBeautyBook.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             return await _reservationService.GetAllFindAsync(x => x.WorkerId == user.WorkerId);
+        }
+
+        [HttpGet(nameof(Filter))]
+        public async Task<IEnumerable<Reservation>> Filter([FromQuery] string[] ids)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var worker = await _workerService.GetAsync(user.WorkerId);
+
+            if (worker == null)
+                return new List<Reservation>();
+
+            return await _reservationService.GetAllFindAsync(r => r.Worker.CompanyId == worker.CompanyId && ids.Contains(r.WorkerId));
         }
 
         [HttpPut]
@@ -55,6 +71,10 @@ namespace WebBeautyBook.Controllers
         public async Task<IActionResult> Update([FromBody] ReservationViewModel viewModel, [FromQuery] string id)
         {
             var user = await _userManager.GetUserAsync(User);
+            var reservation = await _reservationService.GetAsync(id);
+            if (reservation.WorkerId != user.WorkerId)
+                return BadRequest("This is not your Reservation.");
+
 
             var result = await _reservationService.UpdataAsync(new Reservation()
             {
@@ -75,6 +95,11 @@ namespace WebBeautyBook.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] string id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var reservation = await _reservationService.GetAsync(id);
+            if (reservation.WorkerId != user.WorkerId)
+                return BadRequest("This is not your Reservation.");
+
             var result = await _reservationService.DeleteAsync(id);
 
             if (!result.IsSuccess)

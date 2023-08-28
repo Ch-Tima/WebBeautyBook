@@ -15,6 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from "@angular/material/dialog"
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatSelectModule } from '@angular/material/select';
 
 //Components
 import { AppComponent } from './app.component';
@@ -136,7 +138,8 @@ const routes: Routes = [
     ToastrModule.forRoot(),
     //mat for timepicker and datepicker
     MatFormFieldModule, MatInputModule, MatDatepickerModule, 
-    MatNativeDateModule, MatCardModule, MatButtonModule
+    MatNativeDateModule, MatCardModule, MatButtonModule,
+    MatCheckboxModule, MatSelectModule
 
   ],
   providers: [

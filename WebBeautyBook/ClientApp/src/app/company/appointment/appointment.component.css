@@ -1,14 +1,17 @@
-.calendar{
-    height: 85vh;
+.calendar-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.mat-select{
+    width: 225px;
 }
 
 .btn-plus {
-    width: 55px;
-    background: #007bff;
-    border-radius: 2em;
-    padding: 5px;
-    position: fixed;
-    bottom: 1.5em;
-    right: 1.5em;
-    z-index: 500;
+    width: 99px;
+}
+
+.calendar{
+    height: 85vh;
 }

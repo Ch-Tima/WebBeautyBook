@@ -63,7 +63,7 @@ namespace BLL.Services
             try
             {
                 if (!await IsExistAsync(id)) return new ServiceResponse(false, "Not found reservation.");
-                
+
                 await _reservationRepository.DeleteAsync(id);
 
                 return new ServiceResponse(true, "Ok");

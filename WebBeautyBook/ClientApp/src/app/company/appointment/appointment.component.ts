@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CalendarOptions, EventApi, EventChangeArg, EventClickArg} from '@fullcalendar/core';
+import { Component, OnInit } from '@angular/core';
+import { CalendarOptions, EventChangeArg, EventClickArg} from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -13,15 +13,17 @@ import { DatePipe } from '@angular/common';
 import { WorkerEventInput } from 'src/app/models/WorkerEventInput';
 import { ToastrService } from 'ngx-toastr';
 import { EventImpl } from '@fullcalendar/core/internal';
-import { timeStamp } from 'console';
+import { Worker } from '../../models/Worker';
 
 @Component({
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
   styleUrls: ['./appointment.component.css']
 })
-export class AppointmentComponent {
+export class AppointmentComponent implements OnInit {
   
+  public workers: WorkersSelect[] = [];
+  public selectedWorker: string[] = [];
   public events: WorkerEventInput[] = [];
 
   public calendar: CalendarOptions = {
@@ -46,7 +48,6 @@ export class AppointmentComponent {
     eventAllow: item => item.start.getDate() !== item.end.getDate() ? false : true, //prevent partial transfer to a new day
     eventClick: item => this.onReservationClick(item),
     eventChange: item => this.eventChangeItem(item),
-    eventRemove: item => console.log('remove'),
     initialView: 'dayGridMonth',
     events: this.events,
     weekends: true,
@@ -56,8 +57,25 @@ export class AppointmentComponent {
     defaultAllDayEventDuration: null,
   };
 
-  constructor(private toastr: ToastrService, private http: HttpClient, public auth: AuthService, private dialogRef : MatDialog, private datePipe: DatePipe){
-    this.getMyReservations();
+  constructor(public auth: AuthService, private toastr: ToastrService, private http: HttpClient, private dialogRef : MatDialog, private datePipe: DatePipe){
+  }
+
+  public async ngOnInit(){
+    var workers = await this.getWorkers();
+    var user = this.auth.getLocalUserDate();
+    workers?.forEach(w => {
+        if(w.id == user?.workerId) {
+          this.workers.push({ worker: w, selected: true })
+          this.selectedWorker.push(w.id)
+        }else {
+          this.workers.push({worker: w, selected: false})
+        }
+    });
+    var reservations = await this.getReservations();
+    reservations?.forEach(item => this.addEvent(item))
+    
+    console.log(this.selectedWorker);
+
   }
 
   public addReservation(){
@@ -73,16 +91,37 @@ export class AppointmentComponent {
       }
     });
   }
-  
-  public getMyReservations(){
-    this.http.get<Reservation[]>("api/Reservation/GetMy", {
-      headers: this.auth.getHeadersWithToken()
-    }).subscribe(
-      result => result.forEach(item => this.addEvent(item)), //add new items
-      error => console.log(error));
+
+  public async toggleWorkerSelection(item: WorkersSelect) {
+    if(!item.selected){
+      var reservations = await this.getReservations();
+      reservations?.forEach(item => this.addEvent(item))
+    }else{
+      this.events.forEach(x => {
+        if(x.workerId == item.worker.id){
+          this.removeEventById(x.id);
+        }
+      })
+    }
+    item.selected = !item.selected;
+    console.log(this.selectedWorker)
+  }
+
+  private async getReservations():Promise<Reservation[]|undefined>{
+    try {
+      const queryParams = this.selectedWorker.join('&ids=');
+      console.log(queryParams)
+      return await this.http.get<Reservation[]>(`api/Reservation/Filter?ids=${queryParams}`, {
+        headers: this.auth.getHeadersWithToken(),
+      }).toPromise();
+    }catch(error){
+      console.log(error);
+      return undefined;
+    }
   }
 
   private addEvent(item: Reservation){
+    if(this.events.findIndex(x => x.id == item.id) != -1) return;
     var onlyDate = item.date?.toString().replace(/T.*$/, '');
     var newEvent: WorkerEventInput = {
       id: item.id,
@@ -96,7 +135,7 @@ export class AppointmentComponent {
     this.calendar.events = this.events;
   }
 
-  private removeEventById(id: string){
+  private removeEventById(id: string|undefined){
     this.events = this.events.filter(x => x.id != id);
     this.calendar.events = this.events;
   }
@@ -107,6 +146,12 @@ export class AppointmentComponent {
     if(reservation == null){
       this.toastr.error('Error event time')
       item.revert();
+      return;
+    }
+
+    if(reservation.workerId != this.auth.getLocalUserDate()?.workerId){
+      item.revert();
+      this.toastr.warning(`This is not your booking.`, undefined, { closeButton: true, timeOut: 1000 });
       return;
     }
 
@@ -137,11 +182,15 @@ export class AppointmentComponent {
   }
 
   private onReservationClick(item: EventClickArg){
+    var data = this.converEventToReservation(item.event);
+    if(data?.workerId != this.auth.getLocalUserDate()?.workerId){
+      return;
+    }
     const reservationDialog = this.dialogRef.open(ReservationDialogComponent, {
       width: "500px",
       data: {
         isUpdateMode: true,
-        value: this.converEventToReservation(item.event)
+        value: data
       } as ReservationDialogDate
     });
     reservationDialog.afterClosed().subscribe(data => {
@@ -186,4 +235,19 @@ export class AppointmentComponent {
     return item;
   }
 
+  private async getWorkers():Promise<Worker[]|undefined>{
+    try {
+      return await this.http.get<Worker[]>('api/Company/getWorkers', {
+        headers: this.auth.getHeadersWithToken(),
+      }).toPromise();
+    }catch(error){
+      console.log(error);
+      return undefined;
+    }
+  }
+
+}
+class WorkersSelect{
+  worker:Worker = new Worker
+  selected: boolean = false
 }
