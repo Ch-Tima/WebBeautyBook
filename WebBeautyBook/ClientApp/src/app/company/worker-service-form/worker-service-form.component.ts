@@ -31,7 +31,7 @@ export class WorkerServiceFormComponent {
   }
 
   public insertWorkerToService(worker: Worker){
-    this.http.post("api/WorkerService/insertWorkerToService", {
+    this.http.post("api/Assignment/insertWorkerToService", {
       workerId: worker.id,
       serviceId: this.serviceId
     }, {
@@ -48,7 +48,7 @@ export class WorkerServiceFormComponent {
   }
   
   public removeWorkerFromService(worker: Worker){
-    this.http.post("api/WorkerService/removeWorkerFromService", {
+    this.http.post("api/Assignment/removeWorkerFromService", {
       workerId: worker.id,
       serviceId: this.serviceId
     }, {

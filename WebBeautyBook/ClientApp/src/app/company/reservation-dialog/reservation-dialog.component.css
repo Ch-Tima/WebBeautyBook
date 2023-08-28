@@ -1,0 +1,24 @@
+.calendar-card {
+    width: 280px;
+    height: max-content;
+    margin: 0 auto;
+}
+
+.container-time{
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.container-btn button {
+    width: 90px;
+}
+
+textarea{
+    width: 100%;
+    min-height: 125px;
+}
+
+.container-btn{
+    margin: .5em 0;
+}

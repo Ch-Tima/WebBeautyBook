@@ -7,4 +7,5 @@ export class UserDataModel {
     phoneNumber:string = "";
     roles: string[] = [];
     companyId: string|null = null;
+    workerId: string|null = null;
   }

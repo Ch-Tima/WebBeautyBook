@@ -14,28 +14,19 @@ namespace WebBeautyBook.Controllers
 
         private readonly UserManager<BaseUser> _userManager;
         private readonly ServiceService _serviceService;
-        private readonly BLL.Services.WorkerService _workerService;
-        private readonly WorkerServiceService _workerServiceService;
+        private readonly WorkerService _workerService;
 
         public ServiceController(UserManager<BaseUser> userManager, ServiceService serviceService,
-            BLL.Services.WorkerService workerService, WorkerServiceService workerServiceService)
+            WorkerService workerService)
         {
             _userManager = userManager;
             _serviceService = serviceService;
             _workerService = workerService;
-            _workerServiceService = workerServiceService;
         }
 
-        [HttpGet("getCompanyServices/{compamyId}")]
-        [AllowAnonymous]
-        public async Task<IEnumerable<Service>> GetCompanyService(string compamyId)
-        {
-            return await _serviceService.GetAllFindAsync(x => x.CompanyId == compamyId && x.WorkerServices.Count > 0);
-        }
-
-        [HttpGet("getCompanyServicesPrivate/{compamyId}")]
+        [HttpGet("getServicesForCompany/{compamyId}")]
         [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.MANAGER}, {Roles.WORKER}")]
-        public async Task<IActionResult> GetCompanyServicesPrivate(string compamyId)
+        public async Task<IActionResult> GetServicesForCompany(string compamyId)
         {
             var user = await _userManager.GetUserAsync(User);
             var worker = await _workerService.GetAsync(user.WorkerId);

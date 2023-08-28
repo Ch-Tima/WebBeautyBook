@@ -1,7 +1,6 @@
 ﻿using BLL.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,15 +10,15 @@ namespace WebBeautyBook.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WorkerServiceController : ControllerBase
+    public class AssignmentController : ControllerBase
     {
         private readonly UserManager<BaseUser> _userManager;
-        private readonly WorkerServiceService _workerServiceService;
-        private readonly BLL.Services.WorkerService _workerService;
+        private readonly AssignmentService _assignmentService;
+        private readonly WorkerService _workerService;
 
-        public WorkerServiceController(WorkerServiceService workerServiceService, BLL.Services.WorkerService workerService, UserManager<BaseUser> userManager)
+        public AssignmentController(AssignmentService assignmentService, WorkerService workerService, UserManager<BaseUser> userManager)
         {
-            _workerServiceService = workerServiceService;
+            _assignmentService = assignmentService;
             _workerService = workerService;
             _userManager = userManager;
         }
@@ -32,14 +31,14 @@ namespace WebBeautyBook.Controllers
             if (workerProfile == null)
                 return BadRequest("Most likely, you do not belong to any company.");
 
-            var workerService = new Domain.Models.WorkerService()
+            var workerService = new Assignment()
             {
                 IsBlock = true,
                 WorkerId = model.workerId,
                 ServiceId = model.serviceId,
             };
 
-            var result = await _workerServiceService.InsertAsync(workerProfile.CompanyId, workerService);
+            var result = await _assignmentService.InsertAsync(workerProfile.CompanyId, workerService);
 
             if (!result.IsSuccess) return BadRequest(result.Message);
 
@@ -54,7 +53,7 @@ namespace WebBeautyBook.Controllers
             if (workerProfile == null)
                 return BadRequest("Most likely, you do not belong to any company.");
 
-            var result = await _workerServiceService.DeleteAsync(workerProfile.CompanyId, model.workerId, model.serviceId);
+            var result = await _assignmentService.DeleteAsync(workerProfile.CompanyId, model.workerId, model.serviceId);
 
             if (!result.IsSuccess) return BadRequest(result.Message);
 

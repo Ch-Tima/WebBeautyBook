@@ -1,4 +1,15 @@
 <div class='demo-app-main'>
-    <full-calendar [options]='calendarOptions()'>
-    </full-calendar>
-  </div>
+
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <mat-select [(ngModel)]="selectedWorker"placeholder="Filter" multiple class="mat-select">
+              <mat-option *ngFor="let item of workers" [value]="item.worker.id" 
+              (click)="toggleWorkerSelection(item)" selected="true">
+                {{item.worker.baseUser.userName}} {{item.worker.baseUser.userSurname}}</mat-option>
+            </mat-select>
+
+            <input type="button" (click)="addReservation()" src="../../../assets/svg/plus.svg" class="btn-plus btn btn-primary" value="Add">
+        </div>
+        <full-calendar class="calendar" [options]="calendar"></full-calendar>
+    </div>
+</div>

@@ -2,7 +2,6 @@ using Azure.Identity;
 using BLL.Infrastructure;
 using BLL.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.FileProviders;
 using WebBeautyBook.Converter;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,15 +12,14 @@ builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredent
 
 
 //Add Services
-builder.Services.AddTransient<ClientService>();
 builder.Services.AddTransient<BaseUserService>();
 builder.Services.AddTransient<CommentService>();
 builder.Services.AddTransient<LocationService>();
-builder.Services.AddTransient<RecordService>();
-builder.Services.AddTransient<ScheduleService>();
+builder.Services.AddTransient<AppointmentService>();
+builder.Services.AddTransient<ReservationService>();
 builder.Services.AddTransient<ServiceService>();
 builder.Services.AddTransient<WorkerService>();
-builder.Services.AddTransient<WorkerServiceService>();
+builder.Services.AddTransient<AssignmentService>();
 builder.Services.AddTransient<CategoryService>();
 builder.Services.AddTransient<CompanyService>();
 builder.Services.AddTransient<CompanyOpenHoursService>();

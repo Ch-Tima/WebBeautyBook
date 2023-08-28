@@ -3,11 +3,14 @@ using DAL.Context;
 using DAL.Repository;
 using Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 using System.Text;
 
 namespace BLL.Infrastructure
@@ -23,13 +26,12 @@ namespace BLL.Infrastructure
 
             //Add Repository
             services.AddTransient<BaseUserRepository>();
-            services.AddTransient<ClientRepository>();
             services.AddTransient<CommentRepository>();
             services.AddTransient<LocationRepository>();
-            services.AddTransient<RecordRepository>();
-            services.AddTransient<ScheduleRepository>();
+            services.AddTransient<AppointmentRepository>();
+            services.AddTransient<ReservationRepository>();
             services.AddTransient<ServiceRepository>();
-            services.AddTransient<WorkerServiceRepository>();
+            services.AddTransient<AssignmentRepository>();
             services.AddTransient<WorkerRepository>();
             services.AddTransient<CategoryRepository>();
             services.AddTransient<CompanyRepository>();
@@ -74,6 +76,15 @@ namespace BLL.Infrastructure
                     ValidIssuer = configuration["JWT:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"])),
                 };
+            });
+
+            //TimeZone
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-US") };
+                options.SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US") };
+                options.RequestCultureProviders.Clear();
             });
 
         }

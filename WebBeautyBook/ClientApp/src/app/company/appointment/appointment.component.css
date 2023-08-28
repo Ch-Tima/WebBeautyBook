@@ -1,0 +1,17 @@
+.calendar-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.mat-select{
+    width: 225px;
+}
+
+.btn-plus {
+    width: 99px;
+}
+
+.calendar{
+    height: 85vh;
+}

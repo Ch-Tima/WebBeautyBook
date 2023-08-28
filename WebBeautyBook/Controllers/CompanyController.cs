@@ -18,11 +18,11 @@ namespace WebBeautyBook.Controllers
 
         private readonly UserManager<BaseUser> _userManager;
         private readonly CompanyService _companyService;
-        private readonly BLL.Services.WorkerService _workerService;
+        private readonly WorkerService _workerService;
         private readonly IEmailSender _emailService;
 
         public CompanyController(UserManager<BaseUser> userManager, CompanyService companyService, 
-            BLL.Services.WorkerService workerService, IEmailSender emailSender)
+            WorkerService workerService, IEmailSender emailSender)
         {
             _userManager = userManager;
             _companyService = companyService;
@@ -35,7 +35,7 @@ namespace WebBeautyBook.Controllers
         {
             if (id == null) return BadRequest("Id cannot null");
 
-            var company = await _companyService.GetIncludeAsync(id);
+            var company = await _companyService.GetIncludeForClientAsync(id);
 
             if (company == null) return BadRequest("Comapny not found");
 

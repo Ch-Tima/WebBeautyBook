@@ -19,8 +19,9 @@ export class ServiceFormComponent{
   public errorMessage: string = "";
   public header: string = "Create";
   public isFirstInitFor: boolean = true;
+  public time:any;
 
-  constructor(private auth: AuthService, private http: HttpClient, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string, 
+  constructor(private auth: AuthService, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, 
   private dialg: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : ServiceFormDialogData){
     //Override close for sending results
     this.dialg.backdropClick().subscribe(() => {
@@ -28,7 +29,7 @@ export class ServiceFormComponent{
     })
     
     //Init form
-    this.mForm = formBuilder.group({
+    this.mForm = new FormGroup({
       name: new FormControl("", [Validators.required, Validators.maxLength(100), Validators.minLength(3)]),
       description: new FormControl("", [Validators.maxLength(500)]),
       time: new FormControl("00:06", [Validators.required]),
@@ -41,12 +42,11 @@ export class ServiceFormComponent{
       this.mForm.setValue({
         name: data.value.name,
         description: data.value.description,
-        time: data.value.time.substring(0, data.value.time.lastIndexOf(":")),
+        time: data.value.time.length > 6 ? data.value.time.substring(0, data.value.time.lastIndexOf(":")) : data.value.time,
         price: data.value.price,
         categoryId: data.value.categoryId
       });
     }
-    
     //load Categories
     this.loadCategories();
   }

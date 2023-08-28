@@ -19,7 +19,7 @@ namespace WebBeautyBook.Controllers
         [HttpGet("getWorkersByServiceId/{serviceId}")]
         public async Task<IEnumerable<Worker>> GetWorkersByServiceId(string serviceId)
         {
-            var workers = await _workerService.GetAllIncludeFindAsync(x => x.WorkerServices.Any(r => r.ServiceId == serviceId));
+            var workers = await _workerService.GetAllIncludeFindAsync(x => x.Assignments.Any(r => r.ServiceId == serviceId));
             var result = await DeleteSensitiveData(workers);
             return result;
         }

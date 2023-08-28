@@ -3,13 +3,22 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatDialogModule } from "@angular/material/dialog"
-import { NgxMatTimepickerModule } from "ngx-mat-timepicker"
+import { BrowserAnimationsModule, provideAnimations } from "@angular/platform-browser/animations";
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { DragScrollModule } from 'ngx-drag-scroll';
+import { NgxMatTimepickerModule } from "ngx-mat-timepicker"
+import { ToastrModule, provideToastr } from 'ngx-toastr';
+//@angular/material
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatCardModule } from "@angular/material/card";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from "@angular/material/dialog"
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatSelectModule } from '@angular/material/select';
 
+//Components
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -37,13 +46,17 @@ import { WorkerServiceFormComponent } from './company/worker-service-form/worker
 import { InvitationEmployeeComponent } from './company/invitation-employee/invitation-employee.component';
 import { AcceptInvitationPageComponent } from './company/accept-invitation-page/accept-invitation-page.component';
 import { FooterComponent } from './footer/footer.component';
-import { CompanyPageComponent } from './company-page/company-page.component'
+import { CompanyPageComponent } from './publicCompany/company-page/company-page.component'
 import { FilterPipe } from './filterPipes/FilterPipe';
 import { ImageSliderComponent } from './image-slider/image-slider.component';
 import { ProfilePageComponent } from './profile/profile-page/profile-page.component';
 import { AccountSettingsComponent } from './profile/account-settings/account-settings.component';
 import { FavouritesComponent } from './profile/favourites/favourites.component';
-import { CompanyCardComponent } from './company/company-card/company-card.component'
+import { CompanyCardComponent } from './company/company-card/company-card.component';
+import { AppointmentDialogComponent } from './publicCompany/appointment-dialog/appointment-dialog.component';
+import { ReservationDialogComponent } from './company/reservation-dialog/reservation-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { DatePipe } from '@angular/common';
 
 const routes: Routes = [
 
@@ -107,6 +120,8 @@ const routes: Routes = [
     AccountSettingsComponent,
     FavouritesComponent,
     CompanyCardComponent,
+    AppointmentDialogComponent,
+    ReservationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -119,10 +134,19 @@ const routes: Routes = [
     MatDialogModule,
     NgxMatTimepickerModule,
     FullCalendarModule,
-    MatFormFieldModule,
     DragScrollModule,
+    ToastrModule.forRoot(),
+    //mat for timepicker and datepicker
+    MatFormFieldModule, MatInputModule, MatDatepickerModule, 
+    MatNativeDateModule, MatCardModule, MatButtonModule,
+    MatCheckboxModule, MatSelectModule
+
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    provideAnimations(),
+    provideToastr()
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
