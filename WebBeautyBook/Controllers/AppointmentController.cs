@@ -14,18 +14,20 @@ namespace WebBeautyBook.Controllers
     {
 
         private readonly AppointmentService _appointmentService;
+        private readonly AssignmentService _assignmentService;
         private readonly UserManager<BaseUser> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public AppointmentController(AppointmentService appointmentService, UserManager<BaseUser> userManager, IEmailSender emailSender)
+        public AppointmentController(AppointmentService appointmentService, AssignmentService assignmentService, UserManager<BaseUser> userManager, IEmailSender emailSender)
         {
             _appointmentService = appointmentService;
+            _assignmentService = assignmentService;
             _userManager = userManager;
             _emailSender = emailSender;
         }
 
         [HttpGet(nameof(GetMyAppointments))]
-        [Authorize(Roles = $"{Roles.CLIENT}")]
+        [Authorize]
         public async Task GetMyAppointments()
         {
 
@@ -38,10 +40,30 @@ namespace WebBeautyBook.Controllers
 
         }
 
-        [Authorize(Roles = $"{Roles.CLIENT}")]
+        [Authorize]
         [HttpPut(nameof(CreateAppointmentViaClient))]
-        public async Task<IActionResult> CreateAppointmentViaClient([FromBody] AppointmentViewModel appointmentViewModel)
+        public async Task<IActionResult> CreateAppointmentViaClient([FromBody] AppointmentViewModel model)
         {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user.WorkerId == model.WorkerId) return BadRequest("You can not do that.");
+
+            var appointment = new Appointment()
+            {
+                Date = model.Date.LocalDateTime,
+                Note = model.Note,
+                Status = AppointmentStatus.done,
+                TimeStart = model.Time.ToTimeSpan(),
+                UserId = user.Id,
+                WorkerId = model.WorkerId,
+                ServiceId = model.ServiceId,
+            };
+
+            var result = await _appointmentService.InsertAsync(appointment);
+
+            if(!result.IsSuccess)
+                return BadRequest(result.Message);
+
             return Ok();
         }
 

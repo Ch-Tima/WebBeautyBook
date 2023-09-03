@@ -34,6 +34,11 @@ namespace BLL.Services
             return await _assignmentRepository.GetAllFindAsync(func);
         }
 
+        public async Task<Assignment?> FirstIncludeAsync(Expression<Func<Assignment, bool>> func)
+        {
+            return await _assignmentRepository.FirstIncludeAsync(func);
+        }
+
         public async Task<ServiceResponse> InsertAsync(string companyId, Assignment assignment)
         {
             try
@@ -66,7 +71,7 @@ namespace BLL.Services
             try
             {
                 //find assignment in database
-                var assignment = await _assignmentRepository.GetFirstIncludeAsync(x => x.ServiceId == serviceId &&  x.WorkerId == workerId);
+                var assignment = await _assignmentRepository.FirstIncludeAsync(x => x.ServiceId == serviceId &&  x.WorkerId == workerId);
 
                 if (assignment == null) 
                     return new ServiceResponse(false, "This worker does not own this service.");

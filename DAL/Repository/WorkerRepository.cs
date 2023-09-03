@@ -19,7 +19,7 @@ namespace DAL.Repository
         {
             return await _db.Workers
                 .Include(x => x.Reservations)
-                .Include(x => x.Assignments)
+                .Include(x => x.Appointments)
                 .Include(x => x.BaseUser)
                 .Include(x => x.Company)
                 .FirstAsync(x => x.Id == primaryKey);
@@ -31,7 +31,7 @@ namespace DAL.Repository
                 .Include(x => x.BaseUser)
                 .Include(x => x.Company)
                 .Include(x => x.Reservations)
-                .Include(x => x.Assignments)
+                .Include(x => x.Appointments)
                 .ToListAsync();
         }
 

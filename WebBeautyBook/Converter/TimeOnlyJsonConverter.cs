@@ -10,7 +10,10 @@ namespace WebBeautyBook.Converter
         public override TimeOnly ReadJson(JsonReader reader, Type objectType, TimeOnly existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.Value == null) return default;
-            return TimeOnly.ParseExact(reader.Value.ToString(), Format, CultureInfo.InvariantCulture);
+            
+            var value = reader.Value.ToString().Substring(0, reader.Value.ToString().IndexOf(':') + 3);
+
+            return TimeOnly.ParseExact(value, Format, CultureInfo.InvariantCulture);
         }
 
         public override void WriteJson(JsonWriter writer, TimeOnly value, JsonSerializer serializer)

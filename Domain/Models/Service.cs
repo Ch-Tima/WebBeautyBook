@@ -11,16 +11,18 @@
 
         public string CompanyId { get; set; }
         public Company Company { get; set; }
-       
-        public List<Assignment> Assignments { get; set; }
 
         public string CategoryId { get; set; }
         public Category? Category { get; set; }
 
+        public List<Appointment> Appointments { get; set; }
+        public List<Assignment> Assignments { get; set; }
 
         public Service()
         {
             Id = Guid.NewGuid().ToString();
+            Appointments = new List<Appointment>();
+            Assignments = new List<Assignment>();
         }
 
     }

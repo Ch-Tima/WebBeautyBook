@@ -112,12 +112,21 @@ namespace BLL.Services
         /// <param name="reservations">The list in which we are looking for time intersections.</param>
         /// <param name="item">The element for which we are looking for intersections in time.</param>
         /// <returns>Returns true if present, otherwise false.</returns>
-        private bool HasOverlappingReservations(List<Reservation> reservations, Reservation item)
+        private bool HasOverlappingReservations(IEnumerable<Reservation> reservations, Reservation item, IEnumerable<Appointment>? appointments = null)
         {
             foreach (var reservation in reservations)
                 if (reservation.Date.Date == item.Date.Date)
                     if ((item.TimeStart < reservation.TimeEnd && item.TimeEnd > reservation.TimeStart) ||
                         (reservation.TimeStart < item.TimeEnd && reservation.TimeEnd > item.TimeStart))
+                        return true;//Overlapping reservation detected
+
+
+            if (appointments == null || appointments.Count() == 0) return false;
+
+            foreach (var appointment in appointments)
+                if (appointment.Date.Date == item.Date.Date)
+                    if ((item.TimeStart < appointment.TimeEnd && item.TimeEnd > appointment.TimeStart) ||
+                        (appointment.TimeStart < item.TimeEnd && appointment.TimeEnd > item.TimeStart))
                         return true;//Overlapping reservation detected
 
             return false;//No overlapping reservation found.

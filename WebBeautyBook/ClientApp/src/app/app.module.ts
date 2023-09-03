@@ -17,6 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatRadioModule } from '@angular/material/radio';
 
 //Components
 import { AppComponent } from './app.component';
@@ -139,7 +141,8 @@ const routes: Routes = [
     //mat for timepicker and datepicker
     MatFormFieldModule, MatInputModule, MatDatepickerModule, 
     MatNativeDateModule, MatCardModule, MatButtonModule,
-    MatCheckboxModule, MatSelectModule
+    MatCheckboxModule, MatSelectModule, MatChipsModule,
+    MatRadioModule, 
 
   ],
   providers: [

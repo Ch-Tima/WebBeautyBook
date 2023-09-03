@@ -15,7 +15,7 @@
         public Service Service{ get; set; }
 
         public List<Appointment> Appointments { get; set; }
-
+        
         public Assignment()
         {
             Appointments = new List<Appointment>();

@@ -155,6 +155,7 @@ namespace DAL.Initializers
             //CompanyOpenHours
             builder.Entity<CompanyOpenHours>().HasData(new CompanyOpenHours[]
             {
+                //Sunday close 0
                 new CompanyOpenHours()
                 {
                     CompanyId = companyForLog417.Id,
@@ -179,7 +180,6 @@ namespace DAL.Initializers
                     OpenFrom = new TimeSpan(10, 0, 0),
                     OpenUntil = new TimeSpan(16, 30, 0)
                 },
-                //Sunday close 7
             });
         }
 

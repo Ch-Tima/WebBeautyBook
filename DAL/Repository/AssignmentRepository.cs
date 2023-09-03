@@ -14,7 +14,12 @@ namespace DAL.Repository
         {
         }
 
-        public async Task<Assignment?> GetFirstIncludeAsync(Expression<Func<Assignment, bool>> expression)
+        public async Task<Assignment> GetAsync(string[] primaryKey)
+        {
+            return await _db.Assignments.FindAsync(primaryKey);
+        }
+
+        public async Task<Assignment?> FirstIncludeAsync(Expression<Func<Assignment, bool>> expression)
         {
             return await _db.Assignments
                 .Include(x => x.Service)
