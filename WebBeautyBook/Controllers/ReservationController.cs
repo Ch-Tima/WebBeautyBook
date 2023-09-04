@@ -1,6 +1,4 @@
-﻿using BLL;
-using BLL.Services;
-using DAL.Repository;
+﻿using BLL.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -72,6 +70,7 @@ namespace WebBeautyBook.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var reservation = await _reservationService.GetAsync(id);
+            if(reservation == null) return BadRequest("Not found Reservation.");
             if (reservation.WorkerId != user.WorkerId)
                 return BadRequest("This is not your Reservation.");
 

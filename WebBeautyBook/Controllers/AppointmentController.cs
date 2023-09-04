@@ -2,7 +2,6 @@
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebBeautyBook.Models;
 
@@ -15,22 +14,28 @@ namespace WebBeautyBook.Controllers
 
         private readonly AppointmentService _appointmentService;
         private readonly AssignmentService _assignmentService;
+        private readonly WorkerService _workerService;
         private readonly UserManager<BaseUser> _userManager;
-        private readonly IEmailSender _emailSender;
-
-        public AppointmentController(AppointmentService appointmentService, AssignmentService assignmentService, UserManager<BaseUser> userManager, IEmailSender emailSender)
+        public AppointmentController(AppointmentService appointmentService, AssignmentService assignmentService, 
+            WorkerService workerService, UserManager<BaseUser> userManager)
         {
             _appointmentService = appointmentService;
             _assignmentService = assignmentService;
+            _workerService = workerService;
             _userManager = userManager;
-            _emailSender = emailSender;
         }
 
-        [HttpGet(nameof(GetMyAppointments))]
-        [Authorize]
-        public async Task GetMyAppointments()
+        [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.WORKER}")]
+        [HttpGet(nameof(GetAppointmentsForMyCompany))]
+        public async Task<IEnumerable<Appointment>> GetAppointmentsForMyCompany([FromQuery] string[] ids)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var worker = await _workerService.GetAsync(user.WorkerId);
 
+            if (worker == null)
+                return new List<Appointment>();
+
+            return await _appointmentService.GetAllFindAsync(r => r.Worker.CompanyId == worker.CompanyId && ids.Contains(r.WorkerId));
         }
 
         [HttpGet(nameof(GetCompanyAppointments))]
