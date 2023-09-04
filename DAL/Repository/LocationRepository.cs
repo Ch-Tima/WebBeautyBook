@@ -1,25 +1,19 @@
 ﻿using DAL.Context;
 using Domain.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository
 {
+    /// <summary>
+    /// Repository for working with <see cref="Location"/> entities.
+    /// </summary>
     public class LocationRepository : BaseRepository<Location, string>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocationRepository"/> class with a database context.
+        /// </summary>
+        /// <param name="db">The database context to use for data access.</param>
         public LocationRepository(BeautyBookDbContext db) : base(db)
         {
-
         }
-
-        public async Task<IEnumerable<Location>> GetAllOnlyLocations() 
-        {
-           return (await _db.Locations.ToListAsync()).Select(x => new Location()
-           {
-               Id = x.Id,
-               City = x.City,
-               Country = x.Country,
-           });
-        }
-
     }
 }
