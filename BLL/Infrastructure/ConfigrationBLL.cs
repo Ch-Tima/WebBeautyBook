@@ -15,16 +15,24 @@ using System.Text;
 
 namespace BLL.Infrastructure
 {
+    /// <summary>
+    /// Contains configuration methods for setting up services in the Business Logic Layer (BLL).
+    /// </summary>
     public static class ConfigrationBLL
     {
+        /// <summary>
+        /// Configures services for the BLL based on the provided <paramref name="configuration"/>.
+        /// </summary>
+        /// <param name="services">The service collection to configure.</param>
+        /// <param name="configuration">The configuration used for configuring services.</param>
         public static void Configure(this IServiceCollection services, IConfiguration configuration)
         {
+            // Database Configuration
             var local = configuration.GetConnectionString("local");//appsettings
             //var conMain = configuration.GetValue<string>("DbConection");//Azure secret key
             services.AddDbContext<BeautyBookDbContext>(opt => opt.UseSqlServer(local));
 
-
-            //Add Repository
+            // Add Repository Services
             services.AddTransient<BaseUserRepository>();
             services.AddTransient<CommentRepository>();
             services.AddTransient<LocationRepository>();
@@ -41,8 +49,7 @@ namespace BLL.Infrastructure
 
             services.AddMemoryCache();
 
-
-            //Set settings Identity
+            // Set settings Identity
             services.AddIdentity<BaseUser, IdentityRole>(opt =>
             {
                 opt.Password.RequireDigit = false;
@@ -57,8 +64,7 @@ namespace BLL.Infrastructure
             .AddDefaultTokenProviders()
             .AddInvitationToCompanyTokenProvider();
 
-
-            //JWT
+            //JWT Authentication Configuration
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -78,7 +84,7 @@ namespace BLL.Infrastructure
                 };
             });
 
-            //TimeZone
+            //TimeZone Configuration
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 options.DefaultRequestCulture = new RequestCulture("en-US");
@@ -88,11 +94,14 @@ namespace BLL.Infrastructure
             });
 
         }
-        public static IdentityBuilder AddInvitationToCompanyTokenProvider(this IdentityBuilder builder)
-        {
-            var userType = builder.UserType;
-            var totpProvider = typeof(InvitationToCompanyTokenProvider<>).MakeGenericType(userType);
-            return builder.AddTokenProvider(InvitationToCompanyTokenProviderOptions.TokenProvider, totpProvider);
-        }
+
+        /// <summary>
+        /// Adds an invitation token provider to the IdentityBuilder for invitation-based company access.
+        /// </summary>
+        /// <param name="builder">The IdentityBuilder instance.</param>
+        /// <returns>The updated IdentityBuilder with the invitation token provider.</returns>
+        public static IdentityBuilder AddInvitationToCompanyTokenProvider(this IdentityBuilder builder) => builder.AddTokenProvider(
+            InvitationToCompanyTokenProviderOptions.TokenProvider, 
+            typeof(InvitationToCompanyTokenProvider<>).MakeGenericType(builder.UserType));
     }
 }
