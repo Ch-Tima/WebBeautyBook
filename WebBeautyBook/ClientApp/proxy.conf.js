@@ -55,6 +55,7 @@ const PROXY_CONFIG = [
       "/api/Reservation",
 
       //Appointment
+      "/api/Appointment/GetMyAppointments",
       "/api/Appointment/CreateAppointmentViaClient",
       "/api/Appointment/GetAppointmentsForMyCompany",
    ],

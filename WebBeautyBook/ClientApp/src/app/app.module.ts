@@ -19,6 +19,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 //Components
 import { AppComponent } from './app.component';
@@ -59,6 +62,7 @@ import { AppointmentDialogComponent } from './publicCompany/appointment-dialog/a
 import { ReservationDialogComponent } from './company/reservation-dialog/reservation-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
+import { AppointmentListComponent } from './profile/appointment-list/appointment-list.component';
 
 const routes: Routes = [
 
@@ -84,7 +88,6 @@ const routes: Routes = [
   { path: 'profile', component: ProfilePageComponent },
 
 ];
-
 
 @NgModule({
   declarations: [
@@ -124,6 +127,7 @@ const routes: Routes = [
     CompanyCardComponent,
     AppointmentDialogComponent,
     ReservationDialogComponent,
+    AppointmentListComponent,
   ],
   imports: [
     BrowserModule,
@@ -142,7 +146,8 @@ const routes: Routes = [
     MatFormFieldModule, MatInputModule, MatDatepickerModule, 
     MatNativeDateModule, MatCardModule, MatButtonModule,
     MatCheckboxModule, MatSelectModule, MatChipsModule,
-    MatRadioModule, 
+    MatRadioModule, MatTableModule, MatPaginatorModule,
+    MatSortModule,
 
   ],
   providers: [

@@ -1,0 +1,14 @@
+table {
+    width: 100%;
+}
+
+td.autoShowHide {
+    white-space: nowrap; 
+    max-width: 175px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}

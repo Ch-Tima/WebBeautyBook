@@ -55,6 +55,8 @@ namespace BLL.Services
             return await _appointmentRepository.GetAllFindAsync(func);
         }
 
+        public async Task<IEnumerable<Appointment>> GetAllFindIncludeAsync(Expression<Func<Appointment, bool>> func) => await _appointmentRepository.GetAllFindIncludeAsync(func);
+
         /// <summary>
         /// Inserts a new appointment into the repository.
         /// </summary>

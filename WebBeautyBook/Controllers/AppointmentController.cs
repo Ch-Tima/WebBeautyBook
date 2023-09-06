@@ -25,6 +25,15 @@ namespace WebBeautyBook.Controllers
             _userManager = userManager;
         }
 
+
+        [Authorize()]
+        [HttpGet(nameof(GetMyAppointments))]
+        public async Task<IEnumerable<Appointment>> GetMyAppointments()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return await _appointmentService.GetAllFindIncludeAsync(x => x.UserId == user.Id);
+        }
+
         [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.WORKER}")]
         [HttpGet(nameof(GetAppointmentsForMyCompany))]
         public async Task<IEnumerable<Appointment>> GetAppointmentsForMyCompany([FromQuery] string[] ids)

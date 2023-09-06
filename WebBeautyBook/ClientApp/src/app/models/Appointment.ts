@@ -3,7 +3,7 @@ import { Comment } from './Comment'
 import { Service } from "./Service";
 
 export interface Appointment{
-    id: string|undefined 
+    id: string; 
     
     date: Date|undefined;
     timeStart:string|undefined
@@ -24,4 +24,3 @@ export interface Appointment{
 
     type: 'Appointment'
 }
-
