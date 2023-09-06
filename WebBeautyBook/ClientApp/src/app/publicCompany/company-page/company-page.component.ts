@@ -8,7 +8,8 @@ import { CompanyLike } from '../../models/CompanyLike';
 import * as $ from 'jquery';
 import { Service } from '../../models/Service';
 import { MatDialog } from '@angular/material/dialog';
-import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
+import { AppointmentDialogComponent, AppointmentDialogDate, AppointmentDialogResult } from '../appointment-dialog/appointment-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-company-page',
@@ -24,7 +25,7 @@ export class CompanyPageComponent {
 
   private companyId:string|null;
 
-  constructor(private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router, private dialogRef : MatDialog){
+  constructor(private toastr: ToastrService, private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router, private dialogRef : MatDialog){
     this.companyId = this.activeRoute.snapshot.queryParams['id'];
 
     if(this.companyId == null || this.companyId == undefined || this.companyId == ''){
@@ -71,9 +72,16 @@ export class CompanyPageComponent {
       return;
     }
     const appointmentDialog = this.dialogRef.open(AppointmentDialogComponent, {
-      width: "500px",
-      data: id
+      width: "550px",
+      data: {
+        isUpdateMode: false,
+        serviceId: id 
+      } as AppointmentDialogDate 
     });
+    appointmentDialog.afterClosed().subscribe((result:AppointmentDialogResult) => {
+      if(result.isSuccess && result.action == 'create')
+        this.toastr.success("Reservation was successful.")
+    })
   }
 
   private async getAllMienLikes(){

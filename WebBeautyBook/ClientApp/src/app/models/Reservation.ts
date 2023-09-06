@@ -1,10 +1,12 @@
-export class Reservation {
-    public id: string|undefined;
-    public date: Date|undefined;
-    public timeStart: string|undefined;
-    public timeEnd: string|undefined;
-    public description: string|null = null;
+export interface Reservation {
+    id: string|undefined;
+    date: Date|undefined;
+    timeStart: string|undefined;
+    timeEnd: string|undefined;
+    description: string|null;
+    workerId: string|undefined;
+    worker: Worker|undefined;
 
-    public workerId: string|undefined;
-    public worker: Worker|undefined;
+    type:'Reservation'
+
 }

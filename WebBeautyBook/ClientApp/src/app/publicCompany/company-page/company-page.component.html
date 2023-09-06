@@ -71,6 +71,10 @@
 
         <div class="schedule-data" *ngIf="company != undefined">
             <div class="schedule-item">
+                <p>Sunday</p>
+                <p id="su">{{getOpenHours(0)}}</p>
+            </div>
+            <div class="schedule-item">
                 <p>Monday</p>
                 <p id="mo">{{getOpenHours(1)}}</p>
             </div>
@@ -93,10 +97,6 @@
             <div class="schedule-item">
                 <p>Saturday</p>
                 <p id="sa">{{getOpenHours(6)}}</p>
-            </div>
-            <div class="schedule-item">
-                <p>Sunday</p>
-                <p id="su">{{getOpenHours(7)}}</p>
             </div>
         </div>
         <hr>  
