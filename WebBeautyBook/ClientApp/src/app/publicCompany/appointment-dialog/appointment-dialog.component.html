@@ -42,6 +42,7 @@
     </div>
       <textarea maxlength="500" class="form-control" matInput formControlName="note" placeholder="note"></textarea>
       <div class="container-btn" align="end">
+        <button class="btn btn-danger mx-1" type="button" *ngIf="data.isUpdateMode" (click)="remove()">Remove</button>
         <button class="btn btn-success mx-1" type="submit" [disabled]="mForm.invalid">{{data.isUpdateMode ? 'Update' : 'Booking'}}</button>
       </div> 
       <p class="text-danger text-center m-0 p-0" *ngIf="error != undefined">{{error}}</p>

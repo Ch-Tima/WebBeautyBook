@@ -37,6 +37,16 @@ namespace BLL.Services
         }
 
         /// <summary>
+        /// Asynchronously retrieves the first appointment that matches a specified filtering expression.
+        /// </summary>
+        /// <param name="func">The filtering expression to apply to the appointments.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. The task result contains the first appointment
+        /// that matches the specified filter, or null if no matching appointment is found.
+        /// </returns>
+        public async Task<Appointment?> GetFirsAsynct(Expression<Func<Appointment, bool>> func) => await _appointmentRepository.GetFirstAsync(func);
+
+        /// <summary>
         /// Get all appointments.
         /// </summary>
         /// <returns>A collection of all appointments.</returns>
@@ -90,9 +100,18 @@ namespace BLL.Services
         /// Deletes an appointment by its ID.
         /// </summary>
         /// <param name="id">The ID of the appointment to delete.</param>
-        public async Task DeleteAsync(string id)
+        public async Task<ServiceResponse> DeleteAsync(string id)
         {
-            await _appointmentRepository.DeleteAsync(id);
+            try
+            {
+
+                await _appointmentRepository.DeleteAsync(id);
+                return new ServiceResponse(true, "Ok");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse(false, ex.Message);
+            }
         }
 
         /// <summary>

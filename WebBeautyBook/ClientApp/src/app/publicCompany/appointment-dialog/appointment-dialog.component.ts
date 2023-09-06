@@ -77,6 +77,20 @@ export class AppointmentDialogComponent implements OnInit{
     }
   }
 
+  public remove(){
+    this.http.delete(`api/Appointment/RemoveAppointmentViaClient?appointmentId=${this.data.value?.id}`, {
+      headers: this.auth.getHeadersWithToken()
+    }).subscribe(result => {
+      this.dialg.close({ 
+        isSuccess: true,
+        action: 'remove',
+        value: this.data.value
+       } as AppointmentDialogResult)
+    }, error => {
+      this.error = error.error;
+    })
+  }
+
   private update(){
     alert("TODO");
   }

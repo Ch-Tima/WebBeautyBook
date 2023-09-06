@@ -58,6 +58,7 @@ const PROXY_CONFIG = [
       "/api/Appointment/GetMyAppointments",
       "/api/Appointment/CreateAppointmentViaClient",
       "/api/Appointment/GetAppointmentsForMyCompany",
+      "/api/Appointment/RemoveAppointmentViaClient",
    ],
     target: target,
     secure: false,

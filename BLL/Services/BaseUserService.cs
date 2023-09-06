@@ -1,5 +1,6 @@
 ﻿using DAL.Repository;
 using Domain.Models;
+using System.Linq.Expressions;
 
 namespace BLL.Services
 {
@@ -26,6 +27,20 @@ namespace BLL.Services
         {
             if (id is null) return null;
             return await _baseUserRepository.GetAsync(id);
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves the first <see cref="BaseUser">user</see> that matches a specified filtering expression.
+        /// </summary>
+        /// <param name="func">The filtering expression to apply to the users.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. The task result contains the first <see cref="BaseUser">user</see>
+        /// that matches the specified filter, or null if no matching <see cref="BaseUser">user</see> is found.
+        /// </returns>
+
+        public async Task<BaseUser?> FirstAsync(Expression<Func<BaseUser, bool>> func)
+        {
+            return await _baseUserRepository.GetFirstAsync(func);
         }
 
         /// <summary>
