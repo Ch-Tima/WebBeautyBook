@@ -38,19 +38,11 @@ namespace WebBeautyBook.Controllers
             return await _appointmentService.GetAllFindAsync(r => r.Worker.CompanyId == worker.CompanyId && ids.Contains(r.WorkerId));
         }
 
-        [HttpGet(nameof(GetCompanyAppointments))]
-        [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.WORKER}")]
-        public async Task GetCompanyAppointments()
-        {
-
-        }
-
         [Authorize]
         [HttpPut(nameof(CreateAppointmentViaClient))]
         public async Task<IActionResult> CreateAppointmentViaClient([FromBody] AppointmentViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
-
             if (user.WorkerId == model.WorkerId) return BadRequest("You can not do that.");
 
             var appointment = new Appointment()
@@ -65,7 +57,6 @@ namespace WebBeautyBook.Controllers
             };
 
             var result = await _appointmentService.InsertAsync(appointment);
-
             if(!result.IsSuccess)
                 return BadRequest(result.Message);
 

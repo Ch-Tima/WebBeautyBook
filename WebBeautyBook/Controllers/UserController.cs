@@ -15,11 +15,11 @@ namespace WebBeautyBook.Controllers
     {
 
         private readonly UserManager<BaseUser> _userManager;
-        private readonly BLL.Services.WorkerService _workerService;
+        private readonly WorkerService _workerService;
         private readonly BaseUserService _baseUserService;
         private readonly IWebHostEnvironment _appEnvironment;
 
-        public UserController(UserManager<BaseUser> userManager, BLL.Services.WorkerService workerService, BaseUserService baseUserService, IWebHostEnvironment appEnvironment)
+        public UserController(UserManager<BaseUser> userManager, WorkerService workerService, BaseUserService baseUserService, IWebHostEnvironment appEnvironment)
         {
             _userManager = userManager;
             _workerService = workerService;
@@ -41,7 +41,6 @@ namespace WebBeautyBook.Controllers
             try
             {
                 var user = await _userManager.GetUserAsync(User);
-
                 user.PhoneNumber = model.PhoneNumber;
                 user.UserName = model.Name;
                 user.UserSurname = model.Surname;
@@ -76,7 +75,7 @@ namespace WebBeautyBook.Controllers
 
 
         /// <summary>
-        /// Based on <see cref="BaseUser">BaseUser</see>, it generates a new model without special fields.
+        /// Generates a new model without sensitive fields based on the <see cref="BaseUser"/>.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
