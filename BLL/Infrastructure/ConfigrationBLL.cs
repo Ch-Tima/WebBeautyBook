@@ -28,9 +28,9 @@ namespace BLL.Infrastructure
         public static void Configure(this IServiceCollection services, IConfiguration configuration)
         {
             // Database Configuration
-            var local = configuration.GetConnectionString("local");//appsettings
-            //var conMain = configuration.GetValue<string>("DbConection");//Azure secret key
-            services.AddDbContext<BeautyBookDbContext>(opt => opt.UseSqlServer(local));
+            //var local = configuration.GetConnectionString("local");//appsettings
+            var realDatabse = configuration.GetValue<string>("BeautyBookDatabase");//Azure secret key
+            services.AddDbContext<BeautyBookDbContext>(opt => opt.UseSqlServer(realDatabse));
 
             // Add Repository Services
             services.AddTransient<BaseUserRepository>();
