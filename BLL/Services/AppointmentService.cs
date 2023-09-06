@@ -11,6 +11,13 @@ namespace BLL.Services
         private readonly ReservationRepository _reservationRepository;
         private readonly ServiceRepository _serviceRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppointmentService"/> class.
+        /// </summary>
+        /// <param name="appointmentRepository">The repository for appointment data.</param>
+        /// <param name="assignmentRepository">The repository for assignment data.</param>
+        /// <param name="reservationRepository">The repository for reservation data.</param>
+        /// <param name="serviceRepository">The repository for service data.</param>
         public AppointmentService(AppointmentRepository appointmentRepository, AssignmentRepository assignmentRepository, ReservationRepository reservationRepository, ServiceRepository serviceRepository)
         {
             _appointmentRepository = appointmentRepository;
@@ -19,21 +26,40 @@ namespace BLL.Services
             _serviceRepository = serviceRepository;
         }
 
+        /// <summary>
+        /// Get an appointment by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the appointment to retrieve.</param>
+        /// <returns>The requested appointment.</returns>
         public async Task<Appointment> GetAsync(string id)
         {
             return await _appointmentRepository.GetAsync(id);
         }
 
+        /// <summary>
+        /// Get all appointments.
+        /// </summary>
+        /// <returns>A collection of all appointments.</returns>
         public async Task<IEnumerable<Appointment>> GetAllAsync()
         {
             return await _appointmentRepository.GetAllAsync();
         }
 
+        /// <summary>
+        /// Get appointments that match the specified filter expression.
+        /// </summary>
+        /// <param name="func">The filter expression to match appointments.</param>
+        /// <returns>A collection of matching appointments.</returns>
         public async Task<IEnumerable<Appointment>> GetAllFindAsync(Expression<Func<Appointment, bool>> func)
         {
             return await _appointmentRepository.GetAllFindAsync(func);
         }
 
+        /// <summary>
+        /// Inserts a new appointment into the repository.
+        /// </summary>
+        /// <param name="appointment">The appointment to insert.</param>
+        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the insertion operation.</returns>
         public async Task<ServiceResponse> InsertAsync(Appointment appointment)
         {
             try
@@ -58,11 +84,19 @@ namespace BLL.Services
             }
         }
 
+        /// <summary>
+        /// Deletes an appointment by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the appointment to delete.</param>
         public async Task DeleteAsync(string id)
         {
             await _appointmentRepository.DeleteAsync(id);
         }
 
+        /// <summary>
+        /// Updates an existing appointment with new data.
+        /// </summary>
+        /// <param name="newRecord">The updated appointment data.</param>
         public async Task UpdataAsync(Appointment newRecord)
         {
             if (newRecord == null) return;
@@ -83,7 +117,6 @@ namespace BLL.Services
                     if ((item.TimeStart < appointment.TimeEnd && item.TimeEnd > appointment.TimeStart) ||
                         (appointment.TimeStart < item.TimeEnd && appointment.TimeEnd > item.TimeStart))
                         return true;//Overlapping reservation detected
-
 
             if(reservations == null || reservations.Count() == 0) return false;
 

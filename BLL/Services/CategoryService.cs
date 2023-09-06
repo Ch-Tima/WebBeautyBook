@@ -9,6 +9,10 @@ namespace BLL.Services
 
         private readonly CategoryRepository _categoryRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryService"/> class.
+        /// </summary>
+        /// <param name="categoryRepository">The repository for categories.</param>
         public CategoryService(CategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
@@ -39,13 +43,16 @@ namespace BLL.Services
             return await _categoryRepository.GetAllFindAsync(func);
         }
 
+        /// <summary>
+        /// Insert a new category into the repository.
+        /// </summary>
+        /// <param name="category">The category to insert.</param>
+        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
         public async Task<ServiceResponse> InsertAsync(Category category)
         {
             try
             {
-
-                if (category.CategoryId == "") category.CategoryId = null;
-
+                if (category.CategoryId == String.Empty) category.CategoryId = null;
                 //Is there a subcategory
                 if (category.CategoryId != null && !(await IsExist(category.CategoryId)))
                     return new ServiceResponse(false, "Not found sub category");
@@ -54,8 +61,7 @@ namespace BLL.Services
                     return new ServiceResponse(false, $"Name {category.Name} is taken");
 
                 await _categoryRepository.InsertAsync(category);
-
-                return new ServiceResponse(true, "");
+                return new ServiceResponse(true, "Ok");
             }
             catch (Exception ex)
             {
@@ -69,29 +75,32 @@ namespace BLL.Services
             await _categoryRepository.DeleteAsync(id);
         }
 
+        /// <summary>
+        /// Update a category with new information.
+        /// </summary>
+        /// <param name="newCategory">The updated category information.</param>
+        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the update operation.</returns>
         public async Task<ServiceResponse> UpdataAsync(Category newCategory)
         {
-
             try
             {
-
-                if (newCategory == null) return new ServiceResponse(false, "Parameter newCategory is null.");
-
+                //Check if the newCategory parameter is null
+                if (newCategory is null) return new ServiceResponse(false, "Parameter newCategory is null.");
+                //Check if a category with the specified ID exists
                 if (!await IsExist(newCategory.Id))
                     return new ServiceResponse(false, $"Category with id: {newCategory.Id} not found.");
-                
-                if (newCategory.CategoryId == newCategory.Id) 
+                //Check if a category is trying to refer to itself (circular reference)
+                if (newCategory.CategoryId == newCategory.Id)
                     return new ServiceResponse(false, "A category cannot refer to itself.");
-
+                //Handle special case where CategoryId is an empty string and set it to null
                 if (newCategory.CategoryId == "") newCategory.CategoryId = null;
-
+                //Check if the referenced subcategory exists.
                 if (newCategory.CategoryId != null && !(await IsExist(newCategory.CategoryId)))
                     return new ServiceResponse(false, "Not found sub category.");
 
-                await _categoryRepository.UpdateAsync(newCategory.Id, newCategory);
-
-                var item = await _categoryRepository.GetAsync(newCategory.Id);
-
+                await _categoryRepository.UpdateAsync(newCategory.Id, newCategory);//Update
+                var item = await _categoryRepository.GetAsync(newCategory.Id);//Retrieve the updated category from the repository
+                //Check if the update was successful by comparing fields
                 if (item.CategoryId == newCategory.CategoryId && item.Name == newCategory.Name) return new ServiceResponse(true, "Ok");
                 else return new ServiceResponse(false, "Something went wrong during the update.");
             }
@@ -102,6 +111,11 @@ namespace BLL.Services
 
         }
 
+        /// <summary>
+        /// Check if a category with the specified ID exists.
+        /// </summary>
+        /// <param name="id">The ID of the category to check.</param>
+        /// <returns>True if the category exists; otherwise, false.</returns>
         public async Task<bool> IsExist(string id)
         {
             try

@@ -6,13 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Context
 {
+    /// <summary>
+    /// The database context for the BeautyBook application.
+    /// </summary>
     public class BeautyBookDbContext : IdentityDbContext<BaseUser, IdentityRole, string>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BeautyBookDbContext"/> class with the specified database options.
+        /// </summary>
+        /// <param name="options">The database context options.</param>
         public BeautyBookDbContext(DbContextOptions<BeautyBookDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
 
+        /// <summary>
+        /// Configures the database schema and relationships between entities.
+        /// </summary>
+        /// <param name="builder">The model builder used to define the database schema.</param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             
@@ -123,6 +134,7 @@ namespace DAL.Context
             base.OnModelCreating(builder);
         }
 
+        // DbSet properties for entity access
 
         public DbSet<BaseUser> BaseUsers { get; set; }
         public DbSet<Comment> Comments { get; set; }

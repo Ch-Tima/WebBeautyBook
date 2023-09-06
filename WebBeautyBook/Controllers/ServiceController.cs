@@ -24,6 +24,11 @@ namespace WebBeautyBook.Controllers
             _workerService = workerService;
         }
 
+        /// <summary>
+        /// Get services for a specific company.
+        /// </summary>
+        /// <param name="compamyId">The ID of the company to fetch services for.</param>
+        /// <returns>Returns a list of services for the company.</returns>
         [HttpGet("getServicesForCompany/{compamyId}")]
         [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.MANAGER}, {Roles.WORKER}")]
         public async Task<IActionResult> GetServicesForCompany(string compamyId)
@@ -36,6 +41,11 @@ namespace WebBeautyBook.Controllers
             return Ok((await _serviceService.GetAllFindAsync(x => x.CompanyId == compamyId)));
         }
 
+        /// <summary>
+        /// Create a new service for a company.
+        /// </summary>
+        /// <param name="model">The service model containing service details.</param>
+        /// <returns>Returns the created service if successful; otherwise, returns an error message.</returns>
         [HttpPut]
         [Authorize(Roles = Roles.OWN_COMPANY + "," + Roles.MANAGER)]
         public async Task<IActionResult> CreateService([FromBody] ServiceModel model)
@@ -59,13 +69,18 @@ namespace WebBeautyBook.Controllers
             };
 
             var result = await _serviceService.InsertAsync(service);
-
             if (!result.IsSuccess)
                 return BadRequest(result.Message);
 
             return Ok(service);
         }
 
+        /// <summary>
+        /// Update an existing service.
+        /// </summary>
+        /// <param name="model">The service model containing updated details.</param>
+        /// <param name="Id">The ID of the service to update.</param>
+        /// <returns>Returns success if the service is updated; otherwise, returns an error message.</returns>
         [HttpPost()]
         [Authorize(Roles = Roles.OWN_COMPANY + "," + Roles.MANAGER)]
         public async Task<IActionResult> UpdateService([FromBody] ServiceModel model, string Id)
@@ -75,7 +90,7 @@ namespace WebBeautyBook.Controllers
             if (workerProfile == null)
                 return BadRequest("Most likely, you do not belong to any company.");
 
-            var newService = new Service()
+            var result = await _serviceService.UpdataAsync(new Service()
             {
                 Id = Id,
                 Name = model.Name,
@@ -84,11 +99,9 @@ namespace WebBeautyBook.Controllers
                 Time = model.Time.ToTimeSpan(),
                 CategoryId = model.CategoryId,
                 CompanyId = workerProfile.CompanyId
-            };
-
-            var result = await _serviceService.UpdataAsync(newService);
-
-            if (!result.IsSuccess) return BadRequest(result.Message);
+            });
+            if (!result.IsSuccess) 
+                return BadRequest(result.Message);
 
             return Ok();
         }

@@ -10,23 +10,29 @@ namespace DAL.Repository
     /// </summary>
     public class AssignmentRepository : BaseRepository<Assignment, string>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssignmentRepository"/> class with a database context.
+        /// </summary>
+        /// <param name="db">The database context to use for data access.</param>
         public AssignmentRepository(BeautyBookDbContext db) : base(db)
         {
         }
 
-        public async Task<Assignment> GetAsync(string[] primaryKey)
-        {
-            return await _db.Assignments.FindAsync(primaryKey);
-        }
-
-        public async Task<Assignment?> FirstIncludeAsync(Expression<Func<Assignment, bool>> expression)
-        {
-            return await _db.Assignments
+        /// <summary>
+        /// Retrieves the first <see cref="Assignment"/> entity that matches a specified expression, including related entities, asynchronously.
+        /// </summary>
+        /// <param name="expression">The expression to filter <see cref="Assignment"/> entities.</param>
+        /// <returns>An asynchronous operation that returns the first matching <see cref="Assignment"/> entity with included related entities.</returns>
+        public async Task<Assignment?> FirstIncludeAsync(Expression<Func<Assignment, bool>> expression) => await _db.Assignments
                 .Include(x => x.Service)
                 .Include(x => x.Worker)
                 .Include(x => x.Appointments)
                 .FirstOrDefaultAsync(expression);
-        }
+
+        /// <summary>
+        /// Deletes an <see cref="Assignment"/> entity asynchronously.
+        /// </summary>
+        /// <param name="assignment">The <see cref="Assignment"/> entity to delete.</param>
 
         public async Task DeleteAsync(Assignment assignment)
         {

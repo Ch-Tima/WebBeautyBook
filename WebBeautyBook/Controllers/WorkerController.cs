@@ -41,6 +41,13 @@ namespace WebBeautyBook.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Retrieves and returns a list of available time slots for a worker to provide a specific service on a given date.
+        /// </summary>
+        /// <param name="workerId">The ID of the worker</param>
+        /// <param name="date">The specified date</param>
+        /// <param name="serviceId">The ID of the service</param>
+        /// <returns>An IActionResult containing the list of available time slots or a BadRequest if not found or not working on the day.</returns>
         [HttpGet(nameof(GetWorkersFreeTimeForService))]
         public async Task<IActionResult> GetWorkersFreeTimeForService([FromQuery]string workerId, [FromQuery] DateTime date, [FromQuery] string serviceId)
         {
