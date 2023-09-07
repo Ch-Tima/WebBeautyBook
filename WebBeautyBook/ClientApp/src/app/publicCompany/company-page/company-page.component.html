@@ -50,7 +50,7 @@
             <p>Staffers</p>
             <drag-scroll #nav class="staffers-carousel">
                 <div class="staffers-item" drag-scroll-item *ngFor="let item of workers">
-                    <img src="https://localhost:7082{{item.baseUser.photo}}" />
+                    <img src="{{item.baseUser.photo}}" />
                     <p class="staffers-name">{{item.baseUser.userName}} {{item.baseUser.userSurname}}</p>
                 </div> 
             </drag-scroll>

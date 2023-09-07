@@ -55,7 +55,7 @@ export class ImageSliderComponent implements OnInit, OnDestroy {
     if(this.slides.length == 0)
       return `url('../assets/images/loading.png')`;
 
-    return `url('https://localhost:7082${this.slides[this.currentIndex].path}')`;
+    return `url('${this.slides[this.currentIndex].path}')`;
   }
 
 }
