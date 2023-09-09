@@ -25,10 +25,7 @@ export class HomeComponent {
 
   //Carousel Recommended (top 10)
  public moveNext() {
-  if(this.ds == undefined){
-    console.log("er");
-    return;
-  }
+    if(this.ds == undefined) return;
     this.ds.moveLeft();
   }
 

@@ -84,6 +84,11 @@ export class CompanyPageComponent {
     })
   }
 
+  public copyToClipboard(val:string) {
+    navigator.clipboard.writeText(val);
+    this.toastr.success("Text copied!", undefined, { timeOut: 1000 })
+  }
+
   private async getAllMienLikes(){
     await this.http.get<CompanyLike[]>("api/CompanyLike", {
       headers: this.auth.getHeadersWithToken()

@@ -11,6 +11,7 @@ namespace DAL.Context
     /// </summary>
     public class BeautyBookDbContext : IdentityDbContext<BaseUser, IdentityRole, string>
     {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BeautyBookDbContext"/> class with the specified database options.
         /// </summary>
@@ -26,7 +27,7 @@ namespace DAL.Context
         /// <param name="builder">The model builder used to define the database schema.</param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
+
             //BaseUser
             builder.Entity<BaseUser>().Property(b => b.UserSurname).HasColumnType("VARCHAR").HasMaxLength(100);
             builder.Entity<BaseUser>().Property(b => b.Photo).HasColumnType("VARCHAR").HasMaxLength(200).HasDefaultValue("/images/profile.png").IsRequired(false);
@@ -129,7 +130,7 @@ namespace DAL.Context
             builder.Entity<Category>().HasMany(x => x.Categories).WithOne(x => x.Categors).HasForeignKey(x => x.CategoryId);
 
             //Default Initialization
-            BeautyBookDbInitializer.Initializer(builder);
+            BeautyBookDbInitializer.Build(builder).Initializer();
 
             base.OnModelCreating(builder);
         }

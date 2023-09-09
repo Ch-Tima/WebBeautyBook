@@ -60,11 +60,11 @@
         <div class="contacts-data">
             <div class="contacts-item" *ngIf="company.phonenumber != ''">
                 <img src="../../assets/svg/phone.svg">
-                <p>{{company.phonenumber}}</p>
+                <p (click)="copyToClipboard(company.phonenumber)" class="copyable-text">{{company.phonenumber}}</p>
             </div>
             <div class="contacts-item" *ngIf="company.email != ''">
                 <img src="../../assets/svg/email.svg">
-                <p>{{company.email}}</p>
+                <p (click)="copyToClipboard(company.email)" class="copyable-text">{{company.email}}</p>
             </div>
         </div>
         <hr>

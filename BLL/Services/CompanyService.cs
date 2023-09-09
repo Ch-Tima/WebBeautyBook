@@ -38,7 +38,7 @@ namespace BLL.Services
         public async Task<Company> GetIncludeForClientAsync(string id)
         {
             var company = await _companyRepository.GetIncludeAsync(id);
-            company.Services = (await _serviceRepository.GetAllFindAsync(x => x.Assignments.Count > 0)).ToList();
+            company.Services = (await _serviceRepository.GetAllFindAsync(x => x.Assignments.Count > 0 && x.CompanyId == id)).ToList();
             return company;
         }
 

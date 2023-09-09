@@ -111,6 +111,7 @@ img{
 }
 .right-container .title{
     text-align: center;
+    margin: 0 .25em;
 }
 
 /*staffers-carousel*/
@@ -155,6 +156,17 @@ img{
 .contacts-item p{
     margin: auto 0 auto 10px;
 }
+.copyable-text {
+  cursor: pointer;
+  color: #007bff;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+.copyable-text:hover {
+  text-decoration: underline;
+}
 
 /*schedule-data*/
 .schedule-data{
@@ -192,12 +204,13 @@ img{
         width: auto;
         margin: 0;
     }
-
     .right-container{
         width: 100%;
         margin: 1em 0 0 0;
     }
-
+    .copyable-text{
+        width: 325px;
+    }
 }
 @media(max-width: 540px){
     .staffers-item img{
