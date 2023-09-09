@@ -1,8 +1,6 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-
 
 namespace DAL.Initializers
 {
@@ -84,20 +82,7 @@ namespace DAL.Initializers
 
         private void SupperAdmin()
         {
-            //hasher for password
-            var hasher = new PasswordHasher<BaseUser>();
-
-            //supperAdmin
-            var supperAdmin = new BaseUser()
-            {
-                UserName = "Tima",
-                NormalizedUserName = "Tima".ToUpper(),
-                UserSurname = "Ch",
-                NormalizedEmail = "chizhevskii.tima@gmail.com".ToUpper(),
-                Email = "chizhevskii.tima@gmail.com",
-                EmailConfirmed = true
-            };
-            supperAdmin.PasswordHash = hasher.HashPassword(supperAdmin, "admin");
+            var supperAdmin = CreateUser("Tima", "Ch", "chizhevskii.tima@gmail.com", "admin");
             _modelBuilder.Entity<BaseUser>().HasData(new BaseUser[] { supperAdmin });
             _modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>[]
             {
@@ -107,7 +92,6 @@ namespace DAL.Initializers
                     RoleId = roles.GetValueOrDefault(Roles.ADMIN).Id
                 }
             });
-
         }
 
         private void Loaction()
@@ -218,16 +202,20 @@ namespace DAL.Initializers
             _modelBuilder.Entity<Category>().HasData(сategories);
         }
 
+        /// <summary>
+        /// Creates a random company with associated owner, workers, services, and other related data.
+        /// </summary>
+        /// <param name="name">The name of the company to be created.</param>
         private void CreateRandomCompany(string name)
         {
             var ownRole = roles.GetValueOrDefault(Roles.OWN_COMPANY);
             var workerRole = roles.GetValueOrDefault(Roles.WORKER);
             if (ownRole == null || workerRole == null) return;
 
-            //generate company owner
+            //Generate company owner
             var owner = CrateRandomUser();
 
-            //create company
+            //Create the company
             var company = new Company()
             {
                 Name = name,
@@ -250,12 +238,12 @@ namespace DAL.Initializers
                 });
             }
 
-            //save company
+            //save the company data
             _modelBuilder.Entity<Company>().HasData(company);
             _modelBuilder.Entity<CompanyOpenHours>().HasData(GenerateRandomOpenHours(company.Id));
             _modelBuilder.Entity<CompanyImage>().HasData(images);
 
-            //'worker' for company owner
+            //Create a 'worker' profile for the company owner
             var ownerWorkerProfile = new Worker()
             {
                 BaseUserId = owner.Id,
@@ -269,11 +257,11 @@ namespace DAL.Initializers
             owner.WorkerId = ownerWorkerProfile.Id;
             _modelBuilder.Entity<BaseUser>().HasData(owner);
             _modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoleOwner);
-
-            //generate employees
+            //Generate employees (workers)
             var employees = CrateRandomUser(count: new Random().Next(1, 5));
             var workerProfiles = new List<Worker>();
             workerProfiles.Add(ownerWorkerProfile);
+            //Assign 'worker' role
             var userRoleWorker = new List<IdentityUserRole<string>>();
             employees.ForEach(item =>
             {
@@ -292,20 +280,25 @@ namespace DAL.Initializers
                     UserId = item.Id
                 });
             });
+            //Save employee (worker) data
             _modelBuilder.Entity<BaseUser>().HasData(employees);
             _modelBuilder.Entity<Worker>().HasData(workerProfiles);
             _modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoleWorker);
-
+            // Generate and save random services for the company
             var service = GenerateRandomServices(company.Id);
             _modelBuilder.Entity<Service>().HasData(service);
             _modelBuilder.Entity<Assignment>().HasData(GenerateRandomAssignment(workerProfiles, service));
         }
 
+        /// <summary>
+        /// Generates a list of random services associated with a company.
+        /// </summary>
+        /// <param name="companyId">The ID of the company for which services are generated.</param>
+        /// <returns>A list of randomly generated services.</returns>
         private List<Service> GenerateRandomServices(string companyId)
         {
             var services = new List<Service>();
             int numberOfServices = _random.Next(3, 6);
-
             for (int i = 0; i < numberOfServices; i++)
             {
                 var category = subCategory[_random.Next(subCategory.Count)];
@@ -324,6 +317,12 @@ namespace DAL.Initializers
             return services;
         }
 
+        /// <summary>
+        /// Generates a list of random assignments between workers and services.
+        /// </summary>
+        /// <param name="workers">A list of workers to assign services to.</param>
+        /// <param name="services">A list of services to be assigned.</param>
+        /// <returns>A list of randomly generated assignments.</returns>
         private List<Assignment> GenerateRandomAssignment(List<Worker> workers, List<Service> services)
         {
             var assignments = new List<Assignment>();
@@ -343,6 +342,8 @@ namespace DAL.Initializers
             return assignments;
         }
 
+        /// <summary> Creates a random user with unique first name and last name. </summary>
+        /// <returns>A random user.</returns>
         private BaseUser CrateRandomUser()
         {
             var guid = Guid.NewGuid().ToString();
@@ -351,6 +352,11 @@ namespace DAL.Initializers
             return CreateUser(firstname + guid.Substring(0, 3), lastname + guid.Substring(3, 2));
         }
 
+        /// <summary>
+        /// Creates a specified number of random users.
+        /// </summary>
+        /// <param name="count">The number of users to create.</param>
+        /// <returns>A list of random users.</returns>
         private List<BaseUser> CrateRandomUser(int count)
         {
             List<BaseUser> users = new List<BaseUser>();
@@ -360,7 +366,15 @@ namespace DAL.Initializers
             return users;
         }
 
-        private BaseUser CreateUser(string firstname, string lastname, string? email = null, string? passwor = null)
+        /// <summary>
+        /// Creates a user with specified data or uses default values.
+        /// </summary>
+        /// <param name="firstname">The user's first name.</param>
+        /// <param name="lastname">The user's last name.</param>
+        /// <param name="email">The user's email (will be generated based on the name and last name if not provided).</param>
+        /// <param name="password">The user's password (defaults to the email if not provided).</param>
+        /// <returns>A user with specified or default data.</returns>
+        private BaseUser CreateUser(string firstname, string lastname, string? email = null, string? password = null)
         {
             if (email == null) email = $"{firstname}.{lastname}@gmail.com";
             var user = new BaseUser() 
@@ -373,10 +387,14 @@ namespace DAL.Initializers
                 EmailConfirmed = true
             };
             var hasher = new PasswordHasher<BaseUser>();
-            user.PasswordHash = hasher.HashPassword(user, passwor != null ? passwor : email);
+            user.PasswordHash = hasher.HashPassword(user, password != null ? password : email);
             return user;
         }
 
+        /// <summary>
+        /// Generates a random phone number in the format "XXX-XXX-XXXX."
+        /// </summary>
+        /// <returns>A randomly generated phone number.</returns>
         private string GenerateRandomPhoneNumber()
         {
             // Generate random area code (e.g., 3 digits)
@@ -390,22 +408,28 @@ namespace DAL.Initializers
             return phoneNumber;
         }
 
+        /// <summary>
+        /// Generates a random address string.
+        /// </summary>
+        /// <returns>A randomly generated address.</returns>
         private string GenerateRandomAddress()
         {
             // Generate a random street name
             string[] streetNames = { "Main Street", "Oak Avenue", "Maple Road", "Cedar Lane", "Elm Street", "Sunset Boulevard", "Willow Street", "Pine Avenue", "Cypress Lane", "Meadowbrook Drive" };
             string streetName = streetNames[_random.Next(streetNames.Length)];
-
             // Generate a random state abbreviation
             string[] states = { "NY", "CA", "IL", "FL", "TX" };
             string state = states[_random.Next(states.Length)];
-
             // Combine the components into the address string
             string address = $"{_random.Next(1, 1000)} {streetName}, {state} {_random.Next(10000, 100000).ToString()}";
-
             return address;
         }
-        
+
+        /// <summary>
+        /// Generates a list of random open hours for a company.
+        /// </summary>
+        /// <param name="companyId">The ID of the company for which open hours are generated.</param>
+        /// <returns>A list of randomly generated open hours.</returns>
         private List<CompanyOpenHours> GenerateRandomOpenHours(string compayId)
         {
             var openHoursList = new List<CompanyOpenHours>();
@@ -431,6 +455,6 @@ namespace DAL.Initializers
 
             return openHoursList;
         }
-
     }
+
 }
