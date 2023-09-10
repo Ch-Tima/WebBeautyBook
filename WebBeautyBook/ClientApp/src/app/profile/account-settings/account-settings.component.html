@@ -2,10 +2,8 @@
     <h2 class="title">Account & Settings</h2>
 
     <h4>Account Details</h4>
-
     <div class="form" #userDataForm>
-        <!--enctype="multipart/form-data"-->
-        <form *ngIf="user$ | async; else loading" [formGroup]="mForm" (ngSubmit)="submit()">
+        <form *ngIf="user$|async;else loading" [formGroup]="mForm" (ngSubmit)="submit()">
 
             <div class="row">
                 <div class="form-group col-lg-5 my-1">
@@ -60,9 +58,9 @@
             </div>
 
         </form>
-        
         <ng-template #loading>
-            <h4>Loading User...</h4>
+            <p class="text-center h5">Loading user date...</p>
+            <mat-spinner style="margin: 0 auto;"></mat-spinner>
         </ng-template>
     </div>
 
