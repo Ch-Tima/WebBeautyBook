@@ -1,0 +1,35 @@
+.calendar-card {
+    width: 280px;
+    height: max-content;
+    margin: 0 auto;
+}
+
+.container-freeTime{
+    width: 100%;
+    height: 75px;
+    margin: .25em 0;
+    padding: 0 .25em;
+    background-color: #f8f9fa;
+}
+
+.mat-mdc-radio-group{
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    max-width: 100%;
+    user-select: none;
+}
+
+.container-btn button {
+    width: 90px;
+}
+
+textarea{
+    width: 100%;
+    min-height: 100px;
+    margin-top: .5em;
+}
+
+.container-btn{
+    margin: .5em 0;
+}

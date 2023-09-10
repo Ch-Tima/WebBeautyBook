@@ -48,12 +48,16 @@ namespace WebBeautyBook.Controllers
 
         }
 
+        /// <summary>
+        /// Refreshes the authentication tokens for the currently authenticated user.
+        /// </summary>
+        /// <returns>An <see cref="IActionResult"/> containing the refreshed JWT token details.</returns>
         [HttpPost(template: "refreshTokens")]
         [Authorize]
         public async Task<IActionResult> RefreshTokens()
         {
-            var user = await _userManager.GetUserAsync(User);
-            return new OkObjectResult(await GenerateJWTAsync(user, 7));
+            var user = await _userManager.GetUserAsync(User);//Retrieve the current user based on the authenticated user's claims.
+            return new OkObjectResult(await GenerateJWTAsync(user, 7));//Generate and return a new JWT token with an extended validity period (e.g., 7 days).
         }
 
         [HttpPost]
@@ -71,7 +75,6 @@ namespace WebBeautyBook.Controllers
         {
             return await BaseRegister(model);
         }
-
 
         [HttpPost]
         [Route("registrationViaCompany")]
@@ -97,7 +100,6 @@ namespace WebBeautyBook.Controllers
 
             return result;
         }
-
 
         [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] string email)
@@ -161,21 +163,20 @@ namespace WebBeautyBook.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Method for handling user registration based on the provided <see cref="RegistrationModel"/>.
         /// </summary>
-        /// <param name="model">RegistrationModel</param>
+        /// <param name="model">user data</param>
         /// <returns>Task<see cref="IActionResult">&lt;IActionResult&gt;</see></returns>
         private async Task<IActionResult> BaseRegister(RegistrationModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-
+            //Check if the provided email address is already in use, return a BadRequest if it is.
             if (await _userManager.FindByEmailAsync(model.Email) is not null)
                 return BadRequest($"This email address \"{model.Email}\" is busy!");
-
+            //Check if the specified role exists; return a BadRequest if it doesn't.
             if (!await _roleManager.RoleExistsAsync(model.Role))
                 return BadRequest($"Invalid role: \"{model.Role}\"");
-
-            //Create user and insert to database
+            //Create a new user object with the provided information.e
             var user = new BaseUser
             {
                 UserName = model.UserName,
@@ -183,19 +184,16 @@ namespace WebBeautyBook.Controllers
                 Email = model.Email,
             };
             var userCreated = await _userManager.CreateAsync(user, model.Password);
-
-            //Check result
+            //Check the result of user creation. If it fails, return a BadRequest with error details.
             if (!userCreated.Succeeded)
                 return new BadRequestObjectResult(string.Join(", ", userCreated.Errors.Select(error => $"{error.Code} {error.Description}")));
-
-            //Add role for user
+            //Add role for user.
             var roleResult = await _userManager.AddToRoleAsync(user, model.Role);
-
-            //Send email with user email confirmation
+            //Send the confirmation email to the user's email address
             var link = await GenerateEmailConfirmationLinkAsync(user);
             var msgHtml = $"<lable>Please click the link for confirm Email address:</lable><a href='{link}'>Confirm Email</a>";
             await _emailService.SendEmailAsync(user.Email, "Confirmation Email(WebBeautyBook)", msgHtml);
-
+            //Return an OkObjectResult with the registered user's details.
             return new OkObjectResult(user);
         }
 
@@ -225,20 +223,17 @@ namespace WebBeautyBook.Controllers
         private async Task<string> GeneratePasswordResetLinkAsync(BaseUser user)
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
             var param = new Dictionary<string, string>
             {
                 {"token", token },
                 {"email", user.Email }
             };
-
             var passwordResetLink = QueryHelpers.AddQueryString(Request.Scheme + "://" + Request.Host.Value + "/resetPassword", param);
-
             return passwordResetLink;
         }
 
         /// <summary>
-        /// 
+        /// Generates JWT for authorization in the system.
         /// </summary>
         /// <param name="user">The user who needs to generate the "JWT" token.</param>
         /// <param name="days">The number of days of life of the "JWT" token</param>

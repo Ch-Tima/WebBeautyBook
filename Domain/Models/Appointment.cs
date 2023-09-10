@@ -7,15 +7,20 @@
     public class Appointment
     {
         public string Id { get; set; }
-        public DateTime ForWhatTime { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan TimeStart { get; set; }
+        public TimeSpan TimeEnd { get; set; }
         public string Note { get; set; }
-        public string Status { get; set; }
+        public AppointmentStatus Status { get; set; }
 
         public string UserId { get; set; }
         public BaseUser BaseUser { get; set; }
 
-        public string AssignmentId { get; set; }
-        public Assignment Assignment { get; set; }
+        public string WorkerId { get; set; }
+        public Worker Worker { get; set; }
+
+        public string ServiceId { get; set; }
+        public Service Service { get; set; }
 
         public string CommentId { get; set; }
         public Comment Comment { get; set; }

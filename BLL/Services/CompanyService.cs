@@ -10,6 +10,12 @@ namespace BLL.Services
         private readonly WorkerService _workerService;
         private readonly ServiceRepository _serviceRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompanyService"/> class.
+        /// </summary>
+        /// <param name="companyRepository">The repository for companies.</param>
+        /// <param name="workerService">The service for managing workers.</param>
+        /// <param name="serviceRepository">The repository for services.</param>
         public CompanyService(CompanyRepository companyRepository, WorkerService workerService, ServiceRepository serviceRepository)
         {
             _companyRepository = companyRepository;
@@ -17,10 +23,12 @@ namespace BLL.Services
             _serviceRepository = serviceRepository;
         }
 
-        public async Task<Company> GetAsync(string id)
-        {
-            return await _companyRepository.GetAsync(id);
-        }
+        /// <summary>
+        /// Retrieves a company by its ID asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the company to retrieve.</param>
+        /// <returns>The company or null if not found.</returns
+        public async Task<Company> GetAsync(string id) => await _companyRepository.GetAsync(id);
 
         /// <summary>
         /// This method is intended for public use in the "authorization not required" API.
@@ -39,50 +47,64 @@ namespace BLL.Services
         /// </summary>
         /// <param name="id">Company primary key</param>
         /// <returns><see cref="Company"/> with navigation fields.</returns>
-        public async Task<Company> GetIncludeForCompanyAsync(string id)
-        {
-            return await _companyRepository.GetIncludeAsync(id);
-        }
-
-        public async Task<IEnumerable<Company>> GetAllAsync()
-        {
-            return await _companyRepository.GetAllAsync();
-        }
-
-        public async Task<IEnumerable<Company>> GetAllIncludeAsync()
-        {
-            return await _companyRepository.GetAllIncludeAsync();
-        }
+        public async Task<Company> GetIncludeForCompanyAsync(string id) => await _companyRepository.GetIncludeAsync(id);
 
         /// <summary>
-        /// ! TODO !
+        /// Retrieves all companies asynchronously.
         /// </summary>
-        /// <param name="location"></param>
-        /// <returns></returns>
+        /// <returns>A collection of companies.</return
+        public async Task<IEnumerable<Company>> GetAllAsync() => await _companyRepository.GetAllAsync();
+
+
+        //TODO
+        /// <summary>
+        /// Retrieves the top ten companies based on an optional location filter.
+        /// </summary>
+        /// <param name="location">The location filter (optional).</param>
+        /// <returns>The top ten companies.</returns>
         public async Task<IEnumerable<Company>> GetTopTen(string? location)
         {
             return (await _companyRepository.GetFindIncludeAsync(x => true)).Take(10);
         }
 
-        public async Task<Company> GetFirstAsync(Expression<Func<Company, bool>> expression)
-        {
-            return await _companyRepository.GetFirstAsync(expression);
-        }
-
+        /// <summary>
+        /// Retrieves all companies that match the specified criteria asynchronously.
+        /// </summary>
+        /// <param name="expression">The filter criteria.</param>
+        /// <returns>A collection of companies that match the criteria.</returns>
         public async Task<IEnumerable<Company>> GetAllFindAsync(Expression<Func<Company, bool>> expression)
         {
             return await _companyRepository.GetAllFindAsync(expression);
         }
 
-        public async Task CreateCompany(Company company, BaseUser own)
+        /// <summary>
+        /// Creates a new company and associates it with a user.
+        /// </summary>
+        /// <param name="company">The company to create.</param>
+        /// <param name="own">The user who owns the company.</param>
+        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<ServiceResponse> CreateCompany(Company company, BaseUser own)
         {
-            //create company
-            await _companyRepository.InsertAsync(company);
+            try
+            {
+                //create company
+                await _companyRepository.InsertAsync(company);
+                //create Worker for own
+                await _workerService.InsertAsync(company.Id, own);
 
-            //create Worker for own
-            await _workerService.InsertAsync(company.Id, own);
+                return new ServiceResponse(true, "Ok");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse(false, ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Updates an existing company asynchronously.
+        /// </summary>
+        /// <param name="company">The updated company.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task Update(Company company)
         {
             await _companyRepository.UpdateAsync(company.Id, company);

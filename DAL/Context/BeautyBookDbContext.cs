@@ -6,13 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Context
 {
+    /// <summary>
+    /// The database context for the BeautyBook application.
+    /// </summary>
     public class BeautyBookDbContext : IdentityDbContext<BaseUser, IdentityRole, string>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BeautyBookDbContext"/> class with the specified database options.
+        /// </summary>
+        /// <param name="options">The database context options.</param>
         public BeautyBookDbContext(DbContextOptions<BeautyBookDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
 
+        /// <summary>
+        /// Configures the database schema and relationships between entities.
+        /// </summary>
+        /// <param name="builder">The model builder used to define the database schema.</param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             
@@ -69,13 +80,16 @@ namespace DAL.Context
 
             //Appointment
             builder.Entity<Appointment>().HasIndex(a => a.Id).IsUnique();
-            builder.Entity<Appointment>().Property(a => a.ForWhatTime).HasColumnType("DateTime");
+            builder.Entity<Reservation>().Property(s => s.Date).HasColumnType("date").IsRequired();
+            builder.Entity<Reservation>().Property(s => s.TimeStart).HasColumnType("Time").IsRequired();
+            builder.Entity<Reservation>().Property(s => s.TimeEnd).HasColumnType("Time").IsRequired();
             builder.Entity<Appointment>().Property(a => a.Note).HasColumnType("VARCHAR").HasMaxLength(500);
             builder.Entity<Appointment>().Property(a => a.Status).HasColumnType("VARCHAR").HasMaxLength(100);
             builder.Entity<Appointment>().Property(a => a.CommentId).IsRequired(false);
             //One to many
             builder.Entity<Appointment>().HasOne(a => a.BaseUser).WithMany(u => u.Appointments).HasForeignKey(a => a.UserId).OnDelete(DeleteBehavior.Cascade).IsRequired();
-            builder.Entity<Appointment>().HasOne(a => a.Assignment).WithMany(u => u.Appointments).HasPrincipalKey(ws => new { ws.WorkerId, ws.ServiceId }).IsRequired(false).OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Appointment>().HasOne(a => a.Service).WithMany(u => u.Appointments).HasForeignKey(a => a.ServiceId).IsRequired().OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<Appointment>().HasOne(a => a.Worker).WithMany(u => u.Appointments).HasForeignKey(a => a.WorkerId).IsRequired().OnDelete(DeleteBehavior.NoAction);
 
             //Reservation
             builder.Entity<Reservation>().HasIndex(s => s.Id).IsUnique();
@@ -120,6 +134,7 @@ namespace DAL.Context
             base.OnModelCreating(builder);
         }
 
+        // DbSet properties for entity access
 
         public DbSet<BaseUser> BaseUsers { get; set; }
         public DbSet<Comment> Comments { get; set; }

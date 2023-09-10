@@ -173,10 +173,10 @@ namespace WebBeautyBook.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Adds the invited user to the company and creates a <see cref="Worker"/> profile.
         /// </summary>
-        /// <param name="token">toke - The company invitation is encrypted with <see cref="WebEncoders.Base64UrlEncode"></see> with UTF-8 format</param>
-        /// <param name="companyId">companyId - encrypted in the same way as the token, needed to check the token for "purpose" and add the user to the company</param>
+        /// <param name="token">The company invitation is encrypted with <see cref="WebEncoders.Base64UrlEncode"></see> with UTF-8 format</param>
+        /// <param name="companyId">Encrypted in the same way as the <paramref name="token"/>, needed to check the <paramref name="token"/> for <c>"purpose"</c> and add the user to the company</param>
         /// <returns></returns>
         [HttpPost(template: "acceptInvitationToCompany")]
         [Authorize]
@@ -211,7 +211,6 @@ namespace WebBeautyBook.Controllers
 
                 //add user to company
                 var resultWorker = await _workerService.InsertAsync(companyId, user);
-
                 //if it was not possible to add a user to the company, then delete the role "worker"
                 if (!resultWorker.IsSuccess)
                 {
