@@ -22,6 +22,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 //Components
 import { AppComponent } from './app.component';
@@ -147,7 +148,7 @@ const routes: Routes = [
     MatNativeDateModule, MatCardModule, MatButtonModule,
     MatCheckboxModule, MatSelectModule, MatChipsModule,
     MatRadioModule, MatTableModule, MatPaginatorModule,
-    MatSortModule,
+    MatSortModule, MatProgressSpinnerModule
 
   ],
   providers: [
