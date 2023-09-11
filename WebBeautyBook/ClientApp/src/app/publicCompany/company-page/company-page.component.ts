@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,7 +6,6 @@ import { Company } from '../../models/Company';
 import { Worker } from '../../models/Worker';
 import { CompanyLike } from '../../models/CompanyLike';
 import * as $ from 'jquery';
-import { Service } from '../../models/Service';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentDialogComponent, AppointmentDialogDate, AppointmentDialogResult } from '../appointment-dialog/appointment-dialog.component';
 import { ToastrService } from 'ngx-toastr';
@@ -16,24 +15,26 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './company-page.component.html',
   styleUrls: ['./company-page.component.css']
 })
-export class CompanyPageComponent {
+export class CompanyPageComponent implements OnInit {
 
   public company: Company = new Company;
-  public workers: Worker[] = []
-  public services: Service[] = []
+  public workers: Worker[]|undefined
   public searchText:any;
-
   private companyId:string|null;
 
   constructor(private toastr: ToastrService, private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router, private dialogRef : MatDialog){
     this.companyId = this.activeRoute.snapshot.queryParams['id'];
-
     if(this.companyId == null || this.companyId == undefined || this.companyId == ''){
       this.rout.navigate(["/"]);
       return;
     }
-    this.loadCompany();
-    this.loadWorkers();
+  }
+
+  public async ngOnInit() {
+    await this.loadCompany();
+    var workers = await this.loadWorkers();
+    if(workers == undefined) this.workers = [];
+    else this.workers = workers;
   }
 
   public getOpenHours(dayOfWeek: number):string{
@@ -90,7 +91,7 @@ export class CompanyPageComponent {
   }
 
   private async getAllMienLikes(){
-    await this.http.get<CompanyLike[]>("api/CompanyLike", {
+    return await this.http.get<CompanyLike[]>("api/CompanyLike", {
       headers: this.auth.getHeadersWithToken()
     }).toPromise().then(result => {
       var r = result?.findIndex(x => x.companyId == this.company.id)
@@ -104,26 +105,22 @@ export class CompanyPageComponent {
   }
 
   private async loadCompany(){
-    await this.http.get<Company>(`api/Company?id=${this.companyId}`).subscribe(
-      async (result) => {
+    return await this.http.get<Company>(`api/Company?id=${this.companyId}`).toPromise().then(async result => {
+      if(result == undefined){
+        this.toastr.error("Not found company!")
+        this.rout.navigate(["/"]);
+      }else{
         this.company = result;
         if(this.auth.hasToken()) await this.getAllMienLikes();
-      }, error => {
-        console.log(error);
-        this.rout.navigate(["/"]);
       }
-    )
+    }).catch(e => {
+      console.log(e);
+      this.rout.navigate(["/"]);
+    });
   }
 
   private async loadWorkers(){
-    await this.http.get<Worker[]>(`api/Worker/getWorkersByCompanyId/${this.companyId}`).subscribe(
-      result => {
-        this.workers = result;
-      }, error => {
-        console.log(error);
-        console.log("error -> loadWorkers");
-      }
-    )
+    return await this.http.get<Worker[]>(`api/Worker/getWorkersByCompanyId/${this.companyId}`).toPromise();
   }
 
 }
