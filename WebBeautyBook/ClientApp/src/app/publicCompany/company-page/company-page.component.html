@@ -25,7 +25,7 @@
                 </div>                  
             </div>
 
-            <ng-container *ngIf="company != undefined">
+            <ng-container *ngIf="company != undefined && company.services.length > 0;else noService">
                 <div class="service-item" *ngFor="let item of company.services | filter:searchText:'name'">
                     <div class="service-data">
                         <p class="service-title">{{item.name}}</p>
@@ -40,6 +40,7 @@
                     <hr>
                 </div>
             </ng-container>
+            <ng-template #noService><p class="text-center my-3 h5">No services</p></ng-template>
         </div>
     </div>
 
@@ -48,12 +49,16 @@
 
         <div class="staffers-data">
             <p>Staffers</p>
-            <drag-scroll #nav class="staffers-carousel">
-                <div class="staffers-item" drag-scroll-item *ngFor="let item of workers">
-                    <img src="{{item.baseUser.photo}}" />
-                    <p class="staffers-name">{{item.baseUser.userName}} {{item.baseUser.userSurname}}</p>
-                </div> 
+            <drag-scroll #nav class="staffers-carousel" *ngIf="workers != undefined;else loadingWorkers">
+                <ng-container *ngIf="workers.length > 0;else noWorkers">
+                    <div class="staffers-item" drag-scroll-item *ngFor="let item of workers">
+                        <img src="{{item.baseUser.photo}}" />
+                        <p class="staffers-name">{{item.baseUser.userName}} {{item.baseUser.userSurname}}</p>
+                    </div> 
+                </ng-container>
+                <ng-template #noWorkers><p class="text-center">no workers</p></ng-template>
             </drag-scroll>
+            <ng-template #loadingWorkers><p class="text-center">Loading...</p></ng-template>
         </div>
         <hr>
         
@@ -117,5 +122,3 @@
     </div>
 
 </div>
-
-<app-footer></app-footer>

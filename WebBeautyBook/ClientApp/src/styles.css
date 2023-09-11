@@ -6,6 +6,10 @@
 @import 'ngx-toastr/toastr';
 
 /* Provide sufficient contrast against white background */
+*{
+  margin: 0;
+  padding: 0;
+}
 
 body{
   font-family: 'Roboto', sans-serif;
@@ -28,10 +32,11 @@ code {
 .my-container{
   position: absolute;
   top: calc(75px + 1.5rem);
-  bottom: 1.5rem;
-
+  bottom: 0rem;
   padding-right: 0 !important;
   padding-left: 0 !important;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 @media (max-width: 767px) {

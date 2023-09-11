@@ -1,8 +1,7 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Appointment } from 'src/app/models/Appointment';
@@ -17,8 +16,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class AppointmentListComponent implements OnInit {
 
   public displayedColumns: string[] = [ 'date', 'time', 'service', 'status' ];
-  public appointments: Appointment[] = [];
-  public dataSource = new MatTableDataSource<Appointment>(this.appointments);
+  public appointments: Appointment[]|undefined;
+  public dataSource = new MatTableDataSource<Appointment>([]);
 
   constructor(private cdRef: ChangeDetectorRef, private auth: AuthService, private toastr: ToastrService, private dialogRef : MatDialog, private http: HttpClient, private liveAnnouncer: LiveAnnouncer, ){
   }
@@ -41,7 +40,7 @@ export class AppointmentListComponent implements OnInit {
       if(value == null || value == undefined) return;
       var result = value as AppointmentDialogResult;
       if(!result.isSuccess || result.action == 'close') return;
-      if(result.action == 'remove'){
+      if(result.action == 'remove' && this.appointments != undefined){
         this.appointments = this.appointments.filter(x => x.id != val.id);
         this.refresh(this.appointments);
       }

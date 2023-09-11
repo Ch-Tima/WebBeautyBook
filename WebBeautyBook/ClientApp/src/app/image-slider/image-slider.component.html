@@ -3,7 +3,6 @@
       <div (click)="goToPrevious()" class="leftArrow">❰</div>
       <div (click)="goToNext()" class="rightArrow">❱</div>
     </div>
-    <div
-    class="slide"
-      [ngStyle]="{ 'background-image': getCurrentSlideUrl() }"></div>
+    <div *ngIf="slides.length > 0;else loading" class="slide" [ngStyle]="{ 'background-image': getCurrentSlideUrl() }"></div>
+    <ng-template #loading><mat-spinner style="margin: 0 auto; top: 25%;"></mat-spinner></ng-template>
   </div>
