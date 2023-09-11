@@ -1,8 +1,10 @@
 <ng-container *ngIf="likes != undefined;else loading">
     
     <ng-container *ngIf="likes.length != 0; else empty">
-        <div *ngFor="let item of likes" class="list">
-            <app-company-card (clickLike)="remove($event)" [company]="item.company"></app-company-card>
+        <div class="list-wrap">
+            <div *ngFor="let item of likes">
+                <app-company-card (clickLike)="remove($event)" [company]="item.company"></app-company-card>
+            </div>
         </div>
     </ng-container>
 

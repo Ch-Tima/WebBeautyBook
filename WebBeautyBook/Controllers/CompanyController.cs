@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Linq.Expressions;
 using System.Text;
 using WebBeautyBook.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebBeautyBook.Controllers
 {
@@ -54,6 +56,25 @@ namespace WebBeautyBook.Controllers
         public async Task<IEnumerable<Company>> GetTopTen(string? location)
         {
             return await _companyService.GetTopTen(location);
+        }
+
+        /// <summary>
+        /// Searches for companies based on name, category, and location criteria.
+        /// </summary>
+        /// <param name="name">The name to filter companies by.</param>
+        /// <param name="category">The category to filter companies by.</param>
+        /// <param name="location">The location to filter companies by.</param>
+        /// <returns>A collection of companies that match the specified criteria.</returns>
+        [HttpGet(nameof(Search))]
+        public async Task<IEnumerable<Company>> Search(string? name, string? category, string? location)
+        {
+            //The filter expression based on the provided parameters
+            Expression<Func<Company, bool>> filterExpression = company => 
+                (string.IsNullOrEmpty(name) || company.Name.Contains(name)) && 
+                (string.IsNullOrEmpty(category) || company.Services.Any(s => s.Category.Name.Contains(category))) &&
+                (string.IsNullOrEmpty(location) || (company.Location.Country.Contains(location) || company.Location.City.Contains(location) || company.Address.Contains(location)));
+
+            return await _companyService.GetFindIncludeAsync(filterExpression);
         }
 
         [HttpGet("getMyCompany")]

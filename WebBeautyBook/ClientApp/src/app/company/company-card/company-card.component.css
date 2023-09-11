@@ -1,8 +1,20 @@
 .card{
-    margin: 0 .5em;
+    margin: 1em auto;
     position: relative;
     width: fit-content;
     border: none;
+}
+
+.w100{
+    width: 100%;
+}
+
+.flex{
+    display: flex;
+}
+
+.block{
+    display: block;
 }
 
 .card-img{
@@ -11,6 +23,11 @@
     object-fit: cover;
     border-radius: 0.35em;
     box-shadow: 2px 10px 15px grey;
+}
+
+.card-img-big{
+    width: 281px;
+    height: 187px;
 }
 
 .container-data{
@@ -22,7 +39,7 @@
     width: 100%;
 }
 
-.data-company p{
+.hind-p200px p{
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -30,9 +47,25 @@
     max-width: 200px;
 }
 
+.hind-p500px p{
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 500px;
+}
+
 .data-company .location{
     font-size: 12px;
     color: #767676;
+}
+
+.f21px{
+    font-size: 21px;
+}
+
+.f17px{
+    font-size: 17px;
 }
 
 .like{
@@ -40,14 +73,26 @@
     filter: opacity(0.8);
 }
 
+.like-position{
+    position: absolute;
+    bottom: 0;
+    right: calc(100% - 325px);
+    margin: 0 5px 5px 0;
+    filter: opacity(0.8);
+}
+
 .grade{
     background-color: #000000af;
     position: absolute;
     top: 0;
-    right: 0;
+    right: calc(100% - 225px);
     z-index: 13;
     width: 50px;
     border-radius: 0 0.35em;
+}
+
+.grade-big{
+    right: calc(100% - 281px);
 }
 
 .grade p{

@@ -1,0 +1,25 @@
+<div class="main-container">
+    <div class="header">
+        <div class="input-search">
+            <input type="text" class="form-control" placeholder="Company name" [(ngModel)]="name">
+            <input type="text" class="form-control" placeholder="Category name" [(ngModel)]="category">
+            <input type="text" class="form-control" placeholder="Location name" [(ngModel)]="location">
+        </div>
+        <button (click)="saerch()" type="button" class="btn btn-outline-success">Search</button>
+    </div>
+
+    <div class="list-container">
+        <div class="list-company">
+        
+            <ng-container *ngIf="companies != undefined;else loading">
+                <ng-container *ngIf="companies.length > 0;else notFound">
+                    <app-company-card *ngFor="let item of companies" [company]="item" [style]="companyCardStyle"></app-company-card>
+                </ng-container>
+                <ng-template #notFound><p class="text-center h5">Not found</p></ng-template>
+            </ng-container>
+    
+            <ng-template #loading><mat-spinner style="margin: 0 auto;"></mat-spinner></ng-template>
+    
+        </div>
+    </div>
+</div>

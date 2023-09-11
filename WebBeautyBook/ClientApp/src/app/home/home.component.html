@@ -38,10 +38,10 @@
                 <ng-container *ngIf="categories != undefined && categories.length > 0;else notFound">
                     <div class="item-category" *ngFor="let item of categories">
                         <div class="content-category">
-                            <a href="#" class="title-category">{{item.name}}</a>
+                            <a href="/search?category={{item.name}}" class="title-category">{{item.name}}</a>
                             <ul>
                                 <li *ngFor="let subItem of item.categories">
-                                    <a href="#">{{subItem.name}}</a>
+                                    <a href="/search?category={{subItem.name}}">{{subItem.name}}</a>
                                 </li>
                             </ul>
                         </div>
