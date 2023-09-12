@@ -55,7 +55,6 @@ namespace BLL.Services
         /// <returns>A collection of companies.</return
         public async Task<IEnumerable<Company>> GetAllAsync() => await _companyRepository.GetAllAsync();
 
-
         //TODO
         /// <summary>
         /// Retrieves the top ten companies based on an optional location filter.
@@ -65,6 +64,16 @@ namespace BLL.Services
         public async Task<IEnumerable<Company>> GetTopTen(string? location)
         {
             return (await _companyRepository.GetFindIncludeAsync(x => true)).Take(10);
+        }
+
+        /// <summary>
+        /// Retrieves a collection of companies that match the specified criteria, including related entities.
+        /// </summary>
+        /// <param name="expression">The filter expression to apply to the query.</param>
+        /// <returns>A collection of companies that match the specified criteria.</returns>
+        public async Task<IEnumerable<Company>> GetFindIncludeAsync(Expression<Func<Company, bool>> expression)
+        {
+            return (await _companyRepository.GetFindIncludeAsync(expression));
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
-.list{
+.list-wrap{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
 }

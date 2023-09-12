@@ -13,6 +13,8 @@ export class CompanyCardComponent {
 
   @Input()
   public company: Company|undefined = undefined;
+  @Input()
+  public style:'small'|'big' = 'small';
   @Output()
   public clickLike: EventEmitter<Company> = new EventEmitter();
 
