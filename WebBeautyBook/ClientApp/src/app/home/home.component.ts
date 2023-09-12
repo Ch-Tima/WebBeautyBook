@@ -6,6 +6,8 @@ import { Company } from '../models/Company';
 import * as $ from "jquery";
 import { AuthService } from '../services/auth.service';
 import { CompanyLike } from '../models/CompanyLike';
+import { Router } from '@angular/router';
+import { SearchData } from '../search-company-input/search-company-input.component';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +20,7 @@ export class HomeComponent implements OnInit {
   public categories: Category[]|undefined = undefined;
   @ViewChild('nav', {read: DragScrollComponent}) ds: DragScrollComponent | undefined;
 
-  public constructor(private http: HttpClient, public auth: AuthService){
+  public constructor(private http: HttpClient, public auth: AuthService, private router: Router){
   }
   
   public async ngOnInit() {
@@ -27,6 +29,11 @@ export class HomeComponent implements OnInit {
     if(categuries != undefined){
       this.categories = categuries;
     }else this.categories = [];
+  }
+
+  public openSearch(search:SearchData){
+    console.log(search);
+    this.router.navigate([`/search`], { queryParams: { name: search.companyName, category: search.categoryName, location: search.locationName} });
   }
 
   //Carousel Recommended (top 10)

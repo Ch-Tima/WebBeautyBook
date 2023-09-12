@@ -65,6 +65,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
 import { AppointmentListComponent } from './profile/appointment-list/appointment-list.component';
 import { SearchPageComponent } from './search-page/search-page.component';
+import { SearchCompanyInputComponent } from './search-company-input/search-company-input.component';
 
 const routes: Routes = [
 
@@ -132,6 +133,7 @@ const routes: Routes = [
     ReservationDialogComponent,
     AppointmentListComponent,
     SearchPageComponent,
+    SearchCompanyInputComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,11 +1,6 @@
 <div class="main-container">
     <div class="header">
-        <div class="input-search">
-            <input type="text" class="form-control" placeholder="Company name" [(ngModel)]="name">
-            <input type="text" class="form-control" placeholder="Category name" [(ngModel)]="category">
-            <input type="text" class="form-control" placeholder="Location name" [(ngModel)]="location">
-        </div>
-        <button (click)="saerch()" type="button" class="btn btn-outline-success">Search</button>
+        <app-search-company-input (resultQuery)="saerch($event)" [companyName]="name" [categoryName]="category" [locationName]="location" [waitClick]="false"></app-search-company-input>
     </div>
 
     <div class="list-container">

@@ -3,6 +3,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Company } from '../models/Company';
 import { ToastrService } from 'ngx-toastr';
+import { SearchData } from '../search-company-input/search-company-input.component';
 
 @Component({
   selector: 'app-search-page',
@@ -25,7 +26,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    await this.saerch();
+    //await this.saerch();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -38,12 +39,9 @@ export class SearchPageComponent implements OnInit {
     }
   }
 
-  public async saerch(){
-    var query = this.name != undefined && this.name.length > 0 ? `name=${this.name}`:''
-    query += this.category != undefined && this.category.length > 0 ? `&category=${this.category}`:''
-    query += this.location != undefined && this.location.length > 0 ? `&location=${this.location}`:''
+  public async saerch(search:SearchData){
     this.companies = undefined;
-    await this.http.get<Company[]>(`api/Company/Search?${query}`).toPromise()
+    await this.http.get<Company[]>(`api/Company/Search?name=${search.companyName}&category=${search.categoryName}&location=${search.locationName}`).toPromise()
     .then(r => {
       if(r == undefined) this.companies = [];
       this.companies = r;

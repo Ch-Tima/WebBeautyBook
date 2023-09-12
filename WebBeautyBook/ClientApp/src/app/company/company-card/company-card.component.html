@@ -1,9 +1,9 @@
-<div *ngIf="company != undefined;else load">
+<div *ngIf="company != undefined;else load" style="margin: 0 5px;">
     <div class="{{style == 'small' ? 'card' : 'card w100'}}" >
         <div class="{{style == 'small' ? 'block' : 'flex'}}">
             <a href="/company?id={{company.id}}">
                 <div>
-                    <img class="card-img {{ style == 'small' ? '' : 'card-img-big' }}" src="https://localhost:7082{{company.companyImages[0].path}}">
+                    <img class="card-img {{ style == 'small' ? '' : 'card-img-big' }}" src="{{company.companyImages[0].path}}">
                     <div class="grade {{ style == 'small' ? '' : 'grade-big' }}">
                         <p>0.0</p>
                     </div>
