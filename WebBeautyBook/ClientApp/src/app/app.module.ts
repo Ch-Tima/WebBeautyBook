@@ -22,6 +22,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 //Components
 import { AppComponent } from './app.component';
@@ -63,11 +64,16 @@ import { ReservationDialogComponent } from './company/reservation-dialog/reserva
 import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
 import { AppointmentListComponent } from './profile/appointment-list/appointment-list.component';
+import { SearchPageComponent } from './search-page/search-page.component';
+import { SearchCompanyInputComponent } from './search-company-input/search-company-input.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
 
   //Public
   { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'search', component: SearchPageComponent },
+  { path: 'privacyPolicy', component: PrivacyPolicyComponent },
 
    //AdminPanel
   { path: "adminPanel", component: AdminPageComponent },
@@ -128,6 +134,9 @@ const routes: Routes = [
     AppointmentDialogComponent,
     ReservationDialogComponent,
     AppointmentListComponent,
+    SearchPageComponent,
+    SearchCompanyInputComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     BrowserModule,
@@ -147,7 +156,7 @@ const routes: Routes = [
     MatNativeDateModule, MatCardModule, MatButtonModule,
     MatCheckboxModule, MatSelectModule, MatChipsModule,
     MatRadioModule, MatTableModule, MatPaginatorModule,
-    MatSortModule,
+    MatSortModule, MatProgressSpinnerModule
 
   ],
   providers: [

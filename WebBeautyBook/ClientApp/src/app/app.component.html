@@ -1,6 +1,7 @@
+<app-nav-menu></app-nav-menu>
 <body>
-  <app-nav-menu></app-nav-menu>
   <div class="container-fluid my-container">
-    <router-outlet></router-outlet>
+    <router-outlet class="main"></router-outlet>
+    <app-footer *ngIf="showFooter"></app-footer>
   </div>
 </body>

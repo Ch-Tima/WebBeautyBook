@@ -1,0 +1,25 @@
+.header{
+    width: 75%;
+    margin: 0 auto;
+    padding: 0 5px;
+}
+.list-container{
+    margin: 1em auto;
+    width: 75%;
+}
+.list-company{
+    display: block;
+}
+@media (max-width :767px){
+    .main-container{
+        margin-top: 1.25em;
+    }
+}
+@media (max-width: 540px) {
+    .header{
+        width: auto;
+    }
+    .input-search{
+        height: 40px;
+    }
+}

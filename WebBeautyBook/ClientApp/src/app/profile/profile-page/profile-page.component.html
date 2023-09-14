@@ -1,7 +1,6 @@
 <app-nav-left-menu (resultEmitter)="navLeftMenu($event)" [list]="navMenuItems"></app-nav-left-menu>
 <div class="container">
     <div #main class="main">
-
         <app-account-settings *ngIf="menu == 'Settings'"></app-account-settings>
         <app-favourites *ngIf="menu == 'Favourites'"></app-favourites>
         <app-appointment-list *ngIf="menu == 'Appointments'"></app-appointment-list>

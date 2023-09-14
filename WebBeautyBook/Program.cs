@@ -10,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
 builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
-
 //Add Services
 builder.Services.AddTransient<BaseUserService>();
 builder.Services.AddTransient<CommentService>();
@@ -38,14 +37,12 @@ builder.Services.AddControllersWithViews()
 
 //Set SendGridEmailSenderOption and Service
 builder.Services.AddTransient<IEmailSender, SendGridEmailService>();
-
 builder.Services.Configure<Domain.Models.SendGridEmailSenderOption>(opt =>
 {
     opt.ApiKey = builder.Configuration.GetValue<string>("SGKey");
     opt.SenderEmail = "logologi417@gmail.com";
     opt.SenderName = "Tima";
 });
-
 
 builder.Services.Configure(builder.Configuration);
 
@@ -66,7 +63,6 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -81,7 +77,6 @@ app.UseSwaggerUI(opt =>
 });
 
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

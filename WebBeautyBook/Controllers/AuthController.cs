@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebBeautyBook.Models;
+using BLL.Services;
 
 namespace WebBeautyBook.Controllers
 {
@@ -20,11 +21,12 @@ namespace WebBeautyBook.Controllers
 
         private readonly UserManager<BaseUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly BLL.Services.WorkerService _workerService;
+        private readonly WorkerService _workerService;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailService;
 
-        public AuthController(UserManager<BaseUser> userManager, RoleManager<IdentityRole> roleManager, BLL.Services.WorkerService workerService, IConfiguration configuration, IEmailSender emailService)
+        public AuthController(UserManager<BaseUser> userManager, RoleManager<IdentityRole> roleManager, 
+            WorkerService workerService, IConfiguration configuration, IEmailSender emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -101,6 +103,11 @@ namespace WebBeautyBook.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Handles the HTTP POST request for initiating the password reset process by sending a reset link to the user's email.
+        /// </summary>
+        /// <param name="email">The email address of the user requesting a password reset.</param>
+        /// <returns>An IActionResult indicating the result of the password reset initiation.</returns>
         [HttpPost("forgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] string email)
         {
@@ -124,6 +131,11 @@ namespace WebBeautyBook.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Handles the HTTP POST request for resetting a user's password.
+        /// </summary>
+        /// <param name="model">A model containing email, token, and new password.</param>
+        /// <returns>An IActionResult indicating the result of the password reset operation.</returns>
         [HttpPost("resetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
         {
@@ -145,6 +157,12 @@ namespace WebBeautyBook.Controllers
             return await _userManager.GetUsersInRoleAsync(role);
         }
 
+        /// <summary>
+        /// Handles the HTTP GET request for confirming a user's email address using a confirmation token.
+        /// </summary>
+        /// <param name="token">The confirmation token sent to the user's email.</param>
+        /// <param name="email">The email address of the user whose email is being confirmed.</param>
+        /// <returns>An IActionResult indicating the result of the email confirmation.</returns>
         [HttpGet("confirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {

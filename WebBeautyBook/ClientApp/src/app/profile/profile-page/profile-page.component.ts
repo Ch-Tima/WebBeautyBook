@@ -27,10 +27,9 @@ export class ProfilePageComponent {
   }
 
   private InitNavLeftMenuItems (){
-    var def = new NavMenuItem("/assets/svg/home.svg", "Main", "Main");
+    var def = new NavMenuItem("/assets/svg/appointment.svg", "Appointments", "Appointments")
     this.menu = def.value;
     this.navMenuItems.push(def);
-    this.navMenuItems.push(new NavMenuItem("/assets/svg/appointment.svg", "Appointments", "Appointments"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/hearts.svg", "Favourites", "Favourites"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/settings.svg", "Account&Settings", "Settings"));
   }

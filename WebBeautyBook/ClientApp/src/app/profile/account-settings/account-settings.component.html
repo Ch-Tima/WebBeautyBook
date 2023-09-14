@@ -2,10 +2,8 @@
     <h2 class="title">Account & Settings</h2>
 
     <h4>Account Details</h4>
-
     <div class="form" #userDataForm>
-        <!--enctype="multipart/form-data"-->
-        <form *ngIf="user$ | async; else loading" [formGroup]="mForm" (ngSubmit)="submit()">
+        <form *ngIf="user$|async;else loading" [formGroup]="mForm" (ngSubmit)="submit()">
 
             <div class="row">
                 <div class="form-group col-lg-5 my-1">
@@ -37,7 +35,7 @@
                 <div class="form-group col custom-file my-1" style="margin: auto 0;">
                     <div class="row">
                         <div class="col-3">
-                            <img class="icon" *ngIf="url == null else imgView" src="https://localhost:7082{{mForm.controls['photo'].getRawValue()}}" />
+                            <img class="icon" *ngIf="url == null else imgView" src="{{mForm.controls['photo'].getRawValue()}}" />
                             <ng-template #imgView><img class="icon" *ngIf="url != null" src="{{url}}"/></ng-template>
                         </div>
                         <div class="col" style="margin: auto 0;">
@@ -60,9 +58,9 @@
             </div>
 
         </form>
-        
         <ng-template #loading>
-            <h4>Loading User...</h4>
+            <p class="text-center h5">Loading user date...</p>
+            <mat-spinner style="margin: 0 auto;"></mat-spinner>
         </ng-template>
     </div>
 
