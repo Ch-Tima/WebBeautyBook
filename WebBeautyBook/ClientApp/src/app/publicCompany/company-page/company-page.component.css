@@ -147,8 +147,8 @@ img{
 }
 
 /*contacts-data*/
-.contacts-item{
-    display: flex;
+.contacts-item {
+  display: flex;
 }
 .contacts-item img{
     width: 28px;

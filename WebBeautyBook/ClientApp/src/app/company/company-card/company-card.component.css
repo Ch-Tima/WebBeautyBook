@@ -1,3 +1,7 @@
+.company-card a {
+  text-decoration: none
+}
+
 .card{
     margin: 1em auto;
     position: relative;

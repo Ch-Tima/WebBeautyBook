@@ -152,10 +152,16 @@
     .content-category{
         width: 100%;
     }
-    .container{
-        max-width: 375px;
-        margin: 0 auto;
-    }
+  .container-recommended{
+    max-width: 470px;/*235px*/
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 400px) {
+    .container-recommended{
+        max-width: 235px;
+      }
 }
 
 

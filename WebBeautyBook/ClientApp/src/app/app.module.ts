@@ -66,12 +66,14 @@ import { DatePipe } from '@angular/common';
 import { AppointmentListComponent } from './profile/appointment-list/appointment-list.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { SearchCompanyInputComponent } from './search-company-input/search-company-input.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
 
   //Public
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'search', component: SearchPageComponent },
+  { path: 'privacyPolicy', component: PrivacyPolicyComponent },
 
    //AdminPanel
   { path: "adminPanel", component: AdminPageComponent },
@@ -134,6 +136,7 @@ const routes: Routes = [
     AppointmentListComponent,
     SearchPageComponent,
     SearchCompanyInputComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     BrowserModule,

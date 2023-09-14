@@ -45,79 +45,85 @@
     </div>
 
     <div class="right-container">
-        <h4 class="title" *ngIf="company">{{company.name}}</h4>
+      <h4 class="title" *ngIf="company">{{company.name}}</h4>
 
-        <div class="staffers-data">
-            <p>Staffers</p>
-            <drag-scroll #nav class="staffers-carousel" *ngIf="workers != undefined;else loadingWorkers">
-                <ng-container *ngIf="workers.length > 0;else noWorkers">
-                    <div class="staffers-item" drag-scroll-item *ngFor="let item of workers">
-                        <img src="{{item.baseUser.photo}}" />
-                        <p class="staffers-name">{{item.baseUser.userName}} {{item.baseUser.userSurname}}</p>
-                    </div> 
-                </ng-container>
-                <ng-template #noWorkers><p class="text-center">no workers</p></ng-template>
-            </drag-scroll>
-            <ng-template #loadingWorkers><p class="text-center">Loading...</p></ng-template>
-        </div>
-        <hr>
-        
-        <div class="contacts-data">
-            <div class="contacts-item" *ngIf="company.phonenumber != ''">
-                <img src="../../assets/svg/phone.svg">
-                <p (click)="copyToClipboard(company.phonenumber)" class="copyable-text">{{company.phonenumber}}</p>
+      <div class="staffers-data">
+        <p>Staffers</p>
+        <drag-scroll #nav class="staffers-carousel" *ngIf="workers != undefined;else loadingWorkers">
+          <ng-container *ngIf="workers.length > 0;else noWorkers">
+            <div class="staffers-item" drag-scroll-item *ngFor="let item of workers">
+              <img src="{{item.baseUser.photo}}" />
+              <p class="staffers-name">{{item.baseUser.userName}} {{item.baseUser.userSurname}}</p>
             </div>
-            <div class="contacts-item" *ngIf="company.email != ''">
-                <img src="../../assets/svg/email.svg">
-                <p (click)="copyToClipboard(company.email)" class="copyable-text">{{company.email}}</p>
-            </div>
-        </div>
-        <hr>
+          </ng-container>
+          <ng-template #noWorkers><p class="text-center">no workers</p></ng-template>
+        </drag-scroll>
+        <ng-template #loadingWorkers><p class="text-center">Loading...</p></ng-template>
+      </div>
+      <hr>
 
-        <div class="schedule-data" *ngIf="company != undefined">
-            <div class="schedule-item">
-                <p>Sunday</p>
-                <p id="su">{{getOpenHours(0)}}</p>
-            </div>
-            <div class="schedule-item">
-                <p>Monday</p>
-                <p id="mo">{{getOpenHours(1)}}</p>
-            </div>
-            <div class="schedule-item">
-                <p>Tuesday</p>
-                <p id="tu">{{getOpenHours(2)}}</p>
-            </div>
-            <div class="schedule-item">
-                <p>Wednesday</p>
-                <p id="we">{{getOpenHours(3)}}</p>
-            </div>
-            <div class="schedule-item">
-                <p>Thursday</p>
-                <p id="th">{{getOpenHours(4)}}</p>
-            </div>
-            <div class="schedule-item">
-                <p>Friday</p>
-                <p id="fr">{{getOpenHours(5)}}</p>
-            </div>
-            <div class="schedule-item">
-                <p>Saturday</p>
-                <p id="sa">{{getOpenHours(6)}}</p>
-            </div>
-        </div>
-        <hr>  
+      <div class="scroll-container">
+        <p (click)="copyToClipboard(company.location.country + ' ' + company.location.city + ' ' + company.address)"
+           style="overflow-x: scroll; white-space: nowrap;" class="m-0">{{company.location.country}} {{company.location.city}} {{company.address}}</p>
+      </div>
+      <hr>
 
-        <div class="social-links">
-            <a href="#">
-                <img src="../../assets/svg/instagram.svg">
-            </a>
-            <a href="#">
-                <img src="../../assets/svg/facebook.svg">
-            </a>
-            <a href="#">
-                <img src="../../assets/svg/twitter.svg">
-            </a>
+      <div class="contacts-data">
+        <div class="contacts-item" *ngIf="company.phonenumber != ''">
+          <img src="../../assets/svg/phone.svg">
+          <p (click)="copyToClipboard(company.phonenumber)" class="copyable-text">{{company.phonenumber}}</p>
         </div>
-        <hr>
+        <div class="contacts-item" *ngIf="company.email != ''">
+          <img src="../../assets/svg/email.svg">
+          <p (click)="copyToClipboard(company.email)" class="copyable-text">{{company.email}}</p>
+        </div>
+      </div>
+      <hr>
+
+      <div class="schedule-data" *ngIf="company != undefined">
+        <div class="schedule-item">
+          <p>Sunday</p>
+          <p id="su">{{getOpenHours(0)}}</p>
+        </div>
+        <div class="schedule-item">
+          <p>Monday</p>
+          <p id="mo">{{getOpenHours(1)}}</p>
+        </div>
+        <div class="schedule-item">
+          <p>Tuesday</p>
+          <p id="tu">{{getOpenHours(2)}}</p>
+        </div>
+        <div class="schedule-item">
+          <p>Wednesday</p>
+          <p id="we">{{getOpenHours(3)}}</p>
+        </div>
+        <div class="schedule-item">
+          <p>Thursday</p>
+          <p id="th">{{getOpenHours(4)}}</p>
+        </div>
+        <div class="schedule-item">
+          <p>Friday</p>
+          <p id="fr">{{getOpenHours(5)}}</p>
+        </div>
+        <div class="schedule-item">
+          <p>Saturday</p>
+          <p id="sa">{{getOpenHours(6)}}</p>
+        </div>
+      </div>
+      <hr>
+
+      <div class="social-links">
+        <a href="#">
+          <img src="../../assets/svg/instagram.svg">
+        </a>
+        <a href="#">
+          <img src="../../assets/svg/facebook.svg">
+        </a>
+        <a href="#">
+          <img src="../../assets/svg/twitter.svg">
+        </a>
+      </div>
+      <hr>
 
     </div>
 
