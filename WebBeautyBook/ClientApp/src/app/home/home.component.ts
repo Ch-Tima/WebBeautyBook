@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit {
 
   //Enable Location Services
   public turnOnLocation(){
-    alert("TODO")
+    $("#enable-location").css("display", "none")
   }
 
   public turnOffLocation(){
