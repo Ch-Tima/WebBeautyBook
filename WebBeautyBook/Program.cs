@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Azure.Identity;
 using BLL.Infrastructure;
 using BLL.Services;
@@ -44,6 +45,15 @@ builder.Services.Configure<Domain.Models.SendGridEmailSenderOption>(opt =>
     opt.SenderName = "Tima";
 });
 
+// Set IpRateLimitOptions
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+builder.Services.AddInMemoryRateLimiting();
+
 builder.Services.Configure(builder.Configuration);
 
 // Add services to the container.
@@ -76,6 +86,8 @@ app.UseSwaggerUI(opt =>
     opt.SwaggerEndpoint($"/swagger/{apiVersion}/swagger.json", "BeautyBookApi");
 });
 
+app.UseIpRateLimiting();
+
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
@@ -86,6 +98,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
-app.MapFallbackToFile("index.html"); ;
+app.MapFallbackToFile("index.html");
 
 app.Run();

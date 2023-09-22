@@ -72,9 +72,8 @@ namespace WebBeautyBook.Controllers
             Expression<Func<Company, bool>> filterExpression = company => 
                 (string.IsNullOrEmpty(name) || company.Name.Contains(name)) && 
                 (string.IsNullOrEmpty(category) || company.Services.Any(s => s.Category.Name.Contains(category))) &&
-                (string.IsNullOrEmpty(location) || (company.Location.Country.Contains(location) || company.Location.City.Contains(location) || company.Address.Contains(location)));
-
-            return await _companyService.GetFindIncludeAsync(filterExpression);
+                (string.IsNullOrEmpty(location) || (company.Location.Country + " " + company.Location.City + " " + company.Address).Contains(location));
+            return await _companyService.GetFindIncludeAsync(filterExpression);;
         }
 
         [HttpGet("getMyCompany")]

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
+import {Component, EventEmitter, Input, Output, AfterViewInit} from '@angular/core';
+import {LocationService} from "../services/location/location.service";
 
 @Component({
   selector: 'app-search-company-input',
@@ -13,17 +14,22 @@ export class SearchCompanyInputComponent implements AfterViewInit {
   public categoryName:string|undefined
   @Input()
   public locationName:string|undefined
-  @Input() 
+  @Input()
   public waitClick: boolean = true;
-  @Output() 
+  @Output()
   public resultQuery = new EventEmitter<SearchData>();
 
+  public constructor(private location: LocationService) {
+  }
+
+  // AfterViewInit lifecycle hook
   public ngAfterViewInit(): void {
-    if(!this.waitClick){
+    if(!this.waitClick){// Automatically trigger a query if waitClick is set to false
       this.getQuery();
     }
   }
 
+  // Emits a search query with provided parameters
   public getQuery(){
     this.resultQuery.emit({
       companyName: this.companyName??'',
@@ -33,6 +39,7 @@ export class SearchCompanyInputComponent implements AfterViewInit {
   }
 
 }
+// Interface to define the shape of a search query
 export interface SearchData{
   companyName:string;
   categoryName:string;

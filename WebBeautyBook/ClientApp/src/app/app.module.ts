@@ -67,6 +67,7 @@ import { AppointmentListComponent } from './profile/appointment-list/appointment
 import { SearchPageComponent } from './search-page/search-page.component';
 import { SearchCompanyInputComponent } from './search-company-input/search-company-input.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import {LocationService} from "./services/location/location.service";
 
 const routes: Routes = [
 
@@ -77,7 +78,7 @@ const routes: Routes = [
 
    //AdminPanel
   { path: "adminPanel", component: AdminPageComponent },
-  
+
   //CompnyPanel
   { path: "companyPanel", component: MyCompanyPanelComponent },
   { path: "acceptInvitation" , component: AcceptInvitationPageComponent },
@@ -152,7 +153,7 @@ const routes: Routes = [
     DragScrollModule,
     ToastrModule.forRoot(),
     //mat for timepicker and datepicker
-    MatFormFieldModule, MatInputModule, MatDatepickerModule, 
+    MatFormFieldModule, MatInputModule, MatDatepickerModule,
     MatNativeDateModule, MatCardModule, MatButtonModule,
     MatCheckboxModule, MatSelectModule, MatChipsModule,
     MatRadioModule, MatTableModule, MatPaginatorModule,
@@ -161,6 +162,7 @@ const routes: Routes = [
   ],
   providers: [
     DatePipe,
+    LocationService,
     provideAnimations(),
     provideToastr()
   ],
