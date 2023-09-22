@@ -1,5 +1,5 @@
 <div class="container">
-    <app-search-company-input (resultQuery)="openSearch($event)" [waitClick]="true"></app-search-company-input>
+    <app-search-company-input #search (resultQuery)="openSearch($event)" [waitClick]="true"></app-search-company-input>
     <!--Carousel Recommended (top 12)-->
     <ng-container *ngIf="topCompany == undefined;else carouselRecommended"><mat-spinner style="margin: 0 auto;"></mat-spinner></ng-container>
     <ng-template #carouselRecommended>
@@ -18,7 +18,7 @@
         <ng-template #notFound><p class="text-center h5">NotFound</p></ng-template>
     </ng-template>
     <!--Enable Location Services?-->
-    <div #enableLocationServices class="enable-location" id="enable-location">
+    <div #enableLocationServices class="enable-location" id="enable-location" *ngIf="!location.isLocationAccessGranted()">
         <div class="location-data">
             <div class="location-text">
                 <h4>Want to enable location services?</h4>

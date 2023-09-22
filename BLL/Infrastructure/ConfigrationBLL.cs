@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.Text;
+using AspNetCoreRateLimit;
 
 namespace BLL.Infrastructure
 {
@@ -46,9 +47,7 @@ namespace BLL.Infrastructure
             services.AddTransient<CompanyOpenHoursRepository>();
             services.AddTransient<CompanyImagesRepository>();
             services.AddTransient<CompanyLikeRepository>();
-
-            services.AddMemoryCache();
-
+            
             // Set settings Identity
             services.AddIdentity<BaseUser, IdentityRole>(opt =>
             {
