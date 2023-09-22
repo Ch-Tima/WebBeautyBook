@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DragScrollComponent } from 'ngx-drag-scroll';
-import {HttpClient, HttpResponseBase} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { Category } from '../models/Category';
 import { Company } from '../models/Company';
 import * as $ from "jquery";
@@ -38,17 +38,19 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  // Opens a search and passes the results to the URL
   public openSearch(search:SearchData){
     console.log(search);
     this.router.navigate([`/search`], { queryParams: { name: search.companyName, category: search.categoryName, location: search.locationName} });
   }
 
-  //Carousel Recommended (top 10)
+  // Carousel of recommended companies: next element
   public moveNext() {
     if(this.ds == undefined) return;
     this.ds.moveLeft();
   }
 
+  // Carousel of recommended companies: previous element
   public movePrevrol() {
     if(this.ds == undefined){
       return;
@@ -56,6 +58,7 @@ export class HomeComponent implements OnInit {
     this.ds.moveRight();
   }
 
+  // Loads recommended companies
   private async loadCompanies(){
     return this.http.get<Company[]>("api/Company/getTopTen").toPromise()
       .then(result => {
@@ -84,18 +87,20 @@ export class HomeComponent implements OnInit {
     }).catch(e => console.log(e));
   }
 
-  //Enable Location Services
+  // Enable location service
   public async turnOnLocation(){
     $("#enable-location").css("display", "none");
     this.location.setLocationAccessGranted(true);
     await this.setLocationToSearch();
   }
 
+  // Disable location service
   public async turnOffLocation(){
     $("#enable-location").css("display", "none")
     this.location.setLocationAccessGranted(false);
   }
 
+  // Set location for search
   private async setLocationToSearch(){
     // Get the user's location from local storage
     const localLocation = this.location.getLocation();
@@ -123,8 +128,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private async loadCategories():Promise<void|Category[]|undefined>{
-    return await this.http.get<Category[]>("api/Category/GetMainCategories", {}).toPromise().catch(e => console.log(e));
+  // Load categories
+  private async loadCategories():Promise<void|Category[]|undefined>{    try {
+    return await this.http.get<Category[]>('api/Category/GetMainCategories', {}).toPromise();
+  } catch (e) {
+    console.log(e);
+  }
   }
 
 }

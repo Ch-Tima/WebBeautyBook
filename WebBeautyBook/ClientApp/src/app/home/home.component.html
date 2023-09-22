@@ -7,17 +7,19 @@
             <div *ngIf="topCompany != undefined && topCompany.length > 0;else notFound" class="container-recommended">
                 <p class="h4">Recommended</p>
                 <drag-scroll #nav [scrollbar-hidden]="true">
+                  <!-- Loop through recommended companies and display them -->
                     <ng-container *ngFor="let item of topCompany; let i = index">
                         <app-company-card drag-scroll-item [company]="item"></app-company-card>
                     </ng-container>
                 </drag-scroll>
+                <!-- Navigation buttons for the carousel -->
                 <img class="carousel-cont-prevrol" (click)="moveNext()" src="../../assets/svg/arrow-left.svg">
                 <img class="carousel-control-next" (click)="movePrevrol()" src="../../assets/svg/arrow-left.svg">
             </div>
         </div>
         <ng-template #notFound><p class="text-center h5">NotFound</p></ng-template>
     </ng-template>
-    <!--Enable Location Services?-->
+    <!--Enable Location Services-->
     <div #enableLocationServices class="enable-location" id="enable-location" *ngIf="!location.isLocationAccessGranted()">
         <div class="location-data">
             <div class="location-text">
@@ -25,6 +27,7 @@
                 <p>Turn on location services to find the best salons in your area.</p>
             </div>
             <div class="location-btn">
+                <!-- Buttons to enable or disable location services -->
                 <button (click)="turnOnLocation()" class="btn btn-success">Yes</button>
                 <button (click)="turnOffLocation()" class="btn btn-outline-success">No</button>
             </div>
@@ -36,8 +39,10 @@
         <div class="container-category">
             <ng-container *ngIf="categories != undefined;else loadCategories">
                 <ng-container *ngIf="categories != undefined && categories.length > 0;else notFound">
+                  <!-- Loop through categories and subcategories -->
                     <div class="item-category" *ngFor="let item of categories">
                         <div class="content-category">
+                          <!-- Links to search by category -->
                             <a href="/search?category={{item.name}}" class="title-category">{{item.name}}</a>
                             <ul>
                                 <li *ngFor="let subItem of item.categories">
