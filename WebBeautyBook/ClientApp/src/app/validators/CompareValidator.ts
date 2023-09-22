@@ -1,13 +1,16 @@
 import { FormGroup } from "@angular/forms";
 
-export function CompareValidator(nameConrolFirst: string, nameConrolSecond: string) {
+// Define a custom validator function that compares two form control values
+export function CompareValidator(nameControlFirst: string, nameControlSecond: string) {
 
+  // Return a validator function that takes a FormGroup as input
   return (formGroup: FormGroup) => {
-    const control = formGroup.controls[nameConrolFirst];
-    const matchingControl = formGroup.controls[nameConrolSecond];
-    if (matchingControl.errors && !matchingControl.errors.confirmedValidator) {
-      return;
-    }
+    // Get references to the two form controls we want to compare
+    const control = formGroup.controls[nameControlFirst];
+    const matchingControl = formGroup.controls[nameControlSecond];
+    // Check if the second control already has an error of 'confirmedValidator'
+    if (matchingControl.errors && !matchingControl.errors.confirmedValidator) return;
+    // Compare the values of the two controls
     if (control.value !== matchingControl.value) {
       matchingControl.setErrors({ confirmedValidator: true });
     } else {

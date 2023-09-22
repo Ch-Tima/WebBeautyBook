@@ -78,27 +78,22 @@ import { SearchCompanyInputComponent } from './components/search/search-company-
 import { ImageSliderComponent } from './components/image-slider/image-slider.component';
 
 const routes: Routes = [
-
   //Public
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'search', component: SearchPageComponent },
   { path: 'privacyPolicy', component: PrivacyPolicyComponent },
-
    //AdminPanel
   { path: "adminPanel", component: AdminPageComponent },
-
-  //CompnyPanel
+  //CompanyPanel
   { path: "companyPanel", component: MyCompanyPanelComponent },
   { path: "acceptInvitation" , component: AcceptInvitationPageComponent },
   { path: "company", component: CompanyPageComponent },
-
   //Auth
   { path: "login", component: LoginPageComponent},
   { path: "register", component: RegisterPageComponent },
   { path: "forgotPassword", component: ForgotPasswordComponent },
   { path: "resetPassword", component: ResetPasswordComponent },
   { path: "emailConfirmation", component: EmailConfirmationComponent },
-
   //Profile
   { path: 'profile', component: ProfilePageComponent },
 ];
