@@ -17,11 +17,11 @@ export class AccountSettingsComponent {
   public user$:Observable<UserDataModel|undefined> = this.getUserData();
   public mForm: FormGroup;
 
-  public url: string|ArrayBuffer|null|undefined = null; //preview image selected by the user
-  private fileToUpload:File|undefined; //the file selected by the user
+  public url: string|ArrayBuffer|null|undefined = null; // Preview image selected by the user
+  private fileToUpload: File|undefined; // The file selected by the user
 
   constructor(private auth: AuthService, private http: HttpClient){
-    //Init form
+    //Initialize the form
     this.mForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.minLength(4)]),
       surname: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.minLength(4)]),
@@ -32,22 +32,16 @@ export class AccountSettingsComponent {
   }
 
   public async submit(){
-    if(!this.mForm.valid)
-    {
-      console.log("form is not valid");
-      return;
-    }
+    if(!this.mForm.valid) return;
+    // Wrap data in FormData
+    const formData = new FormData();
+    if(this.fileToUpload != undefined) formData.append('file', this.fileToUpload, this.fileToUpload.name);
 
-    //wrap data in FormData
-    var formData = new FormData();
-    if(this.fileToUpload != undefined){
-      formData.append('file', this.fileToUpload, this.fileToUpload.name);
-    }
     formData.append('name', this.mForm.controls['name'].getRawValue())
     formData.append('surname', this.mForm.controls['surname'].getRawValue())
     formData.append('phoneNumber', this.mForm.controls['phoneNumber'].getRawValue() ?? '')
 
-    //send
+    // Send data to the server
     await this.http.post<UserDataModel>("api/User", formData, {
       headers: this.auth.getHeadersWithToken(),
     }).toPromise().then(result => {
@@ -56,7 +50,7 @@ export class AccountSettingsComponent {
           user = result;//update form user data
           this.auth.saveUserData(result);//update local user data "in localStorage"
           this.isChangeFrom = false;//hide button
-          alert("Ok");//TODO replace with beautiful push notifications
+          alert("Ok");//TODO: replace with beautiful push notifications
         }else{
           alert("What!?")
         }
@@ -72,9 +66,9 @@ export class AccountSettingsComponent {
   }
 
   public changePassword(){
-    var email = this.auth.getLocalUserDate()?.email;
+    const email = this.auth.getLocalUserDate()?.email;
     if(email != undefined && email.length > 0){
-      //request a password reset
+      // Request a password reset
       this.auth.ForgotPassword(email).subscribe(result => {
         alert("Check your email and follow the instructions to reset your password and sign in again.");
       }, error => {
@@ -86,18 +80,16 @@ export class AccountSettingsComponent {
   public onFileChange(event:any) {
     if (event.target.files && event.target.files[0]){
       const reader = new FileReader();
-
       this.fileToUpload = event.target.files[0];
       reader.readAsDataURL(event.target.files[0]);
       reader.onloadend = (e) => {
         this.url = e.target?.result;
       };
-
-      this.isChangeFrom = true; //show button
+      this.isChangeFrom = true; //Show button
     }
   }
 
-  //just load user data from server
+  // Load user data from the server
   private getUserData(){
     return this.auth.getUserData().pipe(tap(user => {
       this.mForm.patchValue(user)

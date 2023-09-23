@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import {Company} from "../../../models/Company";
 
 @Component({
@@ -10,8 +10,8 @@ import {Company} from "../../../models/Company";
 export class CompanyPanelComponent {
 
   companies: Company[] = [];
-
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string){
+  
+  constructor(private http: HttpClient){
     this.loadCompanies();
   }
 
@@ -20,7 +20,7 @@ export class CompanyPanelComponent {
   }
 
   private loadCompanies(){
-    this.http.get<Company[]>(this.baseUrl + "api/Company/getAll").subscribe(
+    this.http.get<Company[]>("api/Company/getAll").subscribe(
       result => {
         this.companies = result;
       }, error => {

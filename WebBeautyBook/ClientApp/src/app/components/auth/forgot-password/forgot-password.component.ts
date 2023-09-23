@@ -9,35 +9,30 @@ import {AuthService} from "../../../services/auth/auth.service";
   styleUrls: ['./forgot-password.component.css']
 })
 export class ForgotPasswordComponent {
-  mForm: FormGroup;
-  result: string;
-  isErrorResult: boolean;
+
+  mForm: FormGroup;// Form group for forgot password input fields
+  result: string = '';// Variable to store the result message
+  isErrorResult: boolean = false; // Boolean to indicate if the result is an error
 
   constructor(private auth: AuthService, private formBuilder: FormBuilder, private router: Router) {
+    // Check if the user already has a token, if so, redirect to the home page
     if(auth.hasToken()) router.navigate(["/"]);
+    // Initialize the forgot password form with validation
     this.mForm = formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email])
     });
-    this.result = '';
-    this.isErrorResult = false;
   }
 
   public onSubmit(){
-
     if(!this.mForm.valid) return;
-
-    var email = this.mForm.controls["email"].getRawValue();
-    this.auth.ForgotPassword(email)
-      .subscribe(
-        result => {
-          console.log(result);
-          this.result = 'We have sent you a password reset link to your email address "' + email + '"';
-          this.isErrorResult = false;
-        }, error => {
-          console.log(error);
-          this.result = error.error;
-          this.isErrorResult = true;
-        }
-      );
+    const email = this.mForm.controls["email"].getRawValue();
+    this.auth.ForgotPassword(email).toPromise().then(result => {
+      this.result = 'We have sent you a password reset link to your email address "' + email + '"';
+      this.isErrorResult = false;
+    }).catch(error => {
+      console.error(error);
+      this.result = error.error;
+      this.isErrorResult = true;
+    })
   }
 }

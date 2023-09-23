@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { UserDataModel } from '../../models/UserDataModel';
-import { Router } from '@angular/router';
 import {AuthService} from "../../services/auth/auth.service";
 import {NavbarService} from "../../services/navbar/navbar.service";
 
@@ -10,16 +9,16 @@ import {NavbarService} from "../../services/navbar/navbar.service";
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  isExpanded = false;
 
+  isExpanded = false;
   userData: UserDataModel;
   isAuth: boolean;
 
-  constructor(private rout: Router, private auth: AuthService, public nav: NavbarService) {
-    this.userData = new UserDataModel();
+  constructor(private auth: AuthService, public nav: NavbarService) {
+    this.userData = new UserDataModel();// Initialize user data and authentication status
     this.isAuth = this.auth.hasToken();
     if (this.isAuth) {
-      this.getUserData();
+      this.getUserData();// Load user data if authenticated
     }
   }
 
@@ -33,18 +32,18 @@ export class NavMenuComponent {
 
 
   public signOut() {
-    this.auth.signOut();
+    this.auth.signOut();// Sign out the user
   }
 
   private getUserData() {
+    // Get user data from the server
     this.auth.getUserData().subscribe(
       result => {
-        this.userData = result;
+        this.userData = result;// Get user data from the server
         this.auth.saveUserData(result);
       }, error => {
-        alert("Error: nav-menu");
-        console.log(error);
-        this.auth.signOut();
+        console.error(error);// Handle errors
+        this.auth.signOut();// Sign out the user in case of an error
       });
   }
 

@@ -10,30 +10,28 @@ import {AuthService} from "../../../services/auth/auth.service";
 })
 export class MyCompanyPanelComponent {
 
-  public menu:string = "";
-  public errorMessage: string = "";
-
-  public navMenuItems: NavMenuItem[] = [];
+  public menu: string = ""; // Current menu selection
+  public errorMessage: string = ""; // Error message, if any
+  public navMenuItems: NavMenuItem[] = []; // Array of navigation menu items
 
   constructor(private auth: AuthService, private rout: Router){
-
-    var user = this.auth.getLocalUserDate();
-    if(user == null){
-      this.rout.navigate(["login"]);
+    // Check if user is authenticated
+    const user = this.auth.getLocalUserDate();
+    if(!user || (!user.roles.includes('own_company') && !user.roles.includes('worker'))){
+      this.rout.navigate(["login"]);// Redirect to the login page if not authenticated
     }else{
-      if(!user.roles.includes('own_company') && !user.roles.includes('worker')){
-        rout.navigate(["/"]);
-      }
+      this.InitNavLeftMenuItems();// Initialize navigation menu items
     }
-    this.InitNavLeftMenuItems();
   }
 
+  // Handle navigation menu item selection
   public navLeftMenu(namePanel: string){
     this.menu = namePanel;
   }
 
+  // Initialize navigation menu items
   private InitNavLeftMenuItems (){
-    var mainMenu = new NavMenuItem("/assets/svg/home.svg", "Main", "Main")
+    const mainMenu = new NavMenuItem("/assets/svg/home.svg", "Main", "Main")
     this.menu = mainMenu.value;
     this.navMenuItems.push(mainMenu);
     this.navMenuItems.push(new NavMenuItem("/assets/svg/appointment.svg", "Appointment", "Appointment"));

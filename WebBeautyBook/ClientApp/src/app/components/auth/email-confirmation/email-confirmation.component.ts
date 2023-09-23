@@ -15,22 +15,19 @@ export class EmailConfirmationComponent {
     //Pulling a token and an email address from a URL
     const token = this.activityRoute.snapshot.queryParams["token"];
     const email = this.activityRoute.snapshot.queryParams["email"];
-
     //If token or email address not found, redirect to home page
-    if(token == undefined || email == undefined) this.router.navigate(["/"]);
-
+    if(!token || !email) this.router.navigate(["/"]);
     //Otherwise send token and email address to API
     this.send(token, email);
   }
 
   private send(token: string, email:string){
-    this.auth.emailConfirmation(token, email).subscribe(
-      result => {
+    this.auth.emailConfirmation(token, email).toPromise()
+      .then(result => {
         this.isSuccess = true;
-      },error => {
-        this.isSuccess = false;
-        this.errorMessage = error.error;
-      }
-    );
+      }).catch(error => {
+      this.isSuccess = false;
+      this.errorMessage = error.error;
+    });
   }
 }

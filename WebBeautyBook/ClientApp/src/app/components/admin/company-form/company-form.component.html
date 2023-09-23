@@ -39,7 +39,7 @@
 
         <div>
             <label>Choose a Country:</label>
-            <select (change)="loadCityies($event)" name="Country">
+            <select (change)="loadCities($event)" name="Country">
                 <option selected disabled>countries</option>
                 <option *ngFor="let item of listCountry" [value]="item.country" >{{item.country}}</option>
             </select>

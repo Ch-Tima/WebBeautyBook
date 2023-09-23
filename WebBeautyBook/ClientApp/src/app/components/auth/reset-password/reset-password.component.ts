@@ -10,11 +10,11 @@ import { CompareValidator } from 'src/app/validators/CompareValidator';
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
+
   mForm: FormGroup = new FormGroup({});
   lastErrorMessage: string = "";
 
-  constructor(private auth: AuthService, private formBuilder: FormBuilder,
-    private router: Router, private activityRoute: ActivatedRoute)
+  constructor(private auth: AuthService, private formBuilder: FormBuilder, private router: Router, private activityRoute: ActivatedRoute)
   {
     this.mForm = formBuilder.group({
       email: new FormControl('', [Validators.required]),
@@ -28,12 +28,10 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     //Pulling a token and an email address from a URL
-    var token = this.activityRoute.snapshot.queryParams["token"];
-    var email = this.activityRoute.snapshot.queryParams["email"];
-
+    const token = this.activityRoute.snapshot.queryParams["token"];
+    const email = this.activityRoute.snapshot.queryParams["email"];
     //If token or email address not found, redirect to home page
-    if(token == undefined || email == undefined) this.router.navigate(["/"]);
-
+    if(!token || !email) this.router.navigate(["/"]);
     //Add a token and an email to the form
     this.mForm.controls['token'].setValue(token);
     this.mForm.controls['email'].setValue(email);
@@ -41,15 +39,15 @@ export class ResetPasswordComponent implements OnInit {
 
   onSubmit() {
     this.auth.ResetPassword(this.mForm.value)
-      .subscribe(result => {
-        this.router.navigate(["/login"]);
-      }, error => {
-        //If there is an error in the model, then a list of errors will come
-        if(error.error.errors != undefined && Object.values(error.error.errors)[0] != undefined){
-          this.lastErrorMessage = Object.values(error.error.errors)[0] + "";
-        }else{//Just an error line
-          this.lastErrorMessage = error.error;
-        }
-      });
+      .toPromise().then(result => {
+      this.router.navigate(["/login"]);
+    }).catch(error => {
+      //If there is an error in the model, then a list of errors will come
+      if(error.error.errors != undefined && Object.values(error.error.errors)[0] != undefined){
+        this.lastErrorMessage = Object.values(error.error.errors)[0] + "";
+      }else{//Just an error line
+        this.lastErrorMessage = error.error;
+      }
+    });
   }
 }

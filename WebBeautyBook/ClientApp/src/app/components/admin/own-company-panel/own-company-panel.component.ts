@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserDataModel } from 'src/app/models/UserDataModel';
 import {AuthService} from "../../../services/auth/auth.service";
 
@@ -12,13 +12,13 @@ export class OwnCompanyPanelComponent {
 
   users: UserDataModel[];
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private auth: AuthService) {
+  constructor(private http: HttpClient, private auth: AuthService) {
     this.users = [];
     this.loadAllManagers();
   }
 
   loadAllManagers(){
-    this.http.get<UserDataModel[]>(this.baseUrl + "api/Auth?role=own_company", {
+    this.http.get<UserDataModel[]>("api/Auth?role=own_company", {
       headers: this.auth.getHeadersWithToken()
     }).subscribe(
       result =>{

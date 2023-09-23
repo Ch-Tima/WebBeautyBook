@@ -1,20 +1,16 @@
 <div class="main-container">
     <div class="header">
-        <app-search-company-input (resultQuery)="saerch($event)" [companyName]="name" [categoryName]="category" [locationName]="location" [waitClick]="false"></app-search-company-input>
+        <app-search-company-input (resultQuery)="search($event)" [companyName]="name" [categoryName]="category" [locationName]="location" [waitClick]="false"></app-search-company-input>
     </div>
-
     <div class="list-container">
         <div class="list-company">
-        
             <ng-container *ngIf="companies != undefined;else loading">
                 <ng-container *ngIf="companies.length > 0;else notFound">
                     <app-company-card *ngFor="let item of companies" [company]="item" [style]="companyCardStyle"></app-company-card>
                 </ng-container>
                 <ng-template #notFound><p class="text-center h5">Not found</p></ng-template>
             </ng-container>
-    
             <ng-template #loading><mat-spinner style="margin: 0 auto;"></mat-spinner></ng-template>
-    
         </div>
     </div>
 </div>

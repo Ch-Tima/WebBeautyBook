@@ -24,7 +24,6 @@ export class AppointmentDialogComponent implements OnInit{
   constructor(private auth: AuthService, private http: HttpClient, private formBuilder: FormBuilder, private dialg: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : AppointmentDialogDate){
     //Override close for sending results
     this.dialg.backdropClick().subscribe(() => this.dialg.close(new AppointmentDialogResult()))
-
     this.mForm = this.formBuilder.group({
       date: [null, [Validators.required]],
       time: [null, [Validators.required]],
@@ -36,7 +35,7 @@ export class AppointmentDialogComponent implements OnInit{
 
   public async ngOnInit() {
     if(!this.data.isUpdateMode && this.data.serviceId != undefined){
-      var worker = await this.loadServiceDate(this.data.serviceId);
+      const worker = await this.loadServiceDate(this.data.serviceId);
       if(worker == undefined || worker.length == 0){
         this.dialg.close();
         return;
@@ -55,13 +54,10 @@ export class AppointmentDialogComponent implements OnInit{
   }
 
   public async findFreeTime(){
-
-    console.log(this.mForm.value);
-
+    // Get an employee's free time for a service
     if(!this.mForm.controls.date.valid || !this.mForm.controls.workerId.valid) return;
-
     try{//get an employee's free time for a service
-      var availableTime = await this.http.get<string[]>(`api/Worker/getWorkersFreeTimeForService?workerId=${this.mForm.controls.workerId.getRawValue()}&date=${this.mForm.controls.date.getRawValue().toLocaleDateString()}&serviceId=${this.data.serviceId}`, {
+      const availableTime = await this.http.get<string[]>(`api/Worker/getWorkersFreeTimeForService?workerId=${this.mForm.controls.workerId.getRawValue()}&date=${this.mForm.controls.date.getRawValue().toLocaleDateString()}&serviceId=${this.data.serviceId}`, {
       }).toPromise().catch(e => {
         console.log(e);
         this.msgForAvailableTime = e.error;
@@ -115,11 +111,13 @@ export class AppointmentDialogComponent implements OnInit{
   }
 
 }
+// Define a class for the data passed to the dialog
 export class AppointmentDialogDate{
   isUpdateMode: boolean = false;
   serviceId: string|undefined;
   public value: Appointment|undefined;
 }
+// Define a class for the result returned from the dialog
 export class AppointmentDialogResult{
   public isSuccess: boolean = false;
   public action: 'remove'|'update'|'create'|'close' = 'close';

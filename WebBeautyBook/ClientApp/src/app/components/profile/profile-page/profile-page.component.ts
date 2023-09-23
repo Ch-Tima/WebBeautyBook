@@ -10,26 +10,28 @@ import { NavMenuItem } from '../../../models/NavMenuItem';
 })
 export class ProfilePageComponent {
 
-  public menu: string = "";
-  public navMenuItems: NavMenuItem[] = [];
-
+  // Initialize public properties
+  public menu: string = ""; // Represents the currently selected menu item
+  public navMenuItems: NavMenuItem[] = []; // Array to hold navigation menu items
   constructor(private auth: AuthService, private rout: Router){
-    var user = this.auth.getLocalUserDate();
-    if(user == null){
+    const user = this.auth.getLocalUserDate(); // Check if a user is logged in
+    if(user == null){// If no user is logged in, redirect to the login page
       this.rout.navigate(["login"]);
       return;
     }
-    this.InitNavLeftMenuItems();
+    this.InitNavLeftMenuItems();// Check if a user is logged in
   }
 
   public navLeftMenu(menu: string){
     this.menu = menu;
   }
 
+  // Method to initialize navigation menu items
   private InitNavLeftMenuItems (){
-    var def = new NavMenuItem("/assets/svg/appointment.svg", "Appointments", "Appointments")
+    // Create a default menu item and set it as the active menu
+    const def = new NavMenuItem("/assets/svg/appointment.svg", "Appointments", "Appointments")
     this.menu = def.value;
-    this.navMenuItems.push(def);
+    this.navMenuItems.push(def);// Push the default menu item to the array
     this.navMenuItems.push(new NavMenuItem("/assets/svg/hearts.svg", "Favourites", "Favourites"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/settings.svg", "Account&Settings", "Settings"));
   }

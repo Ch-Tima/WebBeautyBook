@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Location } from 'src/app/models/Location';
 import { LocationFormComponent, LocationFormDialogData, LocationFormDialogResult } from '../location-form/location-form.component';
 import * as $ from "jquery";
-import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
   selector: 'app-location-panel',
@@ -15,28 +14,26 @@ export class LocationPanelComponent {
 
   public locations$ = this.loadLocationAsync();
 
-  public constructor(private auth: AuthService, private http: HttpClient, private dialog: MatDialog){
-
+  public constructor(private http: HttpClient, private dialog: MatDialog){
   }
 
+  // Open the location creation form dialog
   public openFormCreateLocation(){
-    //preapation data
+    //prepare data for the dialog
     const data = new LocationFormDialogData()
     data.isUpdateMode = false;
-    //open dialg
-    const dialg = this.dialog.open(LocationFormComponent, {
+    //open dialog
+    const dialog = this.dialog.open(LocationFormComponent, {
       data: data,
       width: '400px',
     });
-
     //subscribe to afterClosed
-    dialg.afterClosed().subscribe((result:LocationFormDialogResult) => {
+    dialog.afterClosed().subscribe((result:LocationFormDialogResult) => {
       if(!result.isSuccess) return;
        this.locations$.then(arr => {
-        var item = result.result;
+        const item = result.result;
           if(arr == undefined || item == null) return;
-
-          var findCountry = arr.find(x => x.country == item?.country)
+          let findCountry = arr.find(x => x.country == item?.country)
             if(findCountry == undefined){//create new and push
               arr.push(new Country(item.country, [item]))
             }else{//insert a new city into an existing country
@@ -46,39 +43,38 @@ export class LocationPanelComponent {
     });
   }
 
+  // Open the location update form dialog
   public openFormUpdateLocation(index:number) {
     console.log(index);
-    var item = this.locations$.then(arr => {
-      var item = arr != undefined ? arr[index]: undefined;
+    const item = this.locations$.then(arr => {
+      const item = arr != undefined ? arr[index]: undefined;
       if(item == undefined) return;
-      var val = $(`#${item.country}`).val();
+      const val = $(`#${item.country}`).val();
       return item.cities.find(x => x.city == val);
     });
 
     if(item == undefined) return;
 
     item.then(x => {
-      //preapation data
+      //prepare data for the dialog
       const data = new LocationFormDialogData()
       data.isUpdateMode = true;
       data.value = x??null;
-
-      const dialg = this.dialog.open(LocationFormComponent, {
+      const dialog = this.dialog.open(LocationFormComponent, {
         data: data,
         width: '400px',
       });
-
       //subscribe to afterClosed
-      dialg.afterClosed().subscribe((value:LocationFormDialogResult) => {
+      dialog.afterClosed().subscribe((value:LocationFormDialogResult) => {
         if(!value.isSuccess) return;
         this.locations$.then(arr => {
           if(arr == undefined || value.result == null) return;
-          var country = arr.find(x => x.cities.find(z => z.id == value.result?.id))
-          if(country == undefined) return;
+          let country = arr.find(x => x.cities.find(z => z.id == value.result?.id))
+          if(!country) return;
 
-          if(value.result.country == country.country){//if country is not changed
+          if(value.result.country == country.country){// if the country is not changed, just update the data
             //just update date
-            var item = country.cities.find(x => x.id == value.result?.id)
+            let item = country.cities.find(x => x.id == value.result?.id)
             if(item == undefined) return;
             item.city = value.result.city;
             return;//end
@@ -86,9 +82,10 @@ export class LocationPanelComponent {
           //else
           if(country.cities.length > 1)//if this is not last item
               country.cities.splice(country.cities.findIndex(x => x.id == value.result?.id), 1)
-            else arr.splice(arr.indexOf(country), 1); //else deletes country from list
+            else //else deletes country from list
+              arr.splice(arr.indexOf(country), 1);
 
-            var newCountry = arr.find(z => z.country == value.result?.country)
+            let newCountry = arr.find(z => z.country == value.result?.country)
             //push to exist country
             if(newCountry != undefined)newCountry.cities.push(value.result);
             //push new
@@ -104,6 +101,7 @@ export class LocationPanelComponent {
     alert("TODO");
   }
 
+  // Load locations asynchronously
   private async loadLocationAsync() {
     return await this.http.get<Location[]>("api/Location/getAll").toPromise()
     .catch(error => {
@@ -115,17 +113,16 @@ export class LocationPanelComponent {
         return
       }
       //grouping by country
-      let filterReult = x.reduce((group:any, item:any) => {
+      let filterResult = x.reduce((group:any, item:any) => {
         const { country } = item
         group[country] = group[country] ?? []
         group[country].push(item)
         return group
       }, {});
-
       //Convert to regular object
-      var list:Country[] = []
-      Object.keys(filterReult).forEach(async item => {
-        list.push(new Country(item, filterReult[item]))
+      let list:Country[] = []
+      Object.keys(filterResult).forEach(async item => {
+        list.push(new Country(item, filterResult[item]))
       });
       return list;
     })

@@ -10,29 +10,25 @@ import {AuthService} from "../../../services/auth/auth.service";
 })
 export class AdminPageComponent {
 
-  public menu: string = "Categoty";
+  public menu: string = '';
 
   public navMenuItems: NavMenuItem[] = [];
 
   constructor(private auth: AuthService, private rout: Router){
-    var user = this.auth.getLocalUserDate();
-    if(user == null){
+    const user = this.auth.getLocalUserDate();
+    if(!user){// Check if a user is authenticated
       this.rout.navigate(["login"]);
-    }else{
-      if(user.roles.filter(role => role == 'admin').length == 0){
-        rout.navigate(["/"]);
-      }
+    }else if(user.roles.filter(role => role == 'admin').length == 0){
+      this.rout.navigate(["/"]);
+    }else {
+      this.InitNavLeftMenuItems(); // Initialize the navigation menu items
     }
-
-    this.InitNavLeftMenuItems();
   }
-
   public navLeftMenu(menu: string){
     this.menu = menu;
   }
-
   private InitNavLeftMenuItems (){
-    var def = new NavMenuItem("/assets/svg/location.svg", "Location", "Location");
+    let def = new NavMenuItem("/assets/svg/location.svg", "Location", "Location");
     this.menu = def.value;
     this.navMenuItems.push(def);
     this.navMenuItems.push(new NavMenuItem("/assets/svg/clients.svg", "Own company", "OwnCompany"));

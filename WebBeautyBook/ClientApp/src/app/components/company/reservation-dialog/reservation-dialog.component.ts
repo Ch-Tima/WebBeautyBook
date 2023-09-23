@@ -12,13 +12,14 @@ import {AuthService} from "../../../services/auth/auth.service";
 })
 export class ReservationDialogComponent {
 
-  public mForm:FormGroup;
-  public error: string|undefined;
+  // Declare class variables
+  public mForm: FormGroup; // Form for reservation data
+  public error: string|undefined; // Error message, if any
 
-  constructor(private auth: AuthService, private http: HttpClient, private formBuilder: FormBuilder, @Inject('BASE_URL') private baseUrl: string, private dialg: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : ReservationDialogDate){
+  constructor(private auth: AuthService, private http: HttpClient, private formBuilder: FormBuilder, private dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : ReservationDialogDate){
     //Override close for sending results
-    this.dialg.backdropClick().subscribe(() => this.dialg.close(new ReservationDialogResult()))
-
+    this.dialog.backdropClick().subscribe(() => this.dialog.close(new ReservationDialogResult()))
+    // Initialize the form with data or empty values based on update mode
     this.mForm = this.formBuilder.group({
       date: [data.isUpdateMode ? data.value?.date : null, [Validators.required]],
       timeStart: [data.isUpdateMode ? data.value?.timeStart : "09:00", [Validators.required]],
@@ -28,6 +29,7 @@ export class ReservationDialogComponent {
 
   }
 
+  // Handle form submission
   public onSubmit() {
     if(this.mForm.invalid) return;
     this.error = undefined;
@@ -38,6 +40,7 @@ export class ReservationDialogComponent {
     }
   }
 
+  // Remove a reservation
   public remove(){
     if(this.data.value?.id == undefined) {
       console.log('ReservationDialogComponent -> remove -> Not found id');
@@ -46,7 +49,7 @@ export class ReservationDialogComponent {
     this.http.delete(`api/Reservation?id=${this.data.value?.id}`, {
       headers: this.auth.getHeadersWithToken()
     }).subscribe(result => {
-      this.dialg.close({
+      this.dialog.close({// Close the dialog with the result
         isSuccess: true,
         action: 'remove',
         value: this.data.value
@@ -54,12 +57,13 @@ export class ReservationDialogComponent {
     }, error => this.showError(error))
   }
 
+  // Create a new reservation
   private create(){
     this.http.put("api/Reservation", this.mForm.value, {
       headers: this.auth.getHeadersWithToken().append('Content-Type', 'application/json')
     }).subscribe(
       result => {
-        this.dialg.close({
+        this.dialog.close({// Close the dialog with the result
           isSuccess: true,
           action: 'create',
           value: result
@@ -68,16 +72,15 @@ export class ReservationDialogComponent {
     );
   }
 
+  // Update an existing reservation
   private update(){
     this.http.post(`api/Reservation?id=${this.data.value?.id}`, this.mForm.value, {
       headers: this.auth.getHeadersWithToken()
-    }).subscribe(result => {
-
-      var v = this.mForm.value as Reservation;
+    }).subscribe(result => {// Close the dialog with the result
+      const v = this.mForm.value as Reservation;
       v.id = this.data.value?.id;
       v.workerId = this.data.value?.workerId;
-
-      this.dialg.close({
+      this.dialog.close({
         isSuccess: true,
         action: 'update',
         value: v
@@ -85,21 +88,24 @@ export class ReservationDialogComponent {
     }, error => this.showError(error));
   }
 
+  // Handle and display error messages
   private showError(error:any){
-    if(error.error.errors != undefined){ //erorr from model
+    if(error.error.errors != undefined){ // Error from model
       this.error = Object.values<any>(error.error.errors)[0][0];
-    }else{ //error from controller
+    }else{ // Error from controller
       this.error = error.error;
     }
   }
 
 }
-export class ReservationDialogDate{
-  isUpdateMode: boolean = false;
-  value: Reservation|null = null;
+// Data class for the reservation dialog
+export class ReservationDialogDate {
+  isUpdateMode: boolean = false; // Flag indicating whether the dialog is in update mode
+  value: Reservation|null = null; // Reservation data to be displayed in the dialog
 }
-export class ReservationDialogResult{
-  public isSuccess: boolean = false;
-  public action: 'remove'|'update'|'create'|'close' = 'close';
-  public value: Reservation|null = null;
+// Result class for the reservation dialog
+export class ReservationDialogResult {
+  public isSuccess: boolean = false; // Flag indicating the success of the operation
+  public action: 'remove'|'update'|'create'|'close' = 'close'; // Action performed in the dialog
+  public value: Reservation|null = null; // Resulting reservation data
 }

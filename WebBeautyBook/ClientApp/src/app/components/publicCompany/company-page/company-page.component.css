@@ -162,7 +162,7 @@ img{
   width: 250px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 .copyable-text:hover {
   text-decoration: underline;

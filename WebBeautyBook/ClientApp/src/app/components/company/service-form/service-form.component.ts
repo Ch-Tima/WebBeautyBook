@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Category } from 'src/app/models/Category';
-import { Service } from 'src/app/models/Service';
+import {HttpClient} from '@angular/common/http';
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Category} from 'src/app/models/Category';
+import {Service} from 'src/app/models/Service';
 import * as $ from "jquery";
 import {AuthService} from "../../../services/auth/auth.service";
 
@@ -12,23 +12,19 @@ import {AuthService} from "../../../services/auth/auth.service";
   templateUrl: './service-form.component.html',
   styleUrls: ['./service-form.component.css']
 })
-export class ServiceFormComponent{
+export class ServiceFormComponent implements OnInit {
 
-  public mForm: FormGroup = new FormGroup({})
-  public categories: Category[] = []
-  public errorMessage: string = "";
-  public header: string = "Create";
-  public isFirstInitFor: boolean = true;
-  public time:any;
+  public mForm: FormGroup = new FormGroup({}); // Form group for service data.
+  public categories: Category[] = []; // Holds a list of categories.
+  public errorMessage: string = ""; // Holds error messages.
+  public header: string = "Create"; // Header text for the form.
+  public isFirstInitFor: boolean = true; // Flag to track if it's the first initialization for event handling.
+  public time: any; // Variable to store time information.
 
-  constructor(private auth: AuthService, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
-  private dialg: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : ServiceFormDialogData){
+  constructor(private auth: AuthService, private http: HttpClient, private dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: ServiceFormDialogData) {
     //Override close for sending results
-    this.dialg.backdropClick().subscribe(() => {
-      this.dialg.close(new ServiceFormDialogResult());
-    })
-
-    //Init form
+    this.dialog.backdropClick().subscribe(() => this.dialog.close(new ServiceFormDialogResult()))
+    // Initialize form controls
     this.mForm = new FormGroup({
       name: new FormControl("", [Validators.required, Validators.maxLength(100), Validators.minLength(3)]),
       description: new FormControl("", [Validators.maxLength(500)]),
@@ -36,8 +32,7 @@ export class ServiceFormComponent{
       price: new FormControl(1.0, [Validators.required, Validators.min(1), Validators.max(50000)]),
       categoryId: new FormControl("", [Validators.required, Validators.maxLength(100), Validators.minLength(3)])
     })
-
-    if(data != null && data != undefined && data.isUpdateMode && data.value != null){
+    if (data?.isUpdateMode && data.value) {
       this.header = "Update"
       this.mForm.setValue({
         name: data.value.name,
@@ -47,83 +42,70 @@ export class ServiceFormComponent{
         categoryId: data.value.categoryId
       });
     }
-    //load Categories
-    this.loadCategories();
   }
 
-  public onSubmit(){
-    if(!this.mForm.valid) return;
+  public async ngOnInit() {
+    await this.loadCategories()//load Categories
+  }
 
+  public async onSubmit() {
+    if (!this.mForm.valid) return;
     this.errorMessage = '';
-
-    if(this.data.isUpdateMode){
-      this.updateService();
-    }else{
-      this.createService();
-    }
+    this.data.isUpdateMode ? await this.updateService() : await this.createService();
   }
 
-  public setSubCategory(event:any){
-    var id = event.target.value;//get category Id from "option" value
-    var item = this.categories.find(x => x.id == id)
-    if(item == undefined){//if not found in categories, then it is a subcategory
+  public setSubCategory(event: any) {
+    const id = event.target.value;//get category Id from "option" value
+    let item = this.categories.find(x => x.id == id)
+    if (item == undefined) {//if not found in categories, then it is a subcategory
       this.mForm.controls["categoryId"].setValue(id);
-    }else{
-      if(item.categories.length > 0){//if "item.categories" has a subcategory
+    } else {
+      if (item.categories.length > 0) {//if "item.categories" has a subcategory
         this.mForm.controls["categoryId"].setValue("");
-
         $("#subCategory").prop("hidden", false);//show "select" subCategory
-
         $(`#subCategory`).empty();
-        $("#subCategory").append("<option selected disabled>nono</option>")
-        item.categories.forEach(item => {
-          $(`#subCategory`).append(`<option value="${item.id}">${item.name}</option>`)
-        })
-
-      }else{//set category id if there is no subcategory
+        $("#subCategory").append("<option selected disabled>non</option>")
+        item.categories.forEach(item => $(`#subCategory`).append(`<option value="${item.id}">${item.name}</option>`))
+      } else {//set category id if there is no subcategory
         this.mForm.controls["categoryId"].setValue(item.id);
         $("#subCategory").prop("hidden", true);
       }
     }
   }
 
-  private createService(){
-    //send to api "api/Service"
-    this.http.put<Service>(this.baseUrl + "api/Service", this.mForm.value, {
-      headers: this.auth.getHeadersWithToken()
-    }).subscribe(result => {
-      var data = new ServiceFormDialogResult(); //preparation result
-      data.isSuccess = true;
-      data.result = result;
-      this.dialg.close(data); //close dialog and send result
-    }, error => {
-      console.log(error);
-      if(error.error.errors != undefined){ //erorr from model
-        this.errorMessage = Object.values<any>(error.error.errors)[0][0];
-      }else{ //error from controller
-        this.errorMessage = error.error;
-      }
-    });
+  // Create a new service.
+  private async createService() {
+    try {
+      //send to api "api/Service"
+      const result = await this.http.put<Service>("api/Service", this.mForm.value, {
+        headers: this.auth.getHeadersWithToken()
+      }).toPromise();
+      if (result !== undefined) {
+        const data = new ServiceFormDialogResult(); //preparation result
+        data.isSuccess = true;
+        data.result = result;
+        this.dialog.close(data); //close dialog and send result
+      } else console.error("Result is undefined");
+    }catch (error:any) {
+      this.showError(error);
+    }
 
   }
 
-  private updateService(){
-    this.http.post(this.baseUrl + `api/Service?Id=${this.data.value?.id}`, this.mForm.value, {
-      headers: this.auth.getHeadersWithToken()
-    }).subscribe(result => {
-      var data = new ServiceFormDialogResult(); //preparation result
+  // Update an existing service.
+  private async updateService() {
+    try {
+      await this.http.post(`api/Service?Id=${this.data.value?.id}`, this.mForm.value, {
+        headers: this.auth.getHeadersWithToken()
+      }).toPromise().catch();
+      const data = new ServiceFormDialogResult(); //preparation result
       data.isSuccess = true;
       this.mForm.addControl("id", new FormControl(this.data.value?.id))
       data.result = this.mForm.value
-      this.dialg.close(data); //close dialog and send result
-    }, error => {
-      console.log(error);
-      if(error.error.errors != undefined){ //erorr from model
-        this.errorMessage = Object.values<any>(error.error.errors)[0][0];
-      }else{ //error from controller
-        this.errorMessage = error.error;
-      }
-    })
+      this.dialog.close(data); //close dialog and send result
+    } catch (error: any) {
+      this.showError(error);
+    }
   }
 
   /**
@@ -131,16 +113,15 @@ export class ServiceFormComponent{
    * - Initialization happens once thanks to: isFirstInitFor
    */
   public onFinishFor() {
-    if(this.data.value != null && this.data.isUpdateMode && this.isFirstInitFor){
-      var main = this.categories.find(x => x.id == this.data.value?.categoryId);
-      if(main != undefined){
-       $(`#mainCategory option[value='${main.id}']`).prop('selected', true);
-      }else{
-        var mainWithSub = this.categories.find(x => x.categories?.find(y => y.id == this.data.value?.categoryId));
-
-        if(mainWithSub != undefined){
+    if (this.data.value != null && this.data.isUpdateMode && this.isFirstInitFor) {
+      let main = this.categories.find(x => x.id == this.data.value?.categoryId);
+      if (main != undefined) {
+        $(`#mainCategory option[value='${main.id}']`).prop('selected', true);
+      } else {
+        let mainWithSub = this.categories.find(x => x.categories?.find(y => y.id == this.data.value?.categoryId));
+        if (mainWithSub != undefined) {
           $(`#mainCategory option[value='${mainWithSub.id}']`).prop('selected', true);
-          var sub = mainWithSub.categories.find(x => x.id == this.data.value?.categoryId);
+          let sub = mainWithSub.categories.find(x => x.id == this.data.value?.categoryId);
           mainWithSub.categories.forEach(item => {
             $(`#subCategory`).append(`<option value="${item.id}">${item.name}</option>`)
           })
@@ -152,25 +133,33 @@ export class ServiceFormComponent{
     }
   }
 
-  private loadCategories(){
-    this.http.get<Category[]>(this.baseUrl + "api/Category/GetMainCategories").subscribe(
-      result => {
-        this.categories = result;
-      }, error => {
-        console.log(error);
-      }
-    );
+  // Load the list of categories
+  private async loadCategories() {
+    try {
+      const result = await this.http.get<Category[]>("api/Category/GetMainCategories").toPromise();
+      this.categories = result || [];
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  private showError(error: any){
+    console.error(error);
+    if (error.error.errors != undefined) { //error from model
+      this.errorMessage = Object.values<any>(error.error.errors)[0][0];
+    } else { //error from controller
+      this.errorMessage = error.error;
+    }
+  }
+
 }
 
-export class ServiceFormDialogData{
+export class ServiceFormDialogData {
   isUpdateMode: boolean = false;
-  value: Service|null = null;
+  value: Service | null = null;
 }
 
-export class ServiceFormDialogResult{
-
+export class ServiceFormDialogResult {
   public isSuccess: boolean = false;
-  public result: Service|null = null;
-
+  public result: Service | null = null;
 }

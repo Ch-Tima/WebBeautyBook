@@ -12,35 +12,34 @@ import {AuthService} from "../../../services/auth/auth.service";
 export class CompanyCardComponent {
 
   @Input()
-  public company: Company|undefined = undefined;
+  public company: Company | undefined = undefined; // Input property for company data
   @Input()
-  public style:'small'|'big' = 'small';
+  public style: 'small' | 'big' = 'small'; // Input property for card style
   @Output()
-  public clickLike: EventEmitter<Company> = new EventEmitter();
+  public clickLike: EventEmitter<Company> = new EventEmitter(); // Output event emitter for liking a company
 
-  public constructor(private http: HttpClient, public auth: AuthService){
+  public constructor(private http: HttpClient, public auth: AuthService){}
 
-  }
-
+  // Handle like button click
   public onClickLike(item:Company, event: any){
-    var status = $(event.srcElement).attr("onPressed")
-    if(status == "false"){
+    const status = $(event.srcElement).attr("onPressed")
+    if(status == "false"){// Like the company
       this.http.post(`api/CompanyLike?companyId=${item.id}`, "", {
         headers: this.auth.getHeadersWithToken()
       }).subscribe(r => {
         item.isFavorite = true;
-        this.clickLike.emit(item);
+        this.clickLike.emit(item);// Emit the clickLike event with the liked company
       }, e => {
-        alert(e.error);
+        alert(e.error);// Display an error message on failure
       })
-    }else{
+    }else{// Unlike the company
       this.http.delete(`api/CompanyLike?companyId=${item.id}`, {
         headers: this.auth.getHeadersWithToken()
       }).subscribe(r => {
          item.isFavorite = false;
-         this.clickLike.emit(item);
+         this.clickLike.emit(item);// Emit the clickLike event with the unliked company
       }, e => {
-        alert(e.error);
+        alert(e.error);// Display an error message on failure
       })
     }
   }

@@ -16,7 +16,8 @@ export class CategoryFormComponent {
   public header: string = "CategoryFormComponent";
   public errorMessages : string = "";
 
-  constructor(private auth: AuthService, private http : HttpClient, @Inject('BASE_URL') private baseUrl: string, private dialg: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : CategoryFormDialogData) {
+  constructor(private auth: AuthService, private http : HttpClient, private dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : CategoryFormDialogData) {
+    // Create a form group with form controls and initial values
     this.mForm = new FormGroup({
       id: new FormControl(''),
       name: new FormControl(data.value?.name, [Validators.required, Validators.minLength(3)]),
@@ -26,64 +27,55 @@ export class CategoryFormComponent {
 
   public onSubmit(){
     if(this.mForm.valid){
-      if(this.data.isUpdateMode){
-        this.update();
-      }else{
-        this.insert();
-      }
+      if(this.data.isUpdateMode) this.update();
+      else this.insert();
     }else{
-      console.log("TODO: processing Validators");
+      console.log("TODO: processing Validators");//TODO: processing Validators
     }
   }
 
-  public onCancel(){
-
-  }
+  public onCancel(){}
 
   private insert(){
-    this.http.put<any>(this.baseUrl + "api/Category", this.mForm.value,
+    // Send a PUT request to insert a new category
+    this.http.put<any>("api/Category", this.mForm.value,
     {
       headers: this.auth.getHeadersWithToken()
-    })
-    .subscribe(result => {
-      var newCategory = new Category();
+    }).subscribe(result => {
+      // Create a new category object with the result data
+      let newCategory = new Category();
       newCategory.id = result['id'];
       newCategory.name = this.mForm.controls['name'].getRawValue();
       newCategory.categoryId = this.mForm.controls['categoryId'].getRawValue();
-
+      // Reset the form
       this.mForm.reset();
-
-      var insertRelut = new CategoryFormDialogResult();
-      insertRelut.isSuccess = true;
-      insertRelut.reason = "insert";
-      insertRelut.result = newCategory
-
-      this.dialg.close(insertRelut);
-
+      // Create a dialog result with success information
+      let insert = new CategoryFormDialogResult();
+      insert.isSuccess = true;
+      insert.reason = "insert";
+      insert.result = newCategory
+      // Close the dialog with the result
+      this.dialog.close(insert);
     }, error => {
       console.log(error);
       this.errorMessages = error.error;
     });
-
   }
 
   private update(){
     this.mForm.controls['id'].setValue(this.data.value?.id);
-    this.http.post<any>(this.baseUrl + "api/Category", this.mForm.value,
-      {
+    this.http.post<any>("api/Category", this.mForm.value, {
         headers: this.auth.getHeadersWithToken()
       })
       .subscribe(result => {
-
-        this.mForm.reset();
-
-        var updateRelut = new CategoryFormDialogResult();
-        updateRelut.isSuccess = true;
-        updateRelut.reason = "insert";
-        updateRelut.result = this.mForm.value;
-
-        this.dialg.close(updateRelut);
-
+        this.mForm.reset();// Reset the form
+        // Create a dialog result with success information
+        const updateResult = new CategoryFormDialogResult();
+        updateResult.isSuccess = true;
+        updateResult.reason = "insert";
+        updateResult.result = this.mForm.value;
+        // Close the dialog with the result
+        this.dialog.close(updateResult);
       }, error => {
         console.log(error);
         this.errorMessages = error.error;
@@ -91,12 +83,12 @@ export class CategoryFormComponent {
   }
 
 }
-
-
+// Data class for the dialog
 export class CategoryFormDialogData{
   isUpdateMode: boolean = true;
   value: Category|null = null;
 }
+// Result class for the dialog
 export class CategoryFormDialogResult{
   reason: string = ""
   isSuccess: boolean = true

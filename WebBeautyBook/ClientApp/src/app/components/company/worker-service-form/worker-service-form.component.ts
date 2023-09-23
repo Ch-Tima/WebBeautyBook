@@ -11,17 +11,15 @@ import {AuthService} from "../../../services/auth/auth.service";
 })
 export class WorkerServiceFormComponent {
 
-  selectedWorkers:Worker[] = []
-  workers:Worker[] = []
-  errorMessage:string|null = "";
-
-  private serviceId:string = "";
+  public selectedWorkers: Worker[] = []; // Holds selected workers.
+  public workers: Worker[] = []; // Holds all available workers.
+  public errorMessage: string | null = ""; // Holds error messages.
+  private readonly serviceId: string = ""; // Holds the current service ID.;
 
   constructor(private dialogRef: MatDialogRef<WorkerServiceFormComponent>, private auth: AuthService,
     @Inject(MAT_DIALOG_DATA) private data : any,  private http: HttpClient) {
-
     this.serviceId = data.serviceId;
-    if(this.serviceId == undefined || this.serviceId == null){
+    if(!this.serviceId){
       this.dialogRef.close();
       console.error("serviceId cannot be null or undefined!");
       return;
@@ -72,7 +70,7 @@ export class WorkerServiceFormComponent {
       result => {
         this.workers = result;
         //leave workers without this Service
-        this.selectedWorkers.forEach(x => {//filter dulicates
+        this.selectedWorkers.forEach(x => {// Filter out workers who are already associated with this service.
           this.workers = this.workers.filter(w => w.id !== x.id)
         });
       }, error => {

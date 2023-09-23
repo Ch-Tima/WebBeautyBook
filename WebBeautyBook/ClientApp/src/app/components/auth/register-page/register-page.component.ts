@@ -12,19 +12,21 @@ import {AuthService} from "../../../services/auth/auth.service";
 })
 export class RegisterPageComponent implements OnInit {
 
+  // Input properties for the component
   @Input() styleContainer : "container-fluid" | "container" = "container"
   @Input() defaultRole: string = 'client';
   @Input() redirectSuccess = true;
   @Input() header:string = "Create An Account";
   @Input() showLinkToLogin: boolean = true;
 
+  // Event emitter to send registration results
   @Output() resultEmitter = new EventEmitter<UserDataModel>();
 
-  mForm: FormGroup = new FormGroup({});
-  lastErrorMessage: string = "";
+  public mForm: FormGroup;// Form for user input
+  public lastErrorMessage: string = "";
 
-  constructor(private auth: AuthService, private formBuilder: FormBuilder, private router: Router)
-  {
+  constructor(private auth: AuthService, private formBuilder: FormBuilder, private router: Router) {
+    // Initialize the form with validation
     this.mForm = formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       userName: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.minLength(4)]),
@@ -37,61 +39,53 @@ export class RegisterPageComponent implements OnInit {
     });
   }
 
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    // Set the default role if provided
     if(this.defaultRole != '') this.mForm.controls['role'].setValue(this.defaultRole);
   }
 
-  onSubmit() {
+  public onSubmit() {
+    // Determine which type of registration to perform based on the default role
     if(this.defaultRole == "own_company") this.registerOwnCompany();
     else if(this.defaultRole == "manager" || this.defaultRole == "worker") this.registerWorker();
     else this.registerNormalPeople();
   }
 
   private registerNormalPeople(){
-    if (!this.mForm.valid) {
-      console.log("Error!");
-      console.log(this.mForm);
-    } else {
-      this.auth.register(this.mForm.value)
-        .subscribe(result => {
-          console.log(result);
-          this.mForm.reset();
-          if(this.redirectSuccess) this.router.navigate(["login"]);
-        }, error => {
-          console.log(error);
-          this.lastErrorMessage = error.error;
-        });
-    }
+    // Handle the case when the form is invalid
+    if (!this.mForm.valid) return;
+    // Register a regular user
+    this.auth.register(this.mForm.value).toPromise().then(result => {
+      // Handle successful registration
+      this.mForm.reset();
+      if(this.redirectSuccess) this.router.navigate(["login"]);
+    }).catch(error => {// Handle registration error
+      console.error(error);
+      this.lastErrorMessage = error.error;
+    })
   }
 
   private registerOwnCompany(){
-    var requst = this.auth.registerOwnCompany(this.mForm.value);
-    if(requst == null) alert("What are you doing here?");
-    else{
-      requst.subscribe(
-        result => {
-          this.resultEmitter.emit(result);
-          this.mForm.reset();
-        }, error => {
-          this.lastErrorMessage = error.error;
-        }
-      );
+    let request = this.auth.registerOwnCompany(this.mForm.value);
+    if(request == null) alert("What are you doing here?");// Handle the case when the request cannot be made
+    else{// Register a company owner
+      request.toPromise().then(result => {
+        this.resultEmitter.emit(result);// Handle successful registration
+        this.mForm.reset()
+      }).catch(error => {
+        this.lastErrorMessage = error.error;
+      });
     }
   }
 
   private registerWorker(){
-    var requst = this.auth.registerWorker(this.mForm.value);
-    if(requst == null) alert("What are you doing here?");
+    const request = this.auth.registerWorker(this.mForm.value);
+    if(!request) alert("What are you doing here?");// Handle the case when the request cannot be made
     else{
-      requst.subscribe(
-        result => {
-          this.resultEmitter.emit(result);
-          this.mForm.reset();
-        }, error => {
-          this.lastErrorMessage = error.error;
-        }
-      );
+      request.toPromise().then(result => {
+        this.resultEmitter.emit(result);// Handle successful registration
+        this.mForm.reset()
+      }).catch(error => this.lastErrorMessage = error.error)
     }
   }
 
