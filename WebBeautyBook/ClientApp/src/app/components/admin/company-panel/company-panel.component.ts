@@ -10,7 +10,7 @@ import {Company} from "../../../models/Company";
 export class CompanyPanelComponent {
 
   companies: Company[] = [];
-  
+
   constructor(private http: HttpClient){
     this.loadCompanies();
   }

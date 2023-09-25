@@ -35,10 +35,10 @@ namespace WebBeautyBook.Controllers
                 UserId = user.Id,
                 CompanyId = companyId
             });
-
+            
             if (!result.IsSuccess)
                 return BadRequest(result.Message);
-
+            
             return Ok();
         }
 
@@ -47,10 +47,10 @@ namespace WebBeautyBook.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var result = await _companyLikeService.DeleteAsync(companyId, user.Id);
-
+            
             if (!result.IsSuccess)
                 return BadRequest(result.Message);
-
+            
             return Ok();
         }
 

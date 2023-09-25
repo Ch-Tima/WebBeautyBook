@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { UserDataModel } from '../../models/UserDataModel';
+import {Component, OnInit} from '@angular/core';
+import {UserDataModel} from '../../models/UserDataModel';
 import {AuthService} from "../../services/auth/auth.service";
 import {NavbarService} from "../../services/navbar/navbar.service";
+import {catchError, forkJoin, map} from "rxjs";
 
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.css']
 })
-export class NavMenuComponent {
+export class NavMenuComponent implements OnInit {
 
   isExpanded = false;
   userData: UserDataModel;
@@ -17,8 +18,11 @@ export class NavMenuComponent {
   constructor(private auth: AuthService, public nav: NavbarService) {
     this.userData = new UserDataModel();// Initialize user data and authentication status
     this.isAuth = this.auth.hasToken();
+  }
+
+  public async ngOnInit() {
     if (this.isAuth) {
-      this.getUserData();// Load user data if authenticated
+      await this.loadUserData()// Load user data if authenticated
     }
   }
 
@@ -30,21 +34,22 @@ export class NavMenuComponent {
     this.isExpanded = !this.isExpanded;
   }
 
-
   public signOut() {
     this.auth.signOut();// Sign out the user
   }
 
-  private getUserData() {
-    // Get user data from the server
-    this.auth.getUserData().subscribe(
-      result => {
-        this.userData = result;// Get user data from the server
+  private async loadUserData() {
+    try {// Get user data from the server
+      const result = await this.auth.getUserData().toPromise();
+      if (result){
+        this.userData = result;
         this.auth.saveUserData(result);
-      }, error => {
-        console.error(error);// Handle errors
-        this.auth.signOut();// Sign out the user in case of an error
-      });
+      }else this.signOut();
+    } catch (err) {
+      console.error(err);// Handle errors
+      this.auth.signOut();// Sign out the user in case of an error
+      return err;
+    }
   }
 
 }

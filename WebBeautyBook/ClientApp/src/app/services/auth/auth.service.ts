@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {LoginModel} from "../../models/LoginModel";
 import {JWT} from "../../models/JWT ";
@@ -16,29 +16,29 @@ export const USER_DATA: string = "user-data"
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    this.baseUrl = baseUrl;
+  constructor(private http: HttpClient) {
   }
+
   /**API request login*/
   public login(data: LoginModel): Observable<JWT> {
-    return this.http.post<JWT>(this.baseUrl + "api/Auth/login", data);
+    return this.http.post<JWT>("api/Auth/login", data);
   }
 
   /**API request login*/
   public refreshTokens(): Observable<JWT> {
-    return this.http.post<JWT>(this.baseUrl + "api/Auth/refreshTokens", {}, {
+    return this.http.post<JWT>("api/Auth/refreshTokens", {}, {
       headers: this.getHeadersWithToken()
     });
   }
 
   /**API request register*/
   public register(data: RegisterModel): Observable<any> {
-    return this.http.post<any>(this.baseUrl + "api/Auth/register", data);
+    return this.http.post<any>("api/Auth/register", data);
   }
 
   /**API request forgotPassword*/
   public ForgotPassword(emailJsonString:string): Observable<string> {
-    return this.http.post<any>(this.baseUrl + "api/Auth/forgotPassword", JSON.stringify(emailJsonString), {
+    return this.http.post<any>("api/Auth/forgotPassword", JSON.stringify(emailJsonString), {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       })
@@ -47,12 +47,12 @@ export class AuthService {
 
   /**API request resetPassword*/
   public ResetPassword(data: ResetPasswordModel): Observable<any>{
-    return this.http.post<any>(this.baseUrl + "api/Auth/resetPassword", data);
+    return this.http.post<any>("api/Auth/resetPassword", data);
   }
 
   /**API request emailConfirmation*/
   public emailConfirmation(token: string, email: string): Observable<any>{
-    return this.http.get(this.baseUrl + "api/Auth/confirmEmail", {
+    return this.http.get("api/Auth/confirmEmail", {
       params : {
         token: token,
         email: email
@@ -65,7 +65,7 @@ export class AuthService {
     var userData = this.getLocalUserDate();
     if(userData != null && userData.roles.filter(role => role == 'admin').length == 0)
       return null;
-    return this.http.post<any>(this.baseUrl + "api/Auth/registrationViaAdmin", data, {
+    return this.http.post<any>("api/Auth/registrationViaAdmin", data, {
       headers: new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem(TOKEN))
     });
   }
@@ -75,14 +75,14 @@ export class AuthService {
     var userData = this.getLocalUserDate();
     if(userData != null && userData.roles.filter(role => role == 'own_company').length == 0)
       return null;
-    return this.http.post<any>(this.baseUrl + "api/Auth/registrationViaCompany", data, {
+    return this.http.post<any>("api/Auth/registrationViaCompany", data, {
       headers: new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem(TOKEN))
     });
   }
 
   /**API request getUserData*/
   public getUserData(): Observable<UserDataModel> {
-    return this.http.get<UserDataModel>(this.baseUrl + "api/User", {
+    return this.http.get<UserDataModel>("api/User", {
       headers: new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem(TOKEN))
     });
   }
@@ -93,8 +93,7 @@ export class AuthService {
   public getLocalUserDate() : UserDataModel|null{
     var json_data = localStorage.getItem(USER_DATA)
     if(json_data != null){
-      var userSubject = new BehaviorSubject<UserDataModel>(JSON.parse(json_data));
-      return userSubject.value;
+      return new BehaviorSubject<UserDataModel>(JSON.parse(json_data)).value;
     }else{
       return null;
     }
@@ -113,11 +112,8 @@ export class AuthService {
    * @returns true if the token exists, or false if the token does not exist.
    */
   public hasToken(): boolean {
-    var token = localStorage.getItem(TOKEN);
-    if (token != null) {
-      return true;
-    }
-    return false;
+    const token = localStorage.getItem(TOKEN);
+    return token != null;
   }
 
   /**
@@ -139,21 +135,16 @@ export class AuthService {
   }
 
   /**
-   *
-   * @returns HttpHeaders with Authorization Token
+   * Creates {@link HttpHeaders} with a custom token
+   * @returns 'HttpHeaders' with Authorization Token
    */
   public getHeadersWithToken(): HttpHeaders{
     return new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem(TOKEN))
   }
 
   public getUserFromLocalStorage(): UserDataModel | null{
-
-    var jsonObj = localStorage.getItem(USER_DATA);
-
+    const jsonObj = localStorage.getItem(USER_DATA);
     if(jsonObj == null) return null;
-
-    var result = Object.assign(new UserDataModel, jsonObj);
-
-    return result;
+    return Object.assign(new UserDataModel, jsonObj);
   }
 }
