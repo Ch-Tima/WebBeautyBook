@@ -41,7 +41,7 @@ builder.Services.AddTransient<IEmailSender, SendGridEmailService>();
 builder.Services.Configure<Domain.Models.SendGridEmailSenderOption>(opt =>
 {
     opt.ApiKey = builder.Configuration.GetValue<string>("SGKey");
-    opt.SenderEmail = "logologi417@gmail.com";
+    opt.SenderEmail = builder.Configuration.GetValue<string>("SGKeyEmail");
     opt.SenderName = "Tima";
 });
 

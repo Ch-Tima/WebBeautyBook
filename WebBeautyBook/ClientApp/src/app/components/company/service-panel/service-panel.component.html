@@ -1,0 +1,26 @@
+<div>
+    <p class="h4 text-center text-danger my-3 " *ngIf="services.length == 0">Not Found Services</p>
+    <div class="bg-white rounded shadow tabel-responsive list-service">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of services let i = index">
+                    <th class="mx-2">{{item.name}}</th>
+                    <th class="col-3 col-md-2">
+                        <div class="d-flex justify-content-center">
+                            <img src="../../../assets/svg/edit.svg" (click)="updateServiceForm(item)">
+                            <img src="../../../assets/svg/userEdit.svg" (click)="workerServiceFrom(item)">
+                            <img src="../../../assets/svg/trash.svg" (click)="deleteService(item)">
+                        </div>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <img (click)="createServiceForm()" src="../../../assets/svg/plus.svg" class="btn-plus">
+</div>

@@ -1,0 +1,31 @@
+<div class="company-card" *ngIf="company != undefined;else load" style="margin: 0 5px;">
+  <div class="{{style == 'small' ? 'card' : 'card w100'}}">
+    <div class="{{style == 'small' ? 'block' : 'flex'}}">
+      <a href="/company?id={{company.id}}">
+        <div>
+          <img class="card-img {{ style == 'small' ? '' : 'card-img-big' }}" src="{{company.companyImages[0].path}}">
+          <div class="grade {{ style == 'small' ? '' : 'grade-big' }}">
+            <p>0.0</p>
+          </div>
+        </div>
+      </a>
+      <div class="{{style == 'small' ? 'container-data' : 'container-data w100'}}">
+        <div class="data-company {{style == 'small' ? 'hind-p200px' : 'hind-p500px p25px'}}">
+          <p class="name {{style == 'small' ? '' : 'f21px'}}">{{company.name}}</p>
+          <p
+            class="{{style == 'small' ? 'location' : 'f17px text-secondary'}}">{{company.location.country}} {{company.location.city}} {{company.address}}</p>
+        </div>
+        <ng-container *ngIf="auth.hasToken()">
+          <img *ngIf="!company.isFavorite; else favorite" class="{{style == 'small' ? 'like' : 'like like-position'}}" (click)="onClickLike(company, $event)" onPressed="false" src="../../assets/svg/heart.svg">
+          <ng-template #favorite>
+            <img class="{{style == 'small' ? 'like' : 'like like-position'}}" (click)="onClickLike(company, $event)" onPressed="true" src="../../../assets/svg/heart-red.svg">
+          </ng-template>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #load>
+  <p>Loading...</p>
+</ng-template>

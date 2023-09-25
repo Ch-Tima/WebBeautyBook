@@ -25,6 +25,44 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    <Content Remove="ClientApp\src\app\components\admin\**" />
+    <None Remove="ClientApp\src\app\components\admin\**" />
+    <None Include="ClientApp\src\app\components\admin\admin-page\admin-page.component.css" />
+    <None Include="ClientApp\src\app\components\admin\admin-page\admin-page.component.html" />
+    <None Include="ClientApp\src\app\components\admin\admin-page\admin-page.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\admin-page\admin-page.component.ts" />
+    <None Include="ClientApp\src\app\components\admin\category-form\category-form.component.css" />
+    <None Include="ClientApp\src\app\components\admin\category-form\category-form.component.html" />
+    <None Include="ClientApp\src\app\components\admin\category-form\category-form.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\category-form\category-form.component.ts" />
+    <None Include="ClientApp\src\app\components\admin\categoty-panel\categoty-panel.component.css" />
+    <None Include="ClientApp\src\app\components\admin\categoty-panel\categoty-panel.component.html" />
+    <None Include="ClientApp\src\app\components\admin\categoty-panel\categoty-panel.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\categoty-panel\categoty-panel.component.ts" />
+    <None Include="ClientApp\src\app\components\admin\company-form\company-form.component.css" />
+    <None Include="ClientApp\src\app\components\admin\company-form\company-form.component.html" />
+    <None Include="ClientApp\src\app\components\admin\company-form\company-form.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\company-form\company-form.component.ts" />
+    <None Include="ClientApp\src\app\components\admin\company-panel\company-panel.component.css" />
+    <None Include="ClientApp\src\app\components\admin\company-panel\company-panel.component.html" />
+    <None Include="ClientApp\src\app\components\admin\company-panel\company-panel.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\company-panel\company-panel.component.ts" />
+    <None Include="ClientApp\src\app\components\admin\list-company\list-company.component.css" />
+    <None Include="ClientApp\src\app\components\admin\list-company\list-company.component.html" />
+    <None Include="ClientApp\src\app\components\admin\list-company\list-company.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\list-company\list-company.component.ts" />
+    <None Include="ClientApp\src\app\components\admin\location-form\location-form.component.css" />
+    <None Include="ClientApp\src\app\components\admin\location-form\location-form.component.html" />
+    <None Include="ClientApp\src\app\components\admin\location-form\location-form.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\location-form\location-form.component.ts" />
+    <None Include="ClientApp\src\app\components\admin\location-panel\location-panel.component.css" />
+    <None Include="ClientApp\src\app\components\admin\location-panel\location-panel.component.html" />
+    <None Include="ClientApp\src\app\components\admin\location-panel\location-panel.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\location-panel\location-panel.component.ts" />
+    <None Include="ClientApp\src\app\components\admin\own-company-panel\own-company-panel.component.css" />
+    <None Include="ClientApp\src\app\components\admin\own-company-panel\own-company-panel.component.html" />
+    <None Include="ClientApp\src\app\components\admin\own-company-panel\own-company-panel.component.spec.ts" />
+    <None Include="ClientApp\src\app\components\admin\own-company-panel\own-company-panel.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +70,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\components\search\" />
     <Folder Include="wwwroot\images\userIcons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ClientApp\src\app\components\admin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\src\app\components\admin\**" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
