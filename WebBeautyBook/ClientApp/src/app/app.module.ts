@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule, provideAnimations } from "@angular/platform-browser/animations";
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -27,6 +27,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+//@ngx-translate
+import { TranslateModule, TranslateLoader, TranslateModuleConfig } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 //Components
 import { AppComponent } from './app.component';
@@ -159,7 +163,15 @@ const routes: Routes = [
     MatNativeDateModule, MatCardModule, MatButtonModule,
     MatCheckboxModule, MatSelectModule, MatChipsModule,
     MatRadioModule, MatTableModule, MatPaginatorModule,
-    MatSortModule, MatProgressSpinnerModule
+    MatSortModule, MatProgressSpinnerModule, MatIconModule,
+    //ngx-translate
+    TranslateModule.forRoot({
+      loader:{
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
 
   ],
   providers: [
@@ -171,3 +183,12 @@ const routes: Routes = [
   bootstrap: [AppComponent],
 })
 export class AppModule { }
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+export const translateConfig: TranslateModuleConfig = {
+  defaultLanguage: 'en',
+  useDefaultLang: true,
+};

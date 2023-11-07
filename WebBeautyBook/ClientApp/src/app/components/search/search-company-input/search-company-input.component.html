@@ -1,8 +1,8 @@
 <div class="main-container">
     <div class="input-search">
-        <input type="text" class="form-control" placeholder="Company" [(ngModel)]="companyName">
-        <input type="text" class="form-control" placeholder="Category" [(ngModel)]="categoryName">
-        <input type="text" class="form-control" placeholder="Location" [(ngModel)]="locationName">
+        <input type="text" class="form-control" placeholder="{{'Company'|translate}}" [(ngModel)]="companyName">
+        <input type="text" class="form-control" placeholder="{{'Category'|translate}}" [(ngModel)]="categoryName">
+        <input type="text" class="form-control" placeholder="{{'Location'|translate}}" [(ngModel)]="locationName">
     </div>
-    <button (click)="getQuery()" type="button" class="btn btn-outline-success">Search</button>
+    <button (click)="getQuery()" type="button" class="btn btn-outline-success">{{"Search"|translate}}</button>
 </div>

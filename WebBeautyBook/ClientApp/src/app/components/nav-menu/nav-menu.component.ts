@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserDataModel} from '../../models/UserDataModel';
 import {AuthService} from "../../services/auth/auth.service";
 import {NavbarService} from "../../services/navbar/navbar.service";
-import {catchError, forkJoin, map} from "rxjs";
+import { TranslationService } from 'src/app/services/translation/translation.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -15,7 +15,7 @@ export class NavMenuComponent implements OnInit {
   userData: UserDataModel;
   isAuth: boolean;
 
-  constructor(private auth: AuthService, public nav: NavbarService) {
+  constructor(private auth: AuthService, public nav: NavbarService, private translationService: TranslationService) {
     this.userData = new UserDataModel();// Initialize user data and authentication status
     this.isAuth = this.auth.hasToken();
   }
@@ -36,6 +36,11 @@ export class NavMenuComponent implements OnInit {
 
   public signOut() {
     this.auth.signOut();// Sign out the user
+  }
+
+  public toggleLanguage(){
+    this.translationService.setLanguage(this.translationService.getLanguage() == 'ru' ? 'en' : 'ru')
+    //dialog with languages
   }
 
   private async loadUserData() {

@@ -5,7 +5,7 @@
     <ng-template #carouselRecommended>
         <div>
             <div *ngIf="topCompany != undefined && topCompany.length > 0;else notFound" class="container-recommended">
-                <p class="h4">Recommended</p>
+                <p class="h4">{{'Recommended'|translate}}</p>
                 <drag-scroll #nav [scrollbar-hidden]="true">
                   <!-- Loop through recommended companies and display them -->
                     <ng-container *ngFor="let item of topCompany; let i = index">
@@ -23,13 +23,13 @@
     <div #enableLocationServices class="enable-location" id="enable-location" *ngIf="!location.isLocationAccessGranted()">
         <div class="location-data">
             <div class="location-text">
-                <h4>Want to enable location services?</h4>
-                <p>Turn on location services to find the best salons in your area.</p>
+                <h4>{{"Want to enable location services?"|translate}}</h4>
+                <p>{{"Turn on location services to find the best salons in your area."|translate}}</p>
             </div>
             <div class="location-btn">
                 <!-- Buttons to enable or disable location services -->
-                <button (click)="turnOnLocation()" class="btn btn-success">Yes</button>
-                <button (click)="turnOffLocation()" class="btn btn-outline-success">No</button>
+                <button (click)="turnOnLocation()" class="btn btn-success">{{"Yes"|translate}}</button>
+                <button (click)="turnOffLocation()" class="btn btn-outline-success">{{"No"|translate}}</button>
             </div>
         </div>
         <img src="../../assets/images/placeholder.png">

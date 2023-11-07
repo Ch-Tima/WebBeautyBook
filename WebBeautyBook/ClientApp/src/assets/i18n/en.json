@@ -1,0 +1,21 @@
+{
+    "Recommended": "Recommended",
+    "Home": "Home",
+    "Want to enable location services?": "Хотите включить службы определения местоположения?",
+    "Turn on location services to find the best salons in your area.": "Включите службы определения местоположения, чтобы найти лучшие салоны в вашем районе.",
+    "Yes": "Yes",
+    "No": "No",
+    "Login": "Login",
+    "Register": "Register",
+    "Profile": "Profile",
+    "AdminPanel": "AdminPanel",
+    "MyCompany": "MyCompany",
+    "SignOut": "SignOut",
+    "Contact": "Contact",
+    "About us": "About us",
+    "Privacy Policy": "Privacy Policy",
+    "Search": "Search",
+    "Company": "Company",
+    "Category": "Category",
+    "Location": "Location"
+}
