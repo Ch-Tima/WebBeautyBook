@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppointmentDialogComponent, AppointmentDialogDate, AppointmentDialogResult } from '../appointment-dialog/appointment-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import {finalize} from "rxjs";
+import { TranslationService } from 'src/app/services/translation/translation.service';
 
 @Component({
   selector: 'app-company-page',
@@ -24,7 +25,7 @@ export class CompanyPageComponent implements OnInit {
   private companyId:string|null;
   private isRequestInProgress: boolean = false;// Flag to track whether an API request is in progress
 
-  constructor(private toast: ToastrService, private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router, private dialogRef : MatDialog){
+  constructor(private toast: ToastrService, private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router, private dialogRef : MatDialog, private translationService: TranslationService){
     // Retrieve company ID from route queryParams
     this.companyId = this.activeRoute.snapshot.queryParams['id'];
     // Redirect to the home page if company ID is missing or empty
@@ -47,7 +48,7 @@ export class CompanyPageComponent implements OnInit {
     if(result != undefined){
       return `${result.openFrom.substring(0, result.openFrom.lastIndexOf(":"))}-${result.openUntil.substring(0, result.openUntil.lastIndexOf(":"))}`;
     }else{
-      return "Closed";
+      return this.translationService.getTranslate("Closed");
     }
   }
 

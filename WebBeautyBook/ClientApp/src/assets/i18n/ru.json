@@ -17,5 +17,20 @@
     "Search": "Поиск",
     "Company": "Компания",
     "Category": "Категория",
-    "Location": "Местоположение"
+    "Location": "Местоположение",
+    
+    "Sunday": "Воскресенье",
+    "Monday": "Понедельник",
+    "Tuesday": "Вторник",
+    "Wednesday": "Среда",
+    "Thursday": "Четверг",
+    "Friday": "Пятница",
+    "Saturday": "Суббота",
+    "Closed": "Закрыто",
+    "Services": "Услуги",
+    "Staffers": "Сотрудники", 
+    "No services": "Нет услуг",
+    "Loading": "Загрузка",
+    "No workers": "Нет работников",
+    "Search for service": "Поиск услуги"
 }

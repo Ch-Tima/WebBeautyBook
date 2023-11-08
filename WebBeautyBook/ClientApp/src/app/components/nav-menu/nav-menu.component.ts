@@ -18,6 +18,7 @@ export class NavMenuComponent implements OnInit {
   constructor(private auth: AuthService, public nav: NavbarService, private translationService: TranslationService) {
     this.userData = new UserDataModel();// Initialize user data and authentication status
     this.isAuth = this.auth.hasToken();
+    this.translationService.setLanguageFromLocaStoragel();
   }
 
   public async ngOnInit() {
