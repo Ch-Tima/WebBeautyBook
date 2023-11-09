@@ -18,6 +18,7 @@
     "Company": "Компания",
     "Category": "Категория",
     "Location": "Местоположение",
+    "Not Found": "Не найдено",
     
     "Sunday": "Воскресенье",
     "Monday": "Понедельник",
@@ -32,5 +33,30 @@
     "No services": "Нет услуг",
     "Loading": "Загрузка",
     "No workers": "Нет работников",
-    "Search for service": "Поиск услуги"
+    "Search for service": "Поиск услуги",
+
+    "Appointments": "Записи",
+    "Favourites": "Избранное",
+    "Account&Settings": "Учетная запись",
+
+    "Account Details": "Детали учетной записи",
+    "First name": "Имя",
+    "Last name": "Фамилия",
+    "Phone number": "Номер телефона",
+    "Change Password": "Изменить пароль",
+
+    "NoFavoriteCompanies": "Нет избранных компаний",
+    "NoAppointments":"Нет записей",
+
+    "Date": "дата",
+    "Service": "услуга",
+    "Status": "статус",
+    "Time": "время",
+
+    "FirstNameIsRequired": "Имя обязательно.",
+    "FirstNameLength": "Длина 'Имени' должна быть от 4 до 100 символов.",
+    "LastNameIsRequired": "Фамилия обязательна.",
+    "LastNameLength": "Длина 'Фамилии' должна быть от 4 до 100 символов.",
+    "ThisIsNotPhoneNumber": "Это не номер телефона.",
+    "Submit": "Сохранить"
 }

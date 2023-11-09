@@ -17,7 +17,7 @@
                 <img class="carousel-control-next" (click)="movePrevious()" src="../../assets/svg/arrow-left.svg">
             </div>
         </div>
-        <ng-template #notFound><p class="text-center h5">NotFound</p></ng-template>
+        <ng-template #notFound><p class="text-center h5">{{'Not Found'|translate}}</p></ng-template>
     </ng-template>
     <!--Enable Location Services-->
     <div #enableLocationServices class="enable-location" id="enable-location" *ngIf="!location.isLocationAccessGranted()">

@@ -27,7 +27,5 @@ export class TranslationService {
   getTranslate(key: string){
     return this.translate.instant(key);
   }
-
-
-
+  
 }

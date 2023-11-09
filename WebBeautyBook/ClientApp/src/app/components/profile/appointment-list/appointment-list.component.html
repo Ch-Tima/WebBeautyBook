@@ -5,25 +5,25 @@
 
             <!-- date Column -->
             <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> date </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Date"|translate}} </th>
             <td mat-cell *matCellDef="let element"> {{element.date.split('T')[0]}} </td>
             </ng-container>
 
             <!-- time Column -->
             <ng-container matColumnDef="time">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> time </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Time"|translate}} </th>
                 <td mat-cell *matCellDef="let element"> {{element.timeStart.substring(0, element.timeStart.lastIndexOf(':'))}}-{{element.timeEnd.substring(0, element.timeEnd.lastIndexOf(':'))}} </td>
             </ng-container>
 
             <!-- service Column -->
             <ng-container matColumnDef="service">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> service </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Service"|translate}} </th>
                 <td mat-cell *matCellDef="let element" class="autoShowHide"> {{element.service.name}} </td>
             </ng-container>
 
             <!-- status Column -->
             <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> status </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{"Status"|translate}} </th>
                 <td mat-cell *matCellDef="let element" class="autoShowHide"> {{element.status}} </td>
             </ng-container>
 
@@ -37,11 +37,11 @@
         </mat-paginator>
     </div>
 
-    <ng-template #noAppointments><p class="text-center h5 my-3">No appointments</p></ng-template>
+    <ng-template #noAppointments><p class="text-center h5 my-3">{{"NoAppointments"|translate}}</p></ng-template>
 
 </ng-container>
 
 <ng-template #loading>
     <mat-spinner style="margin: 1em auto;"></mat-spinner>
-    <h3 class="text-center h5 my-3">Loading...</h3>
+    <h3 class="text-center h5 my-3">{{"Loading"|translate}}</h3>
 </ng-template>

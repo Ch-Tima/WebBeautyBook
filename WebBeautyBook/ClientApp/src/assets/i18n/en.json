@@ -18,6 +18,7 @@
     "Company": "Company",
     "Category": "Category",
     "Location": "Location",
+    "Not Found": "Not Found",
 
     "Sunday": "Sunday",
     "Monday": "Monday",
@@ -32,6 +33,31 @@
     "No services": "No services",
     "Loading": "Loading",
     "No workers": "No workers",
-    "Search for service": "Search for service"
+    "Search for service": "Search for service",
+
+    "Appointments": "Appointments",
+    "Favourites": "Favourites",
+    "Account&Settings": "Appointments",
+
+    "Account Details": "Account Details",
+    "First name": "First name",
+    "Last name": "Last name",
+    "Phone number": "Phone number",
+    "Change Password": "Change Password",
+
+    "NoFavoriteCompanies": "No favorite companies",
+    "NoAppointments":"No appointments",
+
+    "Date": "date",
+    "Service": "service",
+    "Status": "status",
+    "Time": "time",
+    
+    "FirstNameIsRequired": "First name is required.",
+    "FirstNameLength": "The 'First name' must be between 4 and 100 characters.",
+    "LastNameIsRequired": "Last name is required.",
+    "LastNameLength": "The 'Last name' must be between 4 and 100 characters.",
+    "ThisIsNotPhoneNumber": "This is not a phone number.",
+    "Submit": "Submit"
 
 }
