@@ -58,5 +58,19 @@
     "LastNameIsRequired": "Фамилия обязательна.",
     "LastNameLength": "Длина 'Фамилии' должна быть от 4 до 100 символов.",
     "ThisIsNotPhoneNumber": "Это не номер телефона.",
-    "Submit": "Сохранить"
+    "Submit": "Сохранить",
+    
+    "SelectEmployee": "Выберите сотрудника",
+    "NotFreePlaces": "Нет свободных мест",
+    "ChooseDate": "Выберите дату",
+    "Cancel": "Отмена",
+    "Apply": "Применить",
+    "Update": "Обновить",
+    "Booking": "Бронирование",
+    "Remove": "Удалить",
+    "Note": "Примечание",
+    "Book": "Записаться",
+    "ReservationWasSuccessful": "Бронирование прошло успешно.",
+    "TextCopied": "Текст скопирован!",
+    "NotFoundCompany": "Компания не найдена!"
 }

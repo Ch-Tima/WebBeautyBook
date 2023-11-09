@@ -34,7 +34,7 @@
                                 <p class="service-price">{{item.price}}$</p>
                                 <p class="service-time">{{item.time.substring(0, item.time.lastIndexOf(":")).substring(item.time[0] == '0' ? 1: 0).replace(':', "h ").concat('m')}}</p>
                             </div>
-                            <button (click)="booking(item.id)" class="btn btn-success">Book</button>
+                            <button (click)="booking(item.id)" class="btn btn-success">{{"Book"|translate}}</button>
                         </div>
                     </div>
                     <hr>

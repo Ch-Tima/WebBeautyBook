@@ -58,6 +58,19 @@
     "LastNameIsRequired": "Last name is required.",
     "LastNameLength": "The 'Last name' must be between 4 and 100 characters.",
     "ThisIsNotPhoneNumber": "This is not a phone number.",
-    "Submit": "Submit"
+    "Submit": "Submit",
 
+    "SelectEmployee": "Select an employee",
+    "NotFreePlaces": "Not free places",
+    "ChooseDate": "Choose a date",
+    "Cancel": "Cancel",
+    "Apply": "Apply",
+    "Update": "Update",
+    "Booking": "Booking",
+    "Remove": "Remove", 
+    "Note": "Note",
+    "Book": "Book",
+    "ReservationWasSuccessful": "Reservation was successful.",
+    "TextCopied": "Text copied!",
+    "NotFoundCompany": "Not found company!"
 }

@@ -98,14 +98,14 @@ export class CompanyPageComponent implements OnInit {
     });
     appointmentDialog.afterClosed().subscribe((result:AppointmentDialogResult) => {
       if(result.isSuccess && result.action == 'create')
-        this.toast.success("Reservation was successful.")
+        this.toast.success(this.translationService.getTranslate("ReservationWasSuccessful"))
     })
   }
 
   // Function to copy text to clipboard and show a success toastr message
   public copyToClipboard(val:string) {
     navigator.clipboard.writeText(val);
-    this.toast.success("Text copied!", undefined, { timeOut: 1000 })
+    this.toast.success(this.translationService.getTranslate("TextCopied"), undefined, { timeOut: 1000 })
   }
 
   // Function to check if the current user has liked the company
@@ -127,7 +127,7 @@ export class CompanyPageComponent implements OnInit {
   private async loadCompany(){
     return await this.http.get<Company>(`api/Company?id=${this.companyId}`).toPromise().then(async result => {
       if(result == undefined){
-        this.toast.error("Not found company!")
+        this.toast.error(this.translationService.getTranslate("NotFoundCompany"))
         this.rout.navigate(["/"]);
       }else{
         this.company = result;
@@ -135,6 +135,7 @@ export class CompanyPageComponent implements OnInit {
       }
     }).catch(e => {
       console.log(e);
+      this.toast.error(this.translationService.getTranslate("NotFoundCompany"))
       this.rout.navigate(["/"]);
     });
   }
