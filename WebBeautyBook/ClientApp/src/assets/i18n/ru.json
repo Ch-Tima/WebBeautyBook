@@ -18,6 +18,11 @@
     "Company": "Компания",
     "Category": "Категория",
     "Location": "Местоположение",
+    "CompanyOwners": "Владельцы компаний",
+    "Country": "Страна",
+    "Countries": "Страны",
+    "Cities": "Города",
+    "City": "Город",
     "Not Found": "Не найдено",
     
     "Sunday": "Воскресенье",
@@ -44,6 +49,8 @@
     "Last name": "Фамилия",
     "Phone number": "Номер телефона",
     "Change Password": "Изменить пароль",
+    "CheckEmailAndResetPassword": "Проверьте свою электронную почту и следуйте инструкциям, чтобы сбросить пароль и снова войти в систему.",
+    "PasswordReset": "Сброс пароля",
 
     "NoFavoriteCompanies": "Нет избранных компаний",
     "NoAppointments":"Нет записей",
@@ -72,5 +79,22 @@
     "Book": "Записаться",
     "ReservationWasSuccessful": "Бронирование прошло успешно.",
     "TextCopied": "Текст скопирован!",
-    "NotFoundCompany": "Компания не найдена!"
+    "NotFoundCompany": "Компания не найдена!",
+
+    "Add": "Добавлять",
+    "CompanyName": "Название компании",
+    "FeedbackEmail": "Email для обратной связи",
+    "EmailOwn": "Собственный Email",
+    "Address": "Адрес",
+    "ChooseCountry": "Выберите страну",
+    
+    "CompanyNameIsRequired": "Требуется название компании.",
+    "CompanyNameLength": "Название компании должно содержать от 3 до 100 символов.",
+    "EmailAddressIsRequiredForFeedback": "Для обратной связи необходим адрес электронной почты",
+    "OwnerEmailAddressRequired": "Требуется адрес электронной почты владельца!",
+    "ThisIsNotEmailAddress": "Это не адрес электронной почты.",
+    "AddressIsRequired": "Адрес обязателен!",
+    "AddressLength":"Адрес должен содержать от 4 до 100 символов.",
+    "CountyAndCityIsRequired": "Страна и город обязательные поля.",
+    "Send": "Отправить"
 }

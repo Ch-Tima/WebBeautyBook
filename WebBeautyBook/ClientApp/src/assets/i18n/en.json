@@ -18,6 +18,11 @@
     "Company": "Company",
     "Category": "Category",
     "Location": "Location",
+    "CompanyOwners": "Company owners",
+    "Country": "Country",
+    "Countries": "Countries",
+    "Cities": "Cities",
+    "City": "City",
     "Not Found": "Not Found",
 
     "Sunday": "Sunday",
@@ -44,6 +49,8 @@
     "Last name": "Last name",
     "Phone number": "Phone number",
     "Change Password": "Change Password",
+    "CheckEmailAndResetPassword": "Check your email and follow the instructions to reset your password and sign in again.",
+    "PasswordReset": "Password Reset",
 
     "NoFavoriteCompanies": "No favorite companies",
     "NoAppointments":"No appointments",
@@ -72,5 +79,22 @@
     "Book": "Book",
     "ReservationWasSuccessful": "Reservation was successful.",
     "TextCopied": "Text copied!",
-    "NotFoundCompany": "Not found company!"
+    "NotFoundCompany": "Not found company!",
+
+    "Add": "Add",
+    "CompanyName": "Company Name",
+    "FeedbackEmail": "Feedback Email",
+    "EmailOwn": "Own Email",
+    "Address": "Address",
+    "ChooseCountry": "Choose a Country",
+
+    "CompanyNameIsRequired": "Company name is required.",
+    "CompanyNameLength": "The Company name must be between 3 and 100 characters.",
+    "EmailAddressIsRequiredForFeedback": "An email address is required for feedback.",
+    "OwnerEmailAddressRequired": "Owner's email address required!",
+    "ThisIsNotEmailAddress": "This isn't an email address.",
+    "AddressIsRequired": "Address is required!",
+    "AddressLength":"The Address must be between 4 and 100 characters.",
+    "CountyAndCityIsRequired": "County and City is required.",
+    "Send": "Send"
 }

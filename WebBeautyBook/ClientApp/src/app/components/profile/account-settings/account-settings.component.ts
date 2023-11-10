@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {AuthService} from "../../../services/auth/auth.service";
+import { ToastrService } from 'ngx-toastr';
+import { TranslationService } from 'src/app/services/translation/translation.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -20,7 +22,7 @@ export class AccountSettingsComponent {
   public url: string|ArrayBuffer|null|undefined = null; // Preview image selected by the user
   private fileToUpload: File|undefined; // The file selected by the user
 
-  constructor(private auth: AuthService, private http: HttpClient){
+  constructor(private auth: AuthService, private http: HttpClient, private toastr: ToastrService, private translater: TranslationService){
     //Initialize the form
     this.mForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.minLength(4)]),
@@ -70,7 +72,7 @@ export class AccountSettingsComponent {
     if(email != undefined && email.length > 0){
       // Request a password reset
       this.auth.ForgotPassword(email).subscribe(result => {
-        alert("Check your email and follow the instructions to reset your password and sign in again.");
+        this.toastr.success(this.translater.getTranslate("CheckEmailAndResetPassword"), this.translater.getTranslate("PasswordReset"))
       }, error => {
         alert(error.error)
       });

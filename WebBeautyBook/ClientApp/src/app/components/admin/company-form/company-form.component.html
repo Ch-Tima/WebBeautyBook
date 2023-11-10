@@ -2,61 +2,61 @@
     <div>
 
         <div>
-            <label for="nameCompany">CompanyName</label>
+            <label for="nameCompany">{{"CompanyName"|translate}}</label>
             <input formControlName="nameCompany" type="text">
             <div *ngIf="mForm.controls['nameCompany'].errors != null && mForm.controls['nameCompany'].touched">
-              <small style="color:red" *ngIf="mForm.controls['nameCompany'].errors['required'] != undefined">NameCompany is required.</small>
-              <small style="color:red" *ngIf="mForm.controls['nameCompany'].errors['minlength'] != undefined || mForm.controls['nameCompany'].errors['maxlength'] != undefined">The NameCompany must be between 3 and 100 characters.</small>
+              <small style="color:red" *ngIf="mForm.controls['nameCompany'].errors['required'] != undefined">{{"CompanyNameIsRequired"|translate}}</small>
+              <small style="color:red" *ngIf="mForm.controls['nameCompany'].errors['minlength'] != undefined || mForm.controls['nameCompany'].errors['maxlength'] != undefined">{{"CompanyNameLength"|translate}}</small>
             </div>
         </div>
 
         <div>
-            <label for="feedbackEmail">FeedbackEmail</label>
+            <label for="feedbackEmail">{{"FeedbackEmail"|translate}}</label>
             <input formControlName="feedbackEmail" type="text">
             <div *ngIf="mForm.controls['feedbackEmail'].errors != null && mForm.controls['feedbackEmail'].touched">
-              <small style="color:red" *ngIf="mForm.controls['feedbackEmail'].errors['required'] != undefined">FeedbackEmail address is required.</small>
-              <small style="color:red" *ngIf="mForm.controls['feedbackEmail'].errors['email'] != undefined">This isn't an FeedbackEmail address.</small>
+              <small style="color:red" *ngIf="mForm.controls['feedbackEmail'].errors['required'] != undefined">{{"EmailAddressIsRequiredForFeedback"|translate}}</small>
+              <small style="color:red" *ngIf="mForm.controls['feedbackEmail'].errors['email'] != undefined">{{"ThisIsNotEmailAddress"|translate}}</small>
             </div>
         </div>
 
         <div>
-            <label for="emailOwn">EmailOwn</label>
+            <label for="emailOwn">{{"EmailOwn"|translate}}</label>
             <input formControlName="emailOwn" type="text">
             <div *ngIf="mForm.controls['emailOwn'].errors != null && mForm.controls['emailOwn'].touched">
-              <small style="color:red" *ngIf="mForm.controls['emailOwn'].errors['required'] != undefined">EmailOwn is required.</small>
-              <small style="color:red" *ngIf="mForm.controls['emailOwn'].errors['email'] != undefined">This isn't an EmailOwn address.</small>
+              <small style="color:red" *ngIf="mForm.controls['emailOwn'].errors['required'] != undefined">{{"OwnerEmailAddressRequired"|translate}}</small>
+              <small style="color:red" *ngIf="mForm.controls['emailOwn'].errors['email'] != undefined">{{"ThisIsNotEmailAddress"|translate}}</small>
             </div>
         </div>
 
         <div>
-            <label for="emailOwn">Address</label>
+            <label for="emailOwn">{{"Address"|translate}}</label>
             <input formControlName="address" type="text">
             <div *ngIf="mForm.controls['address'].errors != null && mForm.controls['address'].touched">
-              <small style="color:red" *ngIf="mForm.controls['address'].errors['required'] != undefined">Address is required.</small>
-              <small style="color:red" *ngIf="mForm.controls['address'].errors['minlength'] != undefined || mForm.controls['address'].errors['maxlength'] != undefined">The Address must be between 4 and 100 characters.</small>
+              <small style="color:red" *ngIf="mForm.controls['address'].errors['required'] != undefined">{{"AddressIsRequired"|translate}}</small>
+              <small style="color:red" *ngIf="mForm.controls['address'].errors['minlength'] != undefined || mForm.controls['address'].errors['maxlength'] != undefined">{{"AddressLength"|translate}}</small>
             </div>
         </div>
 
         <div>
-            <label>Choose a Country:</label>
+            <label>{{"ChooseCountry"|translate}}:</label>
             <select (change)="loadCities($event)" name="Country">
-                <option selected disabled>countries</option>
+                <option selected disabled>{{"Countries"|translate}}</option>
                 <option *ngFor="let item of listCountry" [value]="item.country" >{{item.country}}</option>
             </select>
             <div *ngIf="listCity.length != 0">
-                <label>City:</label>
+                <label>{{"City"|translate}}:</label>
                 <select formControlName="locationId" name="City">
                     <option *ngFor="let item of listCity" [value]="item.id" >{{item.city}}</option>
                 </select>
             </div>
             <div *ngIf="mForm.controls['locationId'].errors != null && submitted == true">
-                <small style="color:red" *ngIf="mForm.controls['locationId'].errors['required'] != undefined">County and City is required.</small>
+                <small style="color:red" *ngIf="mForm.controls['locationId'].errors['required'] != undefined">{{"CountyAndCityIsRequired"|translate}}</small>
             </div>
         </div>
 
         <div>
-            <button *ngIf="!mForm.valid" class="btn btn-primary" type="submit" disabled>send</button>
-            <button *ngIf="mForm.valid" class="btn btn-primary" type="submit">send</button>
+            <button *ngIf="!mForm.valid" class="btn btn-primary" type="submit" disabled>{{"Send"|translate}}</button>
+            <button *ngIf="mForm.valid" class="btn btn-primary" type="submit">{{"Send"|translate}}</button>
         </div>
     </div>
 </form>
