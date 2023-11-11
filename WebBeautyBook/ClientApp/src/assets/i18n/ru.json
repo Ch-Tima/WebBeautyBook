@@ -1,7 +1,7 @@
 {
     "Recommended": "Рекомендуемые",
-    "Want to enable location services?": "Хотите включить службы определения местоположения?",
-    "Turn on location services to find the best salons in your area.": "Включите службы определения местоположения, чтобы найти лучшие салоны в вашем районе.",
+    "WantToEnableLocationServices": "Хотите включить службы определения местоположения?",
+    "TurnOnLocationServicesToFindTheBestSalonsInYourArea": "Включите службы определения местоположения, чтобы найти лучшие салоны в вашем районе.",
     "Yes": "Да",
     "No": "Нет",
     "Home": "Главная",
@@ -96,5 +96,25 @@
     "AddressIsRequired": "Адрес обязателен!",
     "AddressLength":"Адрес должен содержать от 4 до 100 символов.",
     "CountyAndCityIsRequired": "Страна и город обязательные поля.",
-    "Send": "Отправить"
+    "Send": "Отправить",
+    
+    "EmailConfirmed": "Электронная почта подтверждена",
+    "ResetPassword": "Сброс пароля",
+    "ResetYourPassword": "Сбросить ваш пароль",
+    "Reset": "Сбросить",
+    "Create An Account": "Создать аккаунт",
+    "HiWelcomeBack": "Рады видеть вас снова",
+    "LoginHere": "Войдите в свой аккаунт",
+    "Email": "Электронная почта",
+    "EmailIsRequired": "Требуется указать электронную почту",
+    "Password": "Пароль",
+    "PasswordLength": "Минимальная длина пароля составляет 6 символов.",
+    "ConfirmPassword": "Укажите пароль ещё раз",
+    "PasswordMismatch": "Пароли не совпадают",
+    "PasswordIsRequired": "Требуется указать пароль",
+    "DoNotHaveAnAccount": "У вас нет аккаунта?",
+    "ForgotPassword": "Забыли пароль?",
+    "AlreadyHaveAnAccount": "У вас уже есть аккаунт?",
+    "SignIn": "Войти",
+    "SignUp": "Зарегистрироваться"
 }

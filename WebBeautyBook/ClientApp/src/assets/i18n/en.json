@@ -1,8 +1,8 @@
 {
     "Recommended": "Recommended",
     "Home": "Home",
-    "Want to enable location services?": "Хотите включить службы определения местоположения?",
-    "Turn on location services to find the best salons in your area.": "Включите службы определения местоположения, чтобы найти лучшие салоны в вашем районе.",
+    "WantToEnableLocationServices": "Want to enable location services?",
+    "TurnOnLocationServicesToFindTheBestSalonsInYourArea": "Turn on location services to find the best salons in your area.",
     "Yes": "Yes",
     "No": "No",
     "Login": "Login",
@@ -96,5 +96,25 @@
     "AddressIsRequired": "Address is required!",
     "AddressLength":"The Address must be between 4 and 100 characters.",
     "CountyAndCityIsRequired": "County and City is required.",
-    "Send": "Send"
+    "Send": "Send",
+
+    "EmailConfirmed": "Email confirmed",
+    "ResetPassword": "Reset password",
+    "ResetYourPassword": "Reset your password",
+    "Reset": "Reset",
+    "Create An Account": "Create An Account",
+    "HiWelcomeBack": "Hi Welcome Back",
+    "LoginHere": "Login Here",
+    "Email": "Email",
+    "EmailIsRequired": "Email is required",
+    "Password": "Password",
+    "PasswordLength": "The minimum Password length is 6 characters.",
+    "ConfirmPassword": "Confirm Password",
+    "PasswordMismatch": "Password Mismatch",
+    "PasswordIsRequired": "Password is required.",
+    "DoNotHaveAnAccount": "Don't have an account?",
+    "ForgotPassword": "Forgot password?",
+    "AlreadyHaveAnAccount": "Already have an account?",
+    "SignIn": "SignIn",
+    "SignUp": "SignUp"
 }
