@@ -3,9 +3,11 @@
     <div class="flags-container">
 
         <ng-container *ngFor="let item of flags">
-            <div class="flag-column language-card d-flex" (click)="getSelectedLanguage(item.languageCode)" >
+
+            <div class="flag-column language-card d-flex {{translation.getLanguage()==item.languageCode?'language-card-selected':''}}" (click)="getSelectedLanguage(item.languageCode)" >
                 <img class="icon" src="../../../assets/svg/flags/{{item.flag}}">
                 <p>{{item.title}}</p>
+                <img width="28" style="margin: 0 0 0 auto; padding-left: 5px;" src="../../../assets/svg/checkmark.svg" *ngIf="translation.getLanguage() == item.languageCode">
             </div>
         </ng-container>
     </div>

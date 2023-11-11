@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarOptions, EventChangeArg, EventClickArg, EventInput} from '@fullcalendar/core';
+import { CalendarOptions, EventChangeArg, EventClickArg, EventInput, LocaleInput} from '@fullcalendar/core';
 import ruLocale from '@fullcalendar/core/locales/ru';
 import enLocale from '@fullcalendar/core/locales/en-au';
+import deLocale from '@fullcalendar/core/locales/de';
+import plLocale from '@fullcalendar/core/locales/pl';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -32,7 +34,7 @@ export class AppointmentComponent implements OnInit {
   public events:ClientEventInput[]|WorkerEventInput[] = [];
 
   public calendar: CalendarOptions = {
-    locale: this.translate.getLanguage() == 'ru' ? ruLocale : enLocale,
+    locale: this.setLocale(this.translate.getLanguage()),
     plugins: [
       interactionPlugin,
       dayGridPlugin,
@@ -64,9 +66,17 @@ export class AppointmentComponent implements OnInit {
   };
 
   constructor(public auth: AuthService, private toastr: ToastrService, private http: HttpClient, private dialogRef : MatDialog, private datePipe: DatePipe, private translate: TranslationService){
-    this.translate.getLanguageChangedEvent().subscribe(l => {
-      this.calendar.locale = this.translate.getLanguage() == 'ru' ? ruLocale : enLocale
-    })
+    this.translate.getLanguageChangedEvent().subscribe(l => this.calendar.locale = this.setLocale(l))
+  }
+
+  private setLocale(language: string){
+    console.log(language);
+    switch(language){
+      case 'ru': return ruLocale;
+      case 'de': return deLocale;
+      case 'pl': return plLocale;
+      default: return enLocale;
+    }
   }
 
   public async ngOnInit(){

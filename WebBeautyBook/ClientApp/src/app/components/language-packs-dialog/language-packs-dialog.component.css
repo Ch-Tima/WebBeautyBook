@@ -23,6 +23,7 @@ img, p, div{
     width: auto;
     margin: .5em 1em;
     height: 50px;
+    min-width: 180px;
 }
 
 .language-card p{
@@ -33,6 +34,12 @@ img, p, div{
     background-color: aliceblue;
     border-radius: 0.375em;
 }
+
+.language-card-selected{
+    background-color: aliceblue;
+    border-radius: 0.375em;
+}
+
 
 @media (max-width: 540px) { 
     .flags-container{

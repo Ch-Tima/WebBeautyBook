@@ -13,19 +13,20 @@ export class TranslationService {
   constructor(private translate: TranslateService) {}
 
   setLanguage(language: string) {
+    language = language || "en";
     this.translate.use(language);
     localStorage.setItem(LANGUAGE, language);
     this.languageChanged.emit(language);
   }
 
   setLanguageFromLocaStoragel(){
-    var localLanguage = localStorage.getItem(LANGUAGE);
-    this.translate.use(localLanguage ?? "en")
-    this.languageChanged.emit(localLanguage ?? "en");
+    var localLanguage = localStorage.getItem(LANGUAGE) || "en"
+    this.translate.use(localLanguage)
+    this.languageChanged.emit(localLanguage)
   }
 
   getLanguage() {
-    return this.translate.currentLang;
+    return this.translate.currentLang || "en";
   }
 
   getTranslate(key: string){
