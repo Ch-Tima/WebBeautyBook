@@ -1,0 +1,12 @@
+
+<div class="container-fluid">
+    <div class="flags-container">
+
+        <ng-container *ngFor="let item of flags">
+            <div class="flag-column language-card d-flex" (click)="getSelectedLanguage(item.languageCode)" >
+                <img class="icon" src="../../../assets/svg/flags/{{item.flag}}">
+                <p>{{item.title}}</p>
+            </div>
+        </ng-container>
+    </div>
+</div>

@@ -80,6 +80,8 @@ import { SearchPageComponent } from './components/search/search-page/search-page
 import { SearchCompanyInputComponent } from './components/search/search-company-input/search-company-input.component';
 //ImageSliderComponent
 import { ImageSliderComponent } from './components/image-slider/image-slider.component';
+//LanguagePacksDialogComponent
+import { LanguagePacksDialogComponent } from './components/language-packs-dialog/language-packs-dialog.component';
 
 const routes: Routes = [
   //Public
@@ -144,6 +146,7 @@ const routes: Routes = [
     SearchPageComponent,
     SearchCompanyInputComponent,
     PrivacyPolicyComponent,
+    LanguagePacksDialogComponent,
   ],
   imports: [
     BrowserModule,
