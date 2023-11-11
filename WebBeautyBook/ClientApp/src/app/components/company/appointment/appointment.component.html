@@ -8,7 +8,7 @@
                 {{item.worker.baseUser.userName}} {{item.worker.baseUser.userSurname}}</mat-option>
             </mat-select>
 
-            <input type="button" (click)="addReservation()" src="../../../assets/svg/plus.svg" class="btn-plus btn btn-primary" value="Add">
+            <input type="button" (click)="addReservation()" src="../../../assets/svg/plus.svg" style="width: max-content;" class="btn-plus btn btn-primary" value="{{'Add'|translate}}">
         </div>
         <full-calendar class="calendar" [options]="calendar"></full-calendar>
     </div>

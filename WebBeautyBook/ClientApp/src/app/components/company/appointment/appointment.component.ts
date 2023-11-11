@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarOptions, EventChangeArg, EventClickArg, EventInput} from '@fullcalendar/core';
+import ruLocale from '@fullcalendar/core/locales/ru';
+import enLocale from '@fullcalendar/core/locales/en-au';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -16,6 +18,7 @@ import { Appointment } from 'src/app/models/Appointment';
 import { ClientEventInput } from 'src/app/models/ClientEventInput';
 import {AuthService} from "../../../services/auth/auth.service";
 import { Worker } from "../../../models/Worker"
+import { TranslationService } from 'src/app/services/translation/translation.service';
 
 @Component({
   selector: 'app-appointment',
@@ -29,6 +32,7 @@ export class AppointmentComponent implements OnInit {
   public events:ClientEventInput[]|WorkerEventInput[] = [];
 
   public calendar: CalendarOptions = {
+    locale: this.translate.getLanguage() == 'ru' ? ruLocale : enLocale,
     plugins: [
       interactionPlugin,
       dayGridPlugin,
@@ -59,7 +63,10 @@ export class AppointmentComponent implements OnInit {
     defaultAllDayEventDuration: null,
   };
 
-  constructor(public auth: AuthService, private toastr: ToastrService, private http: HttpClient, private dialogRef : MatDialog, private datePipe: DatePipe){
+  constructor(public auth: AuthService, private toastr: ToastrService, private http: HttpClient, private dialogRef : MatDialog, private datePipe: DatePipe, private translate: TranslationService){
+    this.translate.getLanguageChangedEvent().subscribe(l => {
+      this.calendar.locale = this.translate.getLanguage() == 'ru' ? ruLocale : enLocale
+    })
   }
 
   public async ngOnInit(){

@@ -8,7 +8,7 @@
             <!--Field of error for all occasions-->
             <p class="h5 text-center text-danger" *ngIf="errorMessage != ''">{{errorMessage}}</p>
 
-            <app-appointment *ngIf="menu == 'Appointment'"></app-appointment>
+            <app-appointment *ngIf="menu == 'Appointments'"></app-appointment>
             <app-employees-panel *ngIf="menu == 'Employees'"></app-employees-panel>
             <app-service-panel *ngIf="menu == 'Services'"></app-service-panel>
             
