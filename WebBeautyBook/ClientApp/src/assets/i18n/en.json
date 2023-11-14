@@ -144,5 +144,6 @@
     "Create": "Create",
     "Close": "Close",
     "SelectedWorkers": "Selected Workers",
-    "Workers": "workers"
+    "Workers": "workers",
+    "WeHaveSentYouPasswordResetLink": "We have sent you a password reset link to your email address: "
 }

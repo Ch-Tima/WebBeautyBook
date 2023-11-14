@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {AuthService} from "../../../services/auth/auth.service";
+import { TranslationService } from 'src/app/services/translation/translation.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,7 +15,7 @@ export class ForgotPasswordComponent {
   result: string = '';// Variable to store the result message
   isErrorResult: boolean = false; // Boolean to indicate if the result is an error
 
-  constructor(private auth: AuthService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private auth: AuthService, private formBuilder: FormBuilder, private router: Router, private translation: TranslationService) {
     // Check if the user already has a token, if so, redirect to the home page
     if(auth.hasToken()) router.navigate(["/"]);
     // Initialize the forgot password form with validation
@@ -27,7 +28,7 @@ export class ForgotPasswordComponent {
     if(!this.mForm.valid) return;
     const email = this.mForm.controls["email"].getRawValue();
     this.auth.ForgotPassword(email).toPromise().then(result => {
-      this.result = 'We have sent you a password reset link to your email address "' + email + '"';
+      this.translation.getTranslationByKey("WeHaveSentYouPasswordResetLink").subscribe(r => this.result = r + " " + email);
       this.isErrorResult = false;
     }).catch(error => {
       console.error(error);

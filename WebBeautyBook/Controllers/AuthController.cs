@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using WebBeautyBook.Models;
 using BLL.Services;
+using Microsoft.Extensions.Localization;
 
 namespace WebBeautyBook.Controllers
 {
@@ -25,7 +26,9 @@ namespace WebBeautyBook.Controllers
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailService;
 
-        public AuthController(UserManager<BaseUser> userManager, RoleManager<IdentityRole> roleManager, 
+        private readonly IStringLocalizer<AuthController> _localizer;
+
+        public AuthController(UserManager<BaseUser> userManager, RoleManager<IdentityRole> roleManager, IStringLocalizer<AuthController> localizer,
             WorkerService workerService, IConfiguration configuration, IEmailSender emailService)
         {
             _userManager = userManager;
@@ -33,6 +36,7 @@ namespace WebBeautyBook.Controllers
             _workerService = workerService;
             _configuration = configuration;
             _emailService = emailService;
+            _localizer = localizer;
         }
 
         [HttpPost]
@@ -44,7 +48,7 @@ namespace WebBeautyBook.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
-                return new BadRequestObjectResult($"Incorrect email or password.");
+                return new BadRequestObjectResult(_localizer["IncorrectEmailOrPassword"].Value);
 
             return new OkObjectResult(await GenerateJWTAsync(user, 7));
 
@@ -83,11 +87,11 @@ namespace WebBeautyBook.Controllers
         [Authorize(Roles = Roles.OWN_COMPANY)]
         public async Task<IActionResult> RegistrationViaCompany([FromBody] RegistrationModel model)
         {
-            if (model.Role == Roles.CLIENT) return BadRequest($"Role {model.Role} is invalid.");
+            if (model.Role == Roles.CLIENT) return BadRequest(_localizer["RoleIsInvalid", model.Role].Value);
 
             var own = await _userManager.GetUserAsync(User);
             var ownWork = await _workerService.GetAsync(own.WorkerId);
-            if (own == null || ownWork == null) return BadRequest("You don't have company.");
+            if (own == null || ownWork == null) return BadRequest(_localizer["YouDontHaveCompany"].Value);
 
             var result = await BaseRegister(model);
             var code = ((IStatusCodeActionResult)result).StatusCode;
@@ -114,19 +118,19 @@ namespace WebBeautyBook.Controllers
             var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
-                return new BadRequestObjectResult($"User with name \"{email}\" couldn't be found.");
+                return new BadRequestObjectResult(_localizer["UserWithNameCouldntBeFound", email].Value);
 
             if (!user.EmailConfirmed)
             {
                 //Send email with user email confirmation
                 var emailConfirmLink = await GenerateEmailConfirmationLinkAsync(user);
-                var msgHtml = $"<lable>Please click the link for confirm Email address:</lable><a href='{emailConfirmLink}'>Confirm Email</a>";
+                var msgHtml = _localizer["PleaseConfirmEmail", emailConfirmLink].Value;
                 await _emailService.SendEmailAsync(user.Email, "Confirmation Email(WebBeautyBook)", msgHtml);
-                return new BadRequestObjectResult($"Please verify your email address: {email}.\nWe have sent you a link to verify your email.");
+                return new BadRequestObjectResult(_localizer["PleaseVerifyEmail", email].Value);
             }
 
             var link = await GeneratePasswordResetLinkAsync(user);
-            await _emailService.SendEmailAsync(email, "Reset Password(WebAds)", $"<a href='{link}'>ResetPassword</a>");
+            await _emailService.SendEmailAsync(email, "Reset Password(WebBeautyBook)", _localizer["MsgResetPassword", link].Value);
 
             return Ok();
         }
@@ -141,11 +145,11 @@ namespace WebBeautyBook.Controllers
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user == null) return BadRequest($"User with name {model.Email} couldn't be found.");
+            if (user == null) return BadRequest(_localizer["UserWithNameCouldntBeFound", model.Email]);
 
             var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
 
-            if (!result.Succeeded) return BadRequest("Token is not correct.");
+            if (!result.Succeeded) return BadRequest(_localizer["TokenIsNotCorrect"].Value);
 
             return Ok();
         }
@@ -168,14 +172,14 @@ namespace WebBeautyBook.Controllers
         {
             var user = await _userManager.FindByEmailAsync(email);
 
-            if (user == null) return BadRequest($"User with name {email} couldn't be found.");
-            if (user.EmailConfirmed) return BadRequest($"Email {email} is confirmation.");
+            if (user == null) return BadRequest(_localizer["UserWithNameCouldntBeFound", email]);
+            if (user.EmailConfirmed) return BadRequest(_localizer["EmailIsConfirmation", email].Value);
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
-            if (!result.Succeeded) return BadRequest("Token is not correct.");
+            if (!result.Succeeded) return BadRequest(_localizer["TokenIsNotCorrect"].Value);
 
-            await _emailService.SendEmailAsync(email, "Confirmation Email(WebBeautyBook)", "<p>Your email has been verified!</p>");
+            await _emailService.SendEmailAsync(email, "Confirmation Email(WebBeautyBook)", _localizer["MsgConfirmationEmail"].Value);
 
             return Ok();
         }
@@ -190,10 +194,10 @@ namespace WebBeautyBook.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             //Check if the provided email address is already in use, return a BadRequest if it is.
             if (await _userManager.FindByEmailAsync(model.Email) is not null)
-                return BadRequest($"This email address \"{model.Email}\" is busy!");
+                return BadRequest(_localizer["EmailIsBusy", model.Email].Value);
             //Check if the specified role exists; return a BadRequest if it doesn't.
             if (!await _roleManager.RoleExistsAsync(model.Role))
-                return BadRequest($"Invalid role: \"{model.Role}\"");
+                return BadRequest(_localizer["InvalidRole", model.Role]);
             //Create a new user object with the provided information.e
             var user = new BaseUser
             {
@@ -209,7 +213,7 @@ namespace WebBeautyBook.Controllers
             var roleResult = await _userManager.AddToRoleAsync(user, model.Role);
             //Send the confirmation email to the user's email address
             var link = await GenerateEmailConfirmationLinkAsync(user);
-            var msgHtml = $"<lable>Please click the link for confirm Email address:</lable><a href='{link}'>Confirm Email</a>";
+            var msgHtml = _localizer["PleaseConfirmEmail", link].Value;
             await _emailService.SendEmailAsync(user.Email, "Confirmation Email(WebBeautyBook)", msgHtml);
             //Return an OkObjectResult with the registered user's details.
             return new OkObjectResult(user);

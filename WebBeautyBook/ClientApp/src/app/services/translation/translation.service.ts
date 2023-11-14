@@ -32,6 +32,10 @@ export class TranslationService {
   getTranslate(key: string){
     return this.translate.instant(key);
   }
+
+  getTranslationByKey(key: string) {
+    return this.translate.get(key);
+  }
   
   getLanguageChangedEvent() {
     return this.languageChanged;

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule, provideAnimations } from "@angular/platform-browser/animations";
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -82,6 +82,7 @@ import { SearchCompanyInputComponent } from './components/search/search-company-
 import { ImageSliderComponent } from './components/image-slider/image-slider.component';
 //LanguagePacksDialogComponent
 import { LanguagePacksDialogComponent } from './components/language-packs-dialog/language-packs-dialog.component';
+import { LanguageInterceptorService } from './services/LanguagInterceptor/language-interceptor.service';
 
 const routes: Routes = [
   //Public
@@ -181,7 +182,8 @@ const routes: Routes = [
     DatePipe,
     LocationService,
     provideAnimations(),
-    provideToastr()
+    provideToastr(),
+    { provide: HTTP_INTERCEPTORS, useClass: LanguageInterceptorService, multi: true },
   ],
   bootstrap: [AppComponent],
 })

@@ -142,5 +142,6 @@
     "Create": "Utwórz",
     "Close": "Zamknij",
     "SelectedWorkers": "Wybrani pracownicy",
-    "Workers": "Pracownicy"
+    "Workers": "Pracownicy",
+    "WeHaveSentYouPasswordResetLink": "Wysłaliśmy ci link do resetowania hasła na twój adres e-mail: "
 }
