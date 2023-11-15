@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { NavMenuItem } from '../../../models/NavMenuItem';
+import { TranslationService } from 'src/app/services/translation/translation.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -13,7 +14,8 @@ export class ProfilePageComponent {
   // Initialize public properties
   public menu: string = ""; // Represents the currently selected menu item
   public navMenuItems: NavMenuItem[] = []; // Array to hold navigation menu items
-  constructor(private auth: AuthService, private rout: Router){
+
+  constructor(private auth: AuthService, private rout: Router, private translation: TranslationService){
     const user = this.auth.getLocalUserDate(); // Check if a user is logged in
     if(user == null){// If no user is logged in, redirect to the login page
       this.rout.navigate(["login"]);

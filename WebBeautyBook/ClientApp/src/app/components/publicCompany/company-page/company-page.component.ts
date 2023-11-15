@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppointmentDialogComponent, AppointmentDialogDate, AppointmentDialogResult } from '../appointment-dialog/appointment-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import {finalize} from "rxjs";
+import { TranslationService } from 'src/app/services/translation/translation.service';
 
 @Component({
   selector: 'app-company-page',
@@ -24,7 +25,7 @@ export class CompanyPageComponent implements OnInit {
   private companyId:string|null;
   private isRequestInProgress: boolean = false;// Flag to track whether an API request is in progress
 
-  constructor(private toast: ToastrService, private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router, private dialogRef : MatDialog){
+  constructor(private toast: ToastrService, private http: HttpClient, public auth: AuthService, private activeRoute:ActivatedRoute, private rout: Router, private dialogRef : MatDialog, private translationService: TranslationService){
     // Retrieve company ID from route queryParams
     this.companyId = this.activeRoute.snapshot.queryParams['id'];
     // Redirect to the home page if company ID is missing or empty
@@ -47,7 +48,7 @@ export class CompanyPageComponent implements OnInit {
     if(result != undefined){
       return `${result.openFrom.substring(0, result.openFrom.lastIndexOf(":"))}-${result.openUntil.substring(0, result.openUntil.lastIndexOf(":"))}`;
     }else{
-      return "Closed";
+      return this.translationService.getTranslate("Closed");
     }
   }
 
@@ -97,14 +98,14 @@ export class CompanyPageComponent implements OnInit {
     });
     appointmentDialog.afterClosed().subscribe((result:AppointmentDialogResult) => {
       if(result.isSuccess && result.action == 'create')
-        this.toast.success("Reservation was successful.")
+        this.toast.success(this.translationService.getTranslate("ReservationWasSuccessful"))
     })
   }
 
   // Function to copy text to clipboard and show a success toastr message
   public copyToClipboard(val:string) {
     navigator.clipboard.writeText(val);
-    this.toast.success("Text copied!", undefined, { timeOut: 1000 })
+    this.toast.success(this.translationService.getTranslate("TextCopied"), undefined, { timeOut: 1000 })
   }
 
   // Function to check if the current user has liked the company
@@ -126,7 +127,7 @@ export class CompanyPageComponent implements OnInit {
   private async loadCompany(){
     return await this.http.get<Company>(`api/Company?id=${this.companyId}`).toPromise().then(async result => {
       if(result == undefined){
-        this.toast.error("Not found company!")
+        this.toast.error(this.translationService.getTranslate("NotFoundCompany"))
         this.rout.navigate(["/"]);
       }else{
         this.company = result;
@@ -134,6 +135,7 @@ export class CompanyPageComponent implements OnInit {
       }
     }).catch(e => {
       console.log(e);
+      this.toast.error(this.translationService.getTranslate("NotFoundCompany"))
       this.rout.navigate(["/"]);
     });
   }

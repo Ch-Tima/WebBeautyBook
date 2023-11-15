@@ -1,50 +1,50 @@
 <div class="{{styleContainer}} my-2">
-    <h3>{{header}}</h3>
+    <h3>{{header|translate}}</h3>
     <form [formGroup]="mForm" (ngSubmit)="onSubmit()">
       <div>
         
         <div class="col-md-4 mb-3">
-          <label for="email">Email</label>
+          <label for="email">{{"Email"|translate}}</label>
           <input formControlName="email" class="form-control" type="text" *ngIf="mForm.controls['email'].valid || !mForm.controls['email'].touched">
           <div *ngIf="!mForm.controls['email'].valid && mForm.controls['email'].touched">
             <input formControlName="email" class="form-control is-invalid" type="text">
-            <small style="color:red" *ngIf="mForm.controls['email'].errors?.['required'] != undefined">Email is required.</small>
-            <small style="color:red" *ngIf="mForm.controls['email'].errors?.['email'] != undefined">This isn't an email address.</small>
+            <small style="color:red" *ngIf="mForm.controls['email'].errors?.['required'] != undefined">{{"EmailIsRequired"|translate}}</small>
+            <small style="color:red" *ngIf="mForm.controls['email'].errors?.['email'] != undefined">{{"ThisIsNotEmailAddress"|translate}}</small>
           </div>
         </div>
 
         <div class="col-md-4 mb-3">
-          <label for="userName">UserName</label>
+          <label for="userName">{{"First name"|translate}}</label>
           <input formControlName="userName" class="form-control" type="text">
           <div *ngIf="mForm.controls['userName'].errors != null && mForm.controls['userName'].touched">
-            <small style="color:red" *ngIf="mForm.controls['userName'].errors['required'] != undefined">Name is required.</small>
-            <small style="color:red" *ngIf="mForm.controls['userName'].errors['maxlength'] != undefined || mForm.controls['userName'].errors['minlength'] != undefined">The 'Name' must be between 4 and 100 characters.</small>
+            <small style="color:red" *ngIf="mForm.controls['userName'].errors['required'] != undefined">{{"FirstNameIsRequired"|translate}}</small>
+            <small style="color:red" *ngIf="mForm.controls['userName'].errors['maxlength'] != undefined || mForm.controls['userName'].errors['minlength'] != undefined">{{"FirstNameLength"|translate}}</small>
           </div>
         </div>
   
         <div class="col-md-4 mb-3">
-          <label for="userSurname">UserSurname</label>
+          <label for="userSurname">{{"Last name"|translate}}</label>
           <input formControlName="userSurname" class="form-control" type="text">
           <div *ngIf="mForm.controls['userSurname'].errors != null && mForm.controls['userSurname'].touched">
-            <small style="color:red" *ngIf="mForm.controls['userSurname'].errors['required'] != undefined">Surname is required.</small>
-            <small style="color:red" *ngIf="mForm.controls['userSurname'].errors['maxlength'] != undefined || mForm.controls['userSurname'].errors['minlength'] != undefined">The 'Surname' must be between 4 and 100 characters.</small>
+            <small style="color:red" *ngIf="mForm.controls['userSurname'].errors['required'] != undefined">{{"LastNameIsRequired"|translate}}</small>
+            <small style="color:red" *ngIf="mForm.controls['userSurname'].errors['maxlength'] != undefined || mForm.controls['userSurname'].errors['minlength'] != undefined">{{"LastNameLength"|translate}}</small>
           </div>
         </div>
   
         <div class="col-md-4 mb-3">
-          <label for="password">Password</label>
+          <label for="password">{{"Password"|translate}}</label>
           <input formControlName="password" class="form-control" type="password">
           <div *ngIf="mForm.controls['password'].errors != null && mForm.controls['password'].touched">
-            <small style="color:red" *ngIf="mForm.controls['password'].errors['required'] != undefined">Password is required.</small>
-            <small style="color:red" *ngIf="mForm.controls['password'].errors['maxlength'] != undefined || mForm.controls['password'].errors['minlength'] != undefined">The minimum Password length is 6 characters.</small>
+            <small style="color:red" *ngIf="mForm.controls['password'].errors['required'] != undefined">{{"PasswordIsRequired"|translate}}</small>
+            <small style="color:red" *ngIf="mForm.controls['password'].errors['maxlength'] != undefined || mForm.controls['password'].errors['minlength'] != undefined">{{"PasswordLength"|translate}}</small>
           </div>
         </div>
   
         <div class="col-md-4 mb-3">
-          <label for="confirmPassword">ConfirmPassword</label>
+          <label for="confirmPassword">{{"ConfirmPassword"|translate}}</label>
           <input formControlName="confirmPassword" class="form-control" type="password">
           <div *ngIf="mForm.controls['confirmPassword'].errors != null && mForm.controls['confirmPassword'].touched">
-            <small style="color:red" *ngIf="mForm.controls['confirmPassword'].errors['confirmedValidator'] != undefined">ConfirmPassword and Password do not match.</small>
+            <small style="color:red" *ngIf="mForm.controls['confirmPassword'].errors['confirmedValidator'] != undefined">{{"PasswordMismatch"|translate}}</small>
           </div>
           
         </div>
@@ -52,12 +52,11 @@
   
       <p *ngIf="lastErrorMessage != ''" style="color: red;">{{lastErrorMessage}}</p>
   
-      <button *ngIf="!mForm.valid" class="btn btn-primary" type="submit" disabled>SignUp</button>
-      <button *ngIf="mForm.valid" class="btn btn-primary" type="submit">SignUp</button>
+      <button class="btn btn-primary" type="submit" [disabled]="!mForm.valid">{{"SignUp"|translate}}</button>
   
       <span *ngIf="showLinkToLogin">
-        Already have an account?
-        <a routerLink="/login">Login</a>
+        {{"AlreadyHaveAnAccount"|translate}}
+        <a routerLink="/login">{{"Login"|translate}}</a>
       </span>
     </form>
   </div>

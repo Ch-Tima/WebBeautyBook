@@ -33,3 +33,7 @@ textarea{
 .container-btn{
     margin: .5em 0;
 }
+
+.btn-max-w{
+    width: max-content !important;
+}

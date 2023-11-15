@@ -24,31 +24,32 @@
             class="nav-item"
             [routerLinkActive]="['link-active']"
             [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+            <a class="nav-link text-dark" [routerLink]="['/']">{{'Home'|translate}}</a>
           </li>
 
           <li *ngIf="!isAuth" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/login']">Login</a>
+            <a class="nav-link text-dark" [routerLink]="['/login']">{{'Login'|translate}}</a>
           </li>
 
           <li *ngIf="!isAuth" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/register']">Register</a>
+            <a class="nav-link text-dark" [routerLink]="['/register']">{{'Register'|translate}}</a>
           </li>
 
           <li *ngIf="isAuth" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/profile']">Profile</a>
+            <a class="nav-link text-dark" [routerLink]="['/profile']">{{'Profile'|translate}}</a>
           </li>
 
           <li *ngIf="isAuth && userData.roles.includes('admin')" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/adminPanel']">AdminPanel</a>
+            <a class="nav-link text-dark" [routerLink]="['/adminPanel']">{{'AdminPanel'|translate}}</a>
           </li>
-          
           <li *ngIf="isAuth && userData.roles.includes('own_company') || userData.roles.includes('worker')" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/companyPanel']">MyCompany</a>
+            <a class="nav-link text-dark" [routerLink]="['/companyPanel']">{{'MyCompany'|translate}}</a>
           </li>
-          
+          <button class="btn" style="padding: 0; margin: 0 .28em; border: transparent; " (click)="toggleLanguage()">
+            <mat-icon style="float: right;">language</mat-icon>
+          </button>
           <li *ngIf="isAuth" class="nav-item" [routerLinkActive]="['link-active']">
-            <button (click)="signOut()" class="btn btn-link">SignOut</button>
+            <button (click)="signOut()" class="btn btn-link">{{'SignOut'|translate}}</button>
           </li>
         </ul>
       </div>

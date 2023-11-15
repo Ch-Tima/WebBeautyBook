@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {UserDataModel} from '../../models/UserDataModel';
 import {AuthService} from "../../services/auth/auth.service";
 import {NavbarService} from "../../services/navbar/navbar.service";
-import {catchError, forkJoin, map} from "rxjs";
+import { TranslationService } from 'src/app/services/translation/translation.service';
+import { MatDialog } from '@angular/material/dialog';
+import { LanguagePacksDialogComponent } from '../language-packs-dialog/language-packs-dialog.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -15,9 +17,10 @@ export class NavMenuComponent implements OnInit {
   userData: UserDataModel;
   isAuth: boolean;
 
-  constructor(private auth: AuthService, public nav: NavbarService) {
+  constructor(private auth: AuthService, public nav: NavbarService, private translationService: TranslationService, private dialogRef : MatDialog) {
     this.userData = new UserDataModel();// Initialize user data and authentication status
     this.isAuth = this.auth.hasToken();
+    this.translationService.setLanguageFromLocaStoragel();
   }
 
   public async ngOnInit() {
@@ -36,6 +39,13 @@ export class NavMenuComponent implements OnInit {
 
   public signOut() {
     this.auth.signOut();// Sign out the user
+  }
+
+  public toggleLanguage(){
+    this.dialogRef.open(LanguagePacksDialogComponent, {
+      maxWidth: "500px",
+      height: "400px"
+    }).afterClosed().subscribe(language => this.translationService.setLanguage(language));
   }
 
   private async loadUserData() {

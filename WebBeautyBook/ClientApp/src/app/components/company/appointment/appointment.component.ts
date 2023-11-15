@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarOptions, EventChangeArg, EventClickArg, EventInput} from '@fullcalendar/core';
+import { CalendarOptions, EventChangeArg, EventClickArg, EventInput, LocaleInput} from '@fullcalendar/core';
+import ruLocale from '@fullcalendar/core/locales/ru';
+import enLocale from '@fullcalendar/core/locales/en-au';
+import deLocale from '@fullcalendar/core/locales/de';
+import plLocale from '@fullcalendar/core/locales/pl';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -16,6 +20,7 @@ import { Appointment } from 'src/app/models/Appointment';
 import { ClientEventInput } from 'src/app/models/ClientEventInput';
 import {AuthService} from "../../../services/auth/auth.service";
 import { Worker } from "../../../models/Worker"
+import { TranslationService } from 'src/app/services/translation/translation.service';
 
 @Component({
   selector: 'app-appointment',
@@ -29,6 +34,7 @@ export class AppointmentComponent implements OnInit {
   public events:ClientEventInput[]|WorkerEventInput[] = [];
 
   public calendar: CalendarOptions = {
+    locale: this.setLocale(this.translate.getLanguage()),
     plugins: [
       interactionPlugin,
       dayGridPlugin,
@@ -59,7 +65,18 @@ export class AppointmentComponent implements OnInit {
     defaultAllDayEventDuration: null,
   };
 
-  constructor(public auth: AuthService, private toastr: ToastrService, private http: HttpClient, private dialogRef : MatDialog, private datePipe: DatePipe){
+  constructor(public auth: AuthService, private toastr: ToastrService, private http: HttpClient, private dialogRef : MatDialog, private datePipe: DatePipe, private translate: TranslationService){
+    this.translate.getLanguageChangedEvent().subscribe(l => this.calendar.locale = this.setLocale(l))
+  }
+
+  private setLocale(language: string){
+    console.log(language);
+    switch(language){
+      case 'ru': return ruLocale;
+      case 'de': return deLocale;
+      case 'pl': return plLocale;
+      default: return enLocale;
+    }
   }
 
   public async ngOnInit(){

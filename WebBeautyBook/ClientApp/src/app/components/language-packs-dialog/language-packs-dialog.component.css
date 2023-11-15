@@ -1,0 +1,52 @@
+img, p, div{
+    user-select: none;
+    margin: 0;
+}
+
+.flags-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.flag-column {
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.icon{
+    width: 42px;
+    margin: 0 .25em;
+}
+
+.language-card{
+    width: auto;
+    margin: .5em 1em;
+    height: 50px;
+    min-width: 180px;
+}
+
+.language-card p{
+    margin: auto 0 auto .25em;
+}
+
+.language-card:hover{
+    background-color: aliceblue;
+    border-radius: 0.375em;
+}
+
+.language-card-selected{
+    background-color: aliceblue;
+    border-radius: 0.375em;
+}
+
+
+@media (max-width: 540px) { 
+    .flags-container{
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .language-card{
+        margin: .5em;   
+    }
+}

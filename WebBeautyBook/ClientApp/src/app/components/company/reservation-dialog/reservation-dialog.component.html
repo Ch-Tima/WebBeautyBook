@@ -2,28 +2,28 @@
   <form [formGroup]="mForm" (ngSubmit)="onSubmit()">
 
     <mat-form-field class="example-form-field">
-      <mat-label>Choose a date</mat-label>
+      <mat-label>{{"ChooseDate"|translate}}</mat-label>
       <input matInput [matDatepicker]="datepicker" formControlName="date" readonly>
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
       <mat-datepicker #datepicker>
         <mat-datepicker-actions>
           <button mat-button matDatepickerCancel>Cancel</button>
-          <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+          <button mat-raised-button color="primary" matDatepickerApply>{{"Apply"|translate}}</button>
         </mat-datepicker-actions>
       </mat-datepicker>
     </mat-form-field>
 
     <div class="container-time">
       <div class="timepicker">
-        <label>StartTime:</label>
+        <label>{{"StartTime"|translate}}:</label>
         <mat-form-field>
           <input matInput [format]="24" [ngxMatTimepicker]="timeStart" formControlName="timeStart" placeholder="09:00" readonly />
         </mat-form-field>
         <ngx-mat-timepicker color="accent" #timeStart></ngx-mat-timepicker>
       </div>
       <div class="timepicker">
-        <label>EndTime:</label>
+        <label>{{"EndTime"|translate}}:</label>
         <mat-form-field>
           <input matInput [format]="24" [ngxMatTimepicker]="timeEnd" formControlName="timeEnd" placeholder="10:00" readonly />
         </mat-form-field>
@@ -31,11 +31,11 @@
       </div>
     </div>
 
-    <textarea maxlength="250" class="form-control" matInput formControlName="description" placeholder="description"></textarea>
+    <textarea maxlength="250" class="form-control" matInput formControlName="description" placeholder="{{'Description'|translate}}"></textarea>
 
     <div class="container-btn" align="end">
-      <button class="btn btn-danger mx-1" type="button" *ngIf="data.isUpdateMode" (click)="remove()">Remove</button>
-      <button class="btn btn-primary mx-1" type="submit" [disabled]="mForm.invalid">{{data.isUpdateMode ? 'Update' : 'Add'}}</button>
+      <button class="btn btn-danger mx-1" type="button" *ngIf="data.isUpdateMode" (click)="remove()">{{"Remove"|translate}}</button>
+      <button class="btn btn-primary mx-1" type="submit" [disabled]="mForm.invalid">{{data.isUpdateMode ? ("Update"|translate) : ("Add"|translate) }}</button>
     </div>
 
     <p class="text-danger text-center m-0 p-0" *ngIf="error != undefined">{{error}}</p>

@@ -1,7 +1,7 @@
 <div class="p-2" disable>
 
     <div>
-        <label>selectedWorkers:</label>
+        <label>{{"SelectedWorkers"|translate}}:</label>
         <div class="mx-2">
             <p *ngIf="selectedWorkers.length == 0">empty</p>
             <div class="row bg-light border my-1" *ngFor="let item of selectedWorkers">
@@ -14,7 +14,7 @@
     <hr class="my-2">
 
     <div>
-        <label>workers:</label>
+        <label>{{"Workers"|translate}}:</label>
         <div class="mx-2">
             <div class="row bg-light border my-1" *ngFor="let item of workers">
                 <p class="col m-0">{{item.baseUser.userName}} {{item.baseUser.userSurname}}</p>  
@@ -26,6 +26,6 @@
     <p class="text-danger" *ngIf="errorMessage != null && errorMessage.length > 0">{{errorMessage}}</p>
 
     <div mat-dialog-actions align="end">
-        <button class="btn btn-primary" mat-button mat-dialog-close>Close</button>
+        <button class="btn btn-primary" mat-button mat-dialog-close>{{"Close"|translate}}</button>
     </div>
 </div>

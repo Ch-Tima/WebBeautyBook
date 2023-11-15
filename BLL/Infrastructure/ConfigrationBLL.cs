@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.Text;
 using AspNetCoreRateLimit;
+using Microsoft.Extensions.Options;
 
 namespace BLL.Infrastructure
 {
@@ -30,8 +31,9 @@ namespace BLL.Infrastructure
         {
             // Database Configuration
             //var local = configuration.GetConnectionString("local");//appsettings
-            var realDatabse = configuration.GetValue<string>("BeautyBookDatabase");//Azure secret key
-            services.AddDbContext<BeautyBookDbContext>(opt => opt.UseSqlServer(realDatabse));
+            //var realDatabse = configuration.GetValue<string>("BeautyBookDatabase");//Azure secret key
+            //services.AddDbContext<BeautyBookDbContext>(opt => opt.UseSqlServer(realDatabse));
+            services.AddDbContext<BeautyBookDbContext>(options => options.UseInMemoryDatabase(nameof(BeautyBookDbContext)));//InMemory
 
             // Add Repository Services
             services.AddTransient<BaseUserRepository>();

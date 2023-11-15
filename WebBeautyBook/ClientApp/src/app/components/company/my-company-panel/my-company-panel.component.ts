@@ -34,7 +34,7 @@ export class MyCompanyPanelComponent {
     const mainMenu = new NavMenuItem("/assets/svg/home.svg", "Main", "Main")
     this.menu = mainMenu.value;
     this.navMenuItems.push(mainMenu);
-    this.navMenuItems.push(new NavMenuItem("/assets/svg/appointment.svg", "Appointment", "Appointment"));
+    this.navMenuItems.push(new NavMenuItem("/assets/svg/appointment.svg", "Appointments", "Appointments"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/employees.svg", "Employees", "Employees"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/services.svg", "Services", "Services"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/clients.svg", "Clients", "Clients"));

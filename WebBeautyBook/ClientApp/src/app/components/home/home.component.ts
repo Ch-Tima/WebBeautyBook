@@ -23,8 +23,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('nav', {read: DragScrollComponent}) ds!: DragScrollComponent;
   @ViewChild('search', {read: SearchCompanyInputComponent}) search!: SearchCompanyInputComponent;
 
-  public constructor(private toast: ToastrService, public location: LocationService, private http: HttpClient, public auth: AuthService, private router: Router) {
-  }
+  public constructor(private toast: ToastrService, public location: LocationService, private http: HttpClient, public auth: AuthService, private router: Router) {}
 
   public async ngOnInit() {
     await this.loadCompanies();

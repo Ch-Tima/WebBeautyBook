@@ -46,6 +46,10 @@ code {
   grid-template-rows: auto 1fr auto;
 }
 
+img{
+  user-select: none;
+}
+
 @media (max-width: 767px) {
   .my-container {
     top: calc(35px + 1.5rem);
