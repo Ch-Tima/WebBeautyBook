@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
@@ -20,10 +21,11 @@ namespace WebBeautyBook.Controllers
         private readonly BaseUserService _baseUserService;
         private readonly ServiceService _serviceService;
         private readonly IEmailSender _emailService;
+        private readonly IStringLocalizer<AppointmentController> _localizer;
 
-        public AppointmentController(AppointmentService appointmentService, AssignmentService assignmentService, 
-            WorkerService workerService, UserManager<BaseUser> userManager, BaseUserService baseUserService, 
-            ServiceService serviceService, IEmailSender emailService)
+        public AppointmentController(AppointmentService appointmentService, AssignmentService assignmentService,
+            WorkerService workerService, UserManager<BaseUser> userManager, BaseUserService baseUserService,
+            ServiceService serviceService, IEmailSender emailService, IStringLocalizer<AppointmentController> localizer)
         {
             _appointmentService = appointmentService;
             _assignmentService = assignmentService;
@@ -32,6 +34,7 @@ namespace WebBeautyBook.Controllers
             _baseUserService = baseUserService;
             _serviceService = serviceService;
             _emailService = emailService;
+            _localizer = localizer;
         }
 
         [Authorize()]
@@ -60,7 +63,7 @@ namespace WebBeautyBook.Controllers
         public async Task<IActionResult> CreateAppointmentViaClient([FromBody] AppointmentViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user.WorkerId == model.WorkerId) return BadRequest("You can not do that.");
+            if (user.WorkerId == model.WorkerId) return BadRequest(_localizer["YouCanNotDoThat"].Value);
 
             var appointment = new Appointment()
             {
@@ -79,14 +82,12 @@ namespace WebBeautyBook.Controllers
 
             var worker = await _baseUserService.FirstAsync(x => x.WorkerId == model.WorkerId);
             var service = await _serviceService.GetAsync(appointment.ServiceId);
-            if(worker != null)
+            if (worker != null)
             {
-                await _emailService.SendEmailAsync(worker.Email, "You have a new entry!", $"<label>User \"{user.UserName} {user.UserSurname}\" signed up for your \"{service.Name}\" service.</label>" +
-                    $"<p>Details: {appointment.Date.ToLocalTime().ToString("dd-MM-yyyy")} {appointment.TimeStart.ToString(@"hh\:mm")} for \"{service.Name}\" service, price {service.Price}$.</p>" +
-                    $"<p>Note from client:{appointment.Note}</p>" +
-                    $"<p>&emsp;Please confirm or reject the client's booking in your personal account.</p>");
+                await _emailService.SendEmailAsync(worker.Email, _localizer["YouHaveNewEntry"].Value,
+                    _localizer["MsgCreateAppointmentViaClient", user.UserName, user.UserSurname, service.Name, appointment.Date.ToLocalTime().ToString("dd-MM-yyyy"),
+                    appointment.TimeStart.ToString(@"hh\:mm"), service.Name, service.Price, appointment.Note].Value);
             }
-
             return Ok();
         }
 
@@ -104,12 +105,12 @@ namespace WebBeautyBook.Controllers
 
             var worker = await _baseUserService.FirstAsync(x => x.WorkerId == appointment.WorkerId);
             var service = await _serviceService.GetAsync(appointment.ServiceId);
+
             if (worker != null)
             {
-                await _emailService.SendEmailAsync(worker.Email, "The client canceled the booking!", $"<label>" +
-                    $"Client \"{user.UserName} {user.UserSurname}\" canceled the reservation for the \"{service.Name}\" service on the date " +
-                    $"\"{appointment.Date.ToLocalTime().ToString("dd-MM-yyyy")} {appointment.TimeStart.ToString(@"hh\:mm")}\"" +
-                    $"</label>");
+                await _emailService.SendEmailAsync(worker.Email, _localizer["ClientCanceledBooking"],
+                    _localizer["MsgRemoveAppointmentViaClient", user.UserName, user.UserSurname, 
+                    service.Name, appointment.Date.ToLocalTime().ToString("dd-MM-yyyy"), appointment.TimeStart.ToString(@"hh\:mm")].Value);
             }
 
             return Ok();
