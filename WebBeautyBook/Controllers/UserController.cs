@@ -48,8 +48,8 @@ namespace WebBeautyBook.Controllers
                 if (model.File != null)
                 {
                     //save new user icon
-                    var name = $"{Guid.NewGuid()}.png";
-                    var resultSaveImage = await model.File.Save($"{_appEnvironment.WebRootPath}/images/userIcons/{name}");
+                    var name = $"{Guid.NewGuid()}.webp";
+                    var resultSaveImage = await model.File.SaveToWebpAsync($"{_appEnvironment.WebRootPath}/images/userIcons/{name}");
 
                     if (!resultSaveImage.IsSuccess)
                         return StatusCode(500, resultSaveImage.Message);
