@@ -234,7 +234,7 @@ namespace DAL.Initializers
                 images.Add(new CompanyImage()
                 {
                     CompanyId = company.Id,
-                    Path = $"/images/testData/{_random.Next(0, 9)}.jpg"
+                    Path = $"/images/testData/{_random.Next(0, 9)}.webp"
                 });
             }
 
@@ -384,7 +384,8 @@ namespace DAL.Initializers
                 UserSurname = lastname,
                 NormalizedEmail = email.ToUpper(),
                 Email = email,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Photo = "/images/profile.webp"
             };
             var hasher = new PasswordHasher<BaseUser>();
             user.PasswordHash = hasher.HashPassword(user, password != null ? password : email);

@@ -30,7 +30,7 @@ namespace DAL.Context
 
             //BaseUser
             builder.Entity<BaseUser>().Property(b => b.UserSurname).HasColumnType("VARCHAR").HasMaxLength(100);
-            builder.Entity<BaseUser>().Property(b => b.Photo).HasColumnType("VARCHAR").HasMaxLength(200).HasDefaultValue("/images/profile.png").IsRequired(false);
+            builder.Entity<BaseUser>().Property(b => b.Photo).HasColumnType("VARCHAR").HasMaxLength(200).HasDefaultValue("/images/profile.webp").IsRequired(false);
             //One to one
             builder.Entity<BaseUser>().Property(b => b.WorkerId).IsRequired(false);
             builder.Entity<BaseUser>().HasOne(e => e.Worker).WithOne(e => e.BaseUser).HasForeignKey<Worker>(e => e.BaseUserId).OnDelete(DeleteBehavior.Cascade).IsRequired();
@@ -45,7 +45,7 @@ namespace DAL.Context
             builder.Entity<Company>().Property(c => c.Name).HasColumnType("VARCHAR").HasMaxLength(100).HasDefaultValue("Company_" + DateTime.Now.ToString("yyyy/MMM/ddd|hh:mm:ss"));
             builder.Entity<Company>().Property(c => c.Phonenumber).HasColumnType("VARCHAR").HasMaxLength(13).IsRequired(false);
             builder.Entity<Company>().Property(c => c.Email).HasColumnType("VARCHAR").HasMaxLength(100);
-            builder.Entity<Company>().Property(c => c.Logo).HasColumnType("VARCHAR").HasMaxLength(200).HasDefaultValue("/images/logoCompany.png").IsRequired(false);
+            builder.Entity<Company>().Property(c => c.Logo).HasColumnType("VARCHAR").HasMaxLength(200).HasDefaultValue("/images/logoCompany.webp").IsRequired(false);
             builder.Entity<Company>().Property(c => c.Address).HasColumnType("VARCHAR").HasMaxLength(100);
             builder.Entity<Company>().Property(s => s.IsVisibility).HasColumnType("BIT").HasDefaultValue<bool>(false);
 
