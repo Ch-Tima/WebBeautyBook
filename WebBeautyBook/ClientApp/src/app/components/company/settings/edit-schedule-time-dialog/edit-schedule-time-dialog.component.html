@@ -32,10 +32,10 @@
   </div>
 
   <div>
-      <button class="btn btn-primary m-1" *ngIf="true" (click)="setCloseStatus()">set closed</button>
+      <button class="btn btn-primary m-1" *ngIf="data.mode == 'update'" (click)="setCloseStatus()">set closed</button>
       <div style="float: right;">
           <button class="btn btn-danger m-1" (click)="cancel()">cancel</button>
-          <button class="btn btn-success m-1" (click)="save()">save</button>
+          <button class="btn btn-success m-1" (click)="data.mode == 'update' ? save() : insert()">{{data.mode == "update" ? 'save': 'add'}}</button>
       </div>
   </div>
 

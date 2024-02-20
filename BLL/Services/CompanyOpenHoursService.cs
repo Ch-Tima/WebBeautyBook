@@ -35,25 +35,27 @@ namespace BLL.Services
         /// <param name="companyOpenHours">The open hours to add.</param>
         /// <param name="companyId">The ID of the company to add open hours for.</param>
         /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> AddAsync(CompanyOpenHours companyOpenHours, string companyId)
+        public async Task<ServiceResponse> AddAsync(CompanyOpenHours companyOpenHours)
         {
             try
             {
                 if (companyOpenHours.DayOfWeek < 0 || companyOpenHours.DayOfWeek > 7)
                     return new ServiceResponse(false, "There is no such day");
 
-                if (companyId is null)
+                if (companyOpenHours.CompanyId is null)
                     return new ServiceResponse(false, "Company ID cannot be null");
 
-                var company = await _companyRepository.GetAsync(companyId);
+                var company = await _companyRepository.GetAsync(companyOpenHours.CompanyId);
                 if (company is null)
                     return new ServiceResponse(false, "Not found company");
 
-                var findDuplicate = _companyOpenHoursRepository.GetFirstAsync(x => x.DayOfWeek == companyOpenHours.DayOfWeek && x.CompanyId == companyId);
-                if (findDuplicate != null)
+                var findDuplicate = await _companyOpenHoursRepository.GetFirstAsync(x => x.DayOfWeek == companyOpenHours.DayOfWeek && x.CompanyId == companyOpenHours.CompanyId);
+                if (findDuplicate is not null)
                     return new ServiceResponse(false, "There is a schedule for the day");
 
-                companyOpenHours.CompanyId = companyId;
+                if (companyOpenHours.OpenFrom > companyOpenHours.OpenUntil) 
+                    (companyOpenHours.OpenFrom, companyOpenHours.OpenUntil) = (companyOpenHours.OpenUntil, companyOpenHours.OpenFrom);
+
                 await _companyOpenHoursRepository.InsertAsync(companyOpenHours);
 
                 return new ServiceResponse(true, "OK");

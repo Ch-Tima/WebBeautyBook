@@ -49,12 +49,13 @@ namespace WebBeautyBook.Controllers
                     OpenUntil = model.OpenUntil.ToTimeSpan()
                 };
 
-                var result = await _companyOpenHoursService.AddAsync(openHours, hasWorker.worker.CompanyId);
-                if (!result.IsSuccess)
-                    return BadRequest(result.Message);
+                var result = await _companyOpenHoursService.AddAsync(openHours);
+                if (result.IsSuccess)
+                    return Ok(openHours);
 
-                return Ok(result);
-            }catch (Exception ex)
+                return BadRequest(result.Message);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CompanyOpenHours } from 'src/app/models/CompanyOpenHours';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { TranslationService } from 'src/app/services/translation/translation.service';
-import { EditScheduleTimeDialogComponent, EditScheduleTimeDialogResult } from 'src/app/components/company/settings/edit-schedule-time-dialog/edit-schedule-time-dialog.component'
+import { EditScheduleTimeDialogComponent, EditScheduleTimeDialogData, EditScheduleTimeDialogResult } from 'src/app/components/company/settings/edit-schedule-time-dialog/edit-schedule-time-dialog.component'
 
 @Component({
   selector: 'app-company-schedule',
@@ -36,31 +36,33 @@ export class CompanyScheduleComponent {
   public openTimeModificationDialog(val:number){
     let dayIndex = this.companyOpenHours.findIndex(x => x.dayOfWeek == val);
     let day = this.companyOpenHours[dayIndex];
-    if(!day){
-      console.log("undefind")
-    }else{
-      const dialog = this.dialogRef.open(EditScheduleTimeDialogComponent, {
-        width: "550px",
-        data: day
-      });
-      dialog.afterClosed().subscribe((res:EditScheduleTimeDialogResult) => {
-        switch (res.status){
-            case 'close':
-              console.log("0" + val)
-              this.companyOpenHours.splice(dayIndex, 1)
-              break;
-            case 'update':
-              if(res.value) {
-                this.companyOpenHours[dayIndex] = res.value;
-              }
-              break
-            case 'insert':
-              break;
-            case 'none':
-              break;
-        }
-      })
-    }
+    const dialog = this.dialogRef.open(EditScheduleTimeDialogComponent, {
+      width: "550px",
+      data: {
+        mode: day ? 'update' : 'create',
+        value: day,
+        dayOfWeek: val
+      } as EditScheduleTimeDialogData
+    });
+    dialog.afterClosed().subscribe((res:EditScheduleTimeDialogResult) => {
+      switch (res.status){
+          case 'close':
+            this.companyOpenHours.splice(dayIndex, 1)
+            break;
+          case 'update':
+            if(res.value) {
+              this.companyOpenHours[dayIndex] = res.value;
+            }
+            break
+          case 'insert':
+            if(res.value)
+              this.companyOpenHours = [...this.companyOpenHours, res.value];
+            console.log(this.companyOpenHours);
+            break;
+          case 'none':
+            break;
+      }
+    })
   }
 
   private loadCompanyOpenHours(){
