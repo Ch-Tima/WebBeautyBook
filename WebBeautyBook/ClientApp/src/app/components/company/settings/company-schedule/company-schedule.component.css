@@ -1,0 +1,43 @@
+.l{
+    width: 62%;
+    height: 80vh;
+    margin: 5px;
+
+    background-color: #B3F8C3;
+    border-radius: 0.375em;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+}
+
+.r{
+    width: 38%;
+    height: 80vh;
+    margin: 5px;
+
+    background-color: #E9FCE0;
+    border-radius: 0.375em;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+}
+
+.title{
+    text-align: center;
+    margin: 0.25em 0 0.45em 0;
+}
+
+.schedule-data{
+    display: block;
+    margin: 0 .25em;
+}
+
+.schedule-data .schedule-item{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: .5fr .2fr;
+}
+
+.schedule-item p{
+    margin: auto 0;
+}
+
+.underline{
+    text-decoration: underline;
+}

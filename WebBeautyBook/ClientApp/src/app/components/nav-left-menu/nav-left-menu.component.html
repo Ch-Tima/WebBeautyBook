@@ -14,7 +14,7 @@
                     <div class="sub-container" *ngIf="item.sublist.length > 0">
                         <div class="sub-list">
                             <ul class="navbar-nav">
-                                <li class="nav-item li-hover" *ngFor="let subItem of item.sublist">
+                                <li class="nav-item li-hover" *ngFor="let subItem of item.sublist" (click)="onClick($event, subItem.value)">
                                     <img src="{{subItem.iconPath}}">
                                     <span class="text-lightgrey px-1">{{subItem.title|translate}}</span>
                                 </li>

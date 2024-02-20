@@ -3,6 +3,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp.Formats.Tga;
 using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
@@ -13,10 +14,10 @@ namespace WebBeautyBook.Controllers
     {
         private readonly CompanyOpenHoursService _companyOpenHoursService;
         private readonly UserManager<BaseUser> _userManager;
-        private readonly BLL.Services.WorkerService _workerService;
+        private readonly WorkerService _workerService;
 
         public CompanyOpenHoursController(CompanyOpenHoursService companyOpenHoursService, 
-            UserManager<BaseUser> userManager, BLL.Services.WorkerService workerService)
+            UserManager<BaseUser> userManager, WorkerService workerService)
         {
             _companyOpenHoursService = companyOpenHoursService;
             _userManager = userManager;
@@ -35,21 +36,20 @@ namespace WebBeautyBook.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
-                var workerProfile = await _workerService.GetAsync(user.WorkerId);
+                var hasWorker = await HasWorkerProfile();
 
-                if(workerProfile == null)
+                if (!hasWorker.has)
                     return BadRequest("Most likely, you do not belong to any company.");
 
                 var openHours = new CompanyOpenHours() 
                 {
-                    CompanyId = workerProfile.CompanyId,
+                    CompanyId = hasWorker.worker.CompanyId,
                     DayOfWeek = model.DayOfWeek,
                     OpenFrom = model.OpenFrom.ToTimeSpan(),
                     OpenUntil = model.OpenUntil.ToTimeSpan()
                 };
 
-                var result = await _companyOpenHoursService.AddAsync(openHours, workerProfile.CompanyId);
+                var result = await _companyOpenHoursService.AddAsync(openHours, hasWorker.worker.CompanyId);
                 if (!result.IsSuccess)
                     return BadRequest(result.Message);
 
@@ -58,7 +58,58 @@ namespace WebBeautyBook.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.MANAGER}")]
+        public async Task<IActionResult> UpdateHours([FromBody] OpenHoursModel model, [FromQuery] string id)
+        {
+            try
+            {
+                if (!(await HasWorkerProfile()).has)
+                    return BadRequest("Most likely, you do not belong to any company.");
+
+                var result = await _companyOpenHoursService.UpdateHoursAsync(id, model.OpenFrom.ToTimeSpan(), model.OpenUntil.ToTimeSpan());
+                if(result.IsSuccess)
+                    return Ok();
+
+                return BadRequest(result.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = $"{Roles.OWN_COMPANY}, {Roles.MANAGER}")]
+        public async Task<IActionResult> Remove([FromQuery]string id)
+        {
+            try
+            {
+
+                if (!(await HasWorkerProfile()).has)
+                    return BadRequest("Most likely, you do not belong to any company.");
+
+                var result = await _companyOpenHoursService.DeleteAsynce(id);
+
+                if(result.IsSuccess)
+                    return Ok();
+                
+                return BadRequest(result.Message);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         } 
+
+        private async Task<(bool has, Worker? worker)> HasWorkerProfile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var workerProfile = await _workerService.GetAsync(user.WorkerId);
+
+             return (workerProfile != null, workerProfile);
+        }
 
     }
 }

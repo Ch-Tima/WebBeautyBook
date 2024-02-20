@@ -11,7 +11,10 @@
             <app-appointment *ngIf="menu == 'Appointments'"></app-appointment>
             <app-employees-panel *ngIf="menu == 'Employees'"></app-employees-panel>
             <app-service-panel *ngIf="menu == 'Services'"></app-service-panel>
-            <app-settings-panel *ngIf="menu == 'Settings'"></app-settings-panel>
+
+            <!-- <app-settings-panel></app-settings-panel> *ngIf="menu == 'Schedule'" -->
+            <app-company-schedule ></app-company-schedule>
+            
             
         </div>
     </div>

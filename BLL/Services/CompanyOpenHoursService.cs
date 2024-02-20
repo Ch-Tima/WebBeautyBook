@@ -64,5 +64,44 @@ namespace BLL.Services
             }
         }
 
+        public async Task<ServiceResponse> DeleteAsynce(string id)
+        {
+            try
+            {
+                var item = await _companyOpenHoursRepository.GetFirstAsync(x => x.Id ==  id);
+
+                if (item == null) return new ServiceResponse(false, "Not found");
+
+                await _companyOpenHoursRepository.DeleteAsync(id);
+
+                return new ServiceResponse(true, "Ok");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse(false, ex.Message);
+            }
+        }
+
+        public async Task<ServiceResponse> UpdateHoursAsync(string id, TimeSpan openFrom, TimeSpan openUntil)
+        {
+            try
+            {
+                var item = await _companyOpenHoursRepository.GetFirstAsync(x => x.Id == id);
+                if (item is null) return new ServiceResponse(false, "Not Found");
+
+                if(openFrom > openUntil) (openFrom, openUntil) = (openUntil, openFrom);
+
+                item.OpenFrom = openFrom;
+                item.OpenUntil = openUntil;
+
+                await _companyOpenHoursRepository.UpdateAsync(id, item);
+                return new ServiceResponse(true, "OK");
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse(false, ex.Message);
+            }
+        }
+
     }
 }

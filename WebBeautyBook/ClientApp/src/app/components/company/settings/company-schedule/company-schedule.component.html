@@ -1,0 +1,16 @@
+<div class="d-flex">
+
+    <div class="l">
+
+    </div>
+    <div class="r">
+        <p class="title">Default schedule</p>
+        <div class="schedule-data">
+            <div class="schedule-item" *ngFor="let item of week; index as i">
+              <p>{{item|translate}}</p>
+              <p class="underline" (click)="openTimeModificationDialog(i)">{{getOpenHours(i)}}</p>
+            </div>
+          </div>
+    </div>
+
+</div>

@@ -67,6 +67,7 @@ import { InvitationEmployeeComponent } from './components/company/invitation-emp
 import { AcceptInvitationPageComponent } from './components/company/accept-invitation-page/accept-invitation-page.component';
 import { CompanyCardComponent } from './components/company/company-card/company-card.component';
 import { ReservationDialogComponent } from './components/company/reservation-dialog/reservation-dialog.component';
+import { EditScheduleTimeDialogComponent } from './components/company/settings/edit-schedule-time-dialog/edit-schedule-time-dialog.component';
 //PublicCompany
 import { CompanyPageComponent } from './components/publicCompany/company-page/company-page.component';
 import { AppointmentDialogComponent } from './components/publicCompany/appointment-dialog/appointment-dialog.component';
@@ -82,7 +83,10 @@ import { SearchCompanyInputComponent } from './components/search/search-company-
 import { ImageSliderComponent } from './components/image-slider/image-slider.component';
 //LanguagePacksDialogComponent
 import { LanguagePacksDialogComponent } from './components/language-packs-dialog/language-packs-dialog.component';
-import { SettingsPanelComponent } from './settings-panel/settings-panel.component';
+import { SettingsPanelComponent } from './components/company/settings-panel/settings-panel.component';
+import { CompanyScheduleComponent } from './components/company/settings/company-schedule/company-schedule.component';
+import { CompanyContactsComponent } from './components/company/settings/company-contacts/company-contacts.component';
+import { CompanyPhotosComponent } from './components/company/settings/company-photos/company-photos.component';
 
 const routes: Routes = [
   //Public
@@ -149,6 +153,10 @@ const routes: Routes = [
     PrivacyPolicyComponent,
     LanguagePacksDialogComponent,
     SettingsPanelComponent,
+    CompanyScheduleComponent,
+    CompanyContactsComponent,
+    EditScheduleTimeDialogComponent,
+    CompanyPhotosComponent,
   ],
   imports: [
     BrowserModule,

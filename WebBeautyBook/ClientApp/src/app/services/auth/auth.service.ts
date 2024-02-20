@@ -143,8 +143,25 @@ export class AuthService {
   }
 
   public getUserFromLocalStorage(): UserDataModel | null{
-    const jsonObj = localStorage.getItem(USER_DATA);
-    if(jsonObj == null) return null;
-    return Object.assign(new UserDataModel, jsonObj);
+    const userDataJson = localStorage.getItem(USER_DATA);
+    if (userDataJson) {
+      const userDataObj = JSON.parse(userDataJson);
+      return this.mapToUserDataModel(userDataObj);
+    }
+    return null;
   }
+
+  private mapToUserDataModel(userDataObj: any): UserDataModel {
+    const userData = new UserDataModel();
+    userData.name = userDataObj.name || '';
+    userData.surname = userDataObj.surname || '';
+    userData.email = userDataObj.email || '';
+    userData.photo = userDataObj.photo || '';
+    userData.phoneNumber = userDataObj.phoneNumber || '';
+    userData.roles = userDataObj.roles || [];
+    userData.companyId = userDataObj.companyId || undefined;
+    userData.workerId = userDataObj.workerId || undefined;
+    return userData;
+  }
+
 }
