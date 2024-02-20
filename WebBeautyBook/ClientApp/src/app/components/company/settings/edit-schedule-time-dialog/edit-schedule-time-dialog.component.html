@@ -10,7 +10,7 @@
           [format]="24" 
           [ngxMatTimepicker]="timeStart" 
           placeholder="09:00" 
-          [(ngModel)]="time.openFrom" 
+          [(ngModel)]="editedCompanyOpenHours.openFrom" 
           readonly />
         </mat-form-field>
         <ngx-mat-timepicker (closed)="timeSet()" color="accent" #timeStart></ngx-mat-timepicker>
@@ -22,7 +22,7 @@
           [format]="24" 
           [ngxMatTimepicker]="timeEnd" 
           placeholder="10:00" 
-          [(ngModel)]="time.openUntil" 
+          [(ngModel)]="editedCompanyOpenHours.openUntil" 
           readonly />
         </mat-form-field>
         <ngx-mat-timepicker color="accent" #timeEnd></ngx-mat-timepicker>

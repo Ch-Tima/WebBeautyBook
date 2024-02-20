@@ -15,12 +15,14 @@ import { EditScheduleTimeDialogComponent, EditScheduleTimeDialogData, EditSchedu
 })
 export class CompanyScheduleComponent {
 
-  companyOpenHours: CompanyOpenHours[] = []
+  // Array to store company open hours
+  companyOpenHours: CompanyOpenHours[] = [];
 
-  week: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  // Array representing days of the week
+  week: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   constructor(private http: HttpClient, private auth: AuthService, private router: Router, private toast: ToastrService, private translationService: TranslationService, private dialogRef : MatDialog,) {
-    this.loadCompanyOpenHours();
+    this.loadCompanyOpenHours();// Load company open hours on component initialization
   }
 
   // Function to format open hours for a specific day
@@ -33,6 +35,7 @@ export class CompanyScheduleComponent {
     }
   }
 
+  // Open dialog for modifying open hours
   public openTimeModificationDialog(val:number){
     let dayIndex = this.companyOpenHours.findIndex(x => x.dayOfWeek == val);
     let day = this.companyOpenHours[dayIndex];
@@ -45,32 +48,32 @@ export class CompanyScheduleComponent {
       } as EditScheduleTimeDialogData
     });
     dialog.afterClosed().subscribe((res:EditScheduleTimeDialogResult) => {
-      switch (res.status){
-          case 'close':
-            this.companyOpenHours.splice(dayIndex, 1)
-            break;
-          case 'update':
-            if(res.value) {
-              this.companyOpenHours[dayIndex] = res.value;
-            }
-            break
-          case 'insert':
-            if(res.value)
-              this.companyOpenHours = [...this.companyOpenHours, res.value];
-            console.log(this.companyOpenHours);
-            break;
-          case 'none':
-            break;
+      switch (res.status) {
+        case 'close':
+          this.companyOpenHours.splice(dayIndex, 1); // Remove the day from companyOpenHours array if closed
+          break;
+        case 'update':
+          if(res.value) {
+            this.companyOpenHours[dayIndex] = res.value; // Update the day in companyOpenHours array
+          }
+          break;
+        case 'insert':
+          if(res.value)
+            this.companyOpenHours = [...this.companyOpenHours, res.value]; // Add new open hours to companyOpenHours array
+          break;
+        case 'none':
+          break;
       }
     })
   }
 
+  // Load company open hours from the API
   private loadCompanyOpenHours(){
     this.http.get<CompanyOpenHours[]>(`/api/CompanyOpenHours?companyId=${this.auth.getUserFromLocalStorage()?.companyId}`).subscribe(res => {
-      this.companyOpenHours = res;
+      this.companyOpenHours = res;// Assign retrieved open hours to companyOpenHours array
       console.log(this.companyOpenHours);
     }, er => {
-      console.log(er)      
+      console.log(er)// Log error if loading open hours fails
     })
   }
 

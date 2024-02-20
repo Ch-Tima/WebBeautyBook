@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { publicDecrypt } from 'crypto';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyOpenHours } from 'src/app/models/CompanyOpenHours';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -13,29 +12,34 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class EditScheduleTimeDialogComponent {
 
-  public time : CompanyOpenHours;
+    // Represents the company open hours being edited
+    public editedCompanyOpenHours: CompanyOpenHours;
 
   constructor(private toast: ToastrService, private auth: AuthService, private http: HttpClient, private dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : EditScheduleTimeDialogData){
     //Override close for sending results
     this.dialog.backdropClick().subscribe(r => this.cancel());
+    //Initialize time based on provided data or defaults
     if(data.value){
-      this.time = {...data.value};
-      this.time.openFrom = this.time.openFrom.substring(0, 5);
-      this.time.openUntil = this.time.openUntil.substring(0, 5);
+      this.editedCompanyOpenHours = {...data.value};
+      this.editedCompanyOpenHours.openFrom = this.editedCompanyOpenHours.openFrom.substring(0, 5);
+      this.editedCompanyOpenHours.openUntil = this.editedCompanyOpenHours.openUntil.substring(0, 5);
     }else{
-      this.time = new CompanyOpenHours();
-      this.time.openFrom = "08:00";
-      this.time.openUntil = "16:00";
-      this.time.dayOfWeek = this.data.dayOfWeek;
+      this.editedCompanyOpenHours = new CompanyOpenHours();
+      this.editedCompanyOpenHours.openFrom = "08:00";
+      this.editedCompanyOpenHours.openUntil = "16:00";
+      this.editedCompanyOpenHours.dayOfWeek = this.data.dayOfWeek;
     }
   }
 
+  // Close the dialog with a default result
   public cancel(){
     this.dialog.close(new EditScheduleTimeDialogResult())
   }
 
+  // Close the schedule time
   public setCloseStatus(){
-    this.http.delete(`api/CompanyOpenHours?id=${this.time.id}`, {
+    // Make a DELETE request to remove the schedule time
+    this.http.delete(`api/CompanyOpenHours?id=${this.editedCompanyOpenHours.id}`, {
       headers: this.auth.getHeadersWithToken()
     }).subscribe(result => {
         let resultDialog = new EditScheduleTimeDialogResult();
@@ -48,13 +52,15 @@ export class EditScheduleTimeDialogComponent {
     });
   }
   
+  // Save changes to the schedule time
   public save(){
-    this.http.post<any>(`api/CompanyOpenHours?id=${this.time.id}`, this.time, {
+    // Make a POST request to update the schedule time
+    this.http.post<any>(`api/CompanyOpenHours?id=${this.editedCompanyOpenHours.id}`, this.editedCompanyOpenHours, {
       headers: this.auth.getHeadersWithToken()
     }).subscribe(() => {
       let resultDialog = new EditScheduleTimeDialogResult();
       resultDialog.status = 'update';
-      resultDialog.value = this.time;
+      resultDialog.value = this.editedCompanyOpenHours;
       this.toast.success("Save");
       this.dialog.close(resultDialog);
     }, ex => {
@@ -62,8 +68,10 @@ export class EditScheduleTimeDialogComponent {
     })
   }
 
+  // Insert a new schedule time
   public insert(){
-    this.http.put<CompanyOpenHours>(`api/CompanyOpenHours`, this.time, { 
+    // Make a PUT request to add a new schedule time
+    this.http.put<CompanyOpenHours>(`api/CompanyOpenHours`, this.editedCompanyOpenHours, { 
       headers: this.auth.getHeadersWithToken() 
     }).subscribe(res => {
       let resultDialog = new EditScheduleTimeDialogResult();
@@ -76,12 +84,14 @@ export class EditScheduleTimeDialogComponent {
     });
   }
 
+  // Ensure that openFrom is before openUntil
   public timeSet(){
-    if(this.parseTimeString(this.time.openFrom) > this.parseTimeString(this.time.openUntil)){
-      [this.time.openFrom, this.time.openUntil] = [this.time.openUntil, this.time.openFrom];
+    if(this.parseTimeString(this.editedCompanyOpenHours.openFrom) > this.parseTimeString(this.editedCompanyOpenHours.openUntil)){
+      [this.editedCompanyOpenHours.openFrom, this.editedCompanyOpenHours.openUntil] = [this.editedCompanyOpenHours.openUntil, this.editedCompanyOpenHours.openFrom];
     }
   }
 
+// Parse time string into Date object
   private parseTimeString(timeString: string): Date {
     const [hours, minutes] = timeString.split(":").map(Number);
     const date = new Date();
@@ -105,6 +115,7 @@ export class EditScheduleTimeDialogResult {
   public value: CompanyOpenHours|undefined;
 }
 
+// Data for the edit schedule time dialog
 export class EditScheduleTimeDialogData {
   public mode: "create"|"update" = 'create';
   public value: CompanyOpenHours|undefined;
