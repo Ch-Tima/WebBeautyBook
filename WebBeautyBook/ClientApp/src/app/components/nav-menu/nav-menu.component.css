@@ -40,7 +40,8 @@ html {
 }
 @media (max-width: 768px) {
   .w75right{
-    width: calc(75px + 1.5rem);
+    /* width: calc(75px + 1.5rem); */
+    width: 100%;
   }
   .title{
     display: block;

@@ -5,6 +5,7 @@
     "TurnOnLocationServicesToFindTheBestSalonsInYourArea": "Aktivieren Sie die Standortdienste, um die besten Salons in Ihrer Umgebung zu finden.",
     "Yes": "Ja",
     "No": "Nein",
+    "Save": "Speichern",
     "Login": "Anmelden",
     "Register": "Registrieren",
     "Profile": "Profil",
@@ -59,6 +60,11 @@
     "Service": "Dienstleistung",
     "Status": "Status",
     "Time": "Uhrzeit",
+
+    "Settings": "Einstellungen",
+    "Schedule": "Zeitplan",
+    "Contacts": "Kontakte",
+    "Photos": "Fotos",
 
     "FirstNameIsRequired": "Vorname ist erforderlich.",
     "FirstNameLength": "Die Länge des 'Vornamens' muss zwischen 4 und 100 Zeichen liegen.",
@@ -124,6 +130,8 @@
     "History": "Verlauf",
     "StartTime": "Startzeit",
     "EndTime": "Endzeit",
+    "StartWorkTime": "Beginn der Arbeitszeit:",
+    "EndWorkTime": "Ende der Arbeitszeit:",
     "Description": "Beschreibung",
 
     "Customer": "Kunde",

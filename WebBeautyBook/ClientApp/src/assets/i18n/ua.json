@@ -5,6 +5,7 @@
     "TurnOnLocationServicesToFindTheBestSalonsInYourArea": "Увімкніть служби визначення місцезнаходження, щоб знайти найкращі салони у вашому районі.",
     "Yes": "Так",
     "No": "Ні",
+    "Save": "Зберегти",
     "Login": "Увійти",
     "Register": "Реєстрація",
     "Profile": "Профіль",
@@ -59,6 +60,11 @@
     "Service": "Послуга",
     "Status": "Статус",
     "Time": "Час",
+
+    "Settings": "Налаштування",
+    "Schedule": "Розклад",
+    "Contacts": "Контакти",
+    "Photos": "Фотографії",
 
     "FirstNameIsRequired": "Ім'я обов'язкове.",
     "FirstNameLength": "Довжина 'Імені' повинна бути від 4 до 100 символів.",
@@ -124,6 +130,8 @@
     "History": "Історія",
     "StartTime": "Час початку",
     "EndTime": "Час закінчення",
+    "StartWorkTime": "Початок робочого часу:",
+    "EndWorkTime": "Кінець робочого часу:",
     "Description": "Опис",
 
     "Customer": "Клієнт",

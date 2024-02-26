@@ -5,6 +5,7 @@
     "TurnOnLocationServicesToFindTheBestSalonsInYourArea": "Turn on location services to find the best salons in your area.",
     "Yes": "Yes",
     "No": "No",
+    "Save": "Save",
     "Login": "Login",
     "Register": "Register",
     "Profile": "Profile",
@@ -59,6 +60,11 @@
     "Service": "service",
     "Status": "status",
     "Time": "time",
+
+    "Settings": "Settings",
+    "Schedule": "Schedule",
+    "Contacts": "Contacts",
+    "Photos": "Photos",
     
     "FirstNameIsRequired": "First name is required.",
     "FirstNameLength": "The 'First name' must be between 4 and 100 characters.",
@@ -118,13 +124,14 @@
     "SignIn": "SignIn",
     "SignUp": "SignUp",
 
-
     "Main": "Main",
     "Employees": "Employees",
     "Clients": "Clients",
     "History": "History",
     "StartTime": "StartTime",
     "EndTime": "EndTime",
+    "StartWorkTime": "Start of working hours:",
+    "EndWorkTime": "End of working hours:",
     "Description": "Description",
 
     "Customer": "Customer",

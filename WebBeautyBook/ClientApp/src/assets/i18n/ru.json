@@ -4,6 +4,7 @@
     "TurnOnLocationServicesToFindTheBestSalonsInYourArea": "Включите службы определения местоположения, чтобы найти лучшие салоны в вашем районе.",
     "Yes": "Да",
     "No": "Нет",
+    "Save": "Сохранить",
     "Home": "Главная",
     "Login": "Войти",
     "Register": "Регистрация",
@@ -59,6 +60,11 @@
     "Service": "услуга",
     "Status": "статус",
     "Time": "время",
+
+    "Settings": "Настройки",
+    "Schedule": "Расписание",
+    "Contacts": "Контакты",
+    "Photos": "Фотографии",
 
     "FirstNameIsRequired": "Имя обязательно.",
     "FirstNameLength": "Длина 'Имени' должна быть от 4 до 100 символов.",
@@ -124,6 +130,8 @@
     "History": "История",
     "StartTime": "Время начала",
     "EndTime": "Время окончания",
+    "StartWorkTime": "Начало рабочего времени:",
+    "EndWorkTime": "Конец рабочего времени:",
     "Description": "Описание",
 
     "Customer": "Клиент",

@@ -1,0 +1,13 @@
+.container-dialog{
+    margin: 0.25em 0.35em;
+}
+
+.container-time{
+    display: flex;
+    justify-content: space-around;
+    margin: 1em 0em;
+}
+
+.timepicker{
+    width: min-content;
+}
