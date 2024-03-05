@@ -49,6 +49,7 @@ namespace BLL.Infrastructure
             services.AddTransient<CompanyOpenHoursRepository>();
             services.AddTransient<CompanyImagesRepository>();
             services.AddTransient<CompanyLikeRepository>();
+            services.AddTransient<CompanyScheduleExceptionRepository>();
             
             // Set settings Identity
             services.AddIdentity<BaseUser, IdentityRole>(opt =>

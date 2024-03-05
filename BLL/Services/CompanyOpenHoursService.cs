@@ -10,16 +10,18 @@ namespace BLL.Services
     {
         private readonly CompanyOpenHoursRepository _companyOpenHoursRepository;
         private readonly CompanyRepository _companyRepository;
+        private readonly CompanyScheduleExceptionRepository _scheduleExceptionRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompanyOpenHoursService"/> class.
         /// </summary>
         /// <param name="companyOpenHoursRepository">The repository for company open hours.</param>
         /// <param name="companyRepository">The repository for companies.</param>
-        public CompanyOpenHoursService(CompanyOpenHoursRepository companyOpenHoursRepository, CompanyRepository companyRepository)
+        public CompanyOpenHoursService(CompanyOpenHoursRepository companyOpenHoursRepository, CompanyRepository companyRepository, CompanyScheduleExceptionRepository scheduleExceptionRepository)
         {
             _companyOpenHoursRepository = companyOpenHoursRepository;
             _companyRepository = companyRepository;
+            _scheduleExceptionRepository = scheduleExceptionRepository;
         }
 
         /// <summary>
@@ -31,6 +33,19 @@ namespace BLL.Services
         {
             return await _companyOpenHoursRepository.GetAllFindAsync(x => x.CompanyId == companyId);
         }
+
+        public async Task<IEnumerable<CompanyOpenHours>> FindWithExeceptionAsync(string companyId)
+        {
+
+            var list = await _companyOpenHoursRepository.GetAllFindAsync(x => x.CompanyId == companyId);
+            var listEx = await _scheduleExceptionRepository.GetAllFindAsync(x => x.CompanyId == companyId);
+
+
+
+            return null;
+
+        }
+
 
         /// <summary>
         /// Add company open hours for a specific day of the week.
