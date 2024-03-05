@@ -135,10 +135,8 @@ namespace DAL.Context
             builder.Entity<CompanyScheduleException>().Property(x => x.OpenFrom).HasColumnType("Time").HasDefaultValue(TimeSpan.Zero);
             builder.Entity<CompanyScheduleException>().Property(x => x.OpenUntil).HasColumnType("Time").HasDefaultValue(TimeSpan.Zero);
             builder.Entity<CompanyScheduleException>().Property(x => x.Reason).HasColumnType("VARCHAR").HasMaxLength(100).IsRequired(false);
-
             builder.Entity<CompanyScheduleException>().Property(x => x.IsClosed).HasColumnType("BIT").IsRequired();
             builder.Entity<CompanyScheduleException>().Property(x => x.IsOnce).HasColumnType("BIT").IsRequired();
-
             builder.Entity<CompanyScheduleException>().HasOne(x => x.Company).WithMany(x => x.CompanyScheduleExceptions).HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Cascade).IsRequired();
 
 

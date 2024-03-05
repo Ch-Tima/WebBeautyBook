@@ -1,12 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyOpenHours } from 'src/app/models/CompanyOpenHours';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { TranslationService } from 'src/app/services/translation/translation.service';
-import { EditScheduleTimeDialogComponent, EditScheduleTimeDialogData, EditScheduleTimeDialogResult } from 'src/app/components/company/settings/edit-schedule-time-dialog/edit-schedule-time-dialog.component'
+import { 
+  EditScheduleTimeDialogComponent, 
+  EditScheduleTimeDialogData, 
+  EditScheduleTimeDialogResult 
+} from 'src/app/components/company/settings/edit-schedule-time-dialog/edit-schedule-time-dialog.component';
+import { ScheduleExceptionDialogComponent, ScheduleExceptionResult } from '../schedule-exception-dialog/schedule-exception-dialog.component';
+import { CompanyScheduleException } from 'src/app/models/CompanyScheduleException';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-company-schedule',
@@ -17,12 +24,15 @@ export class CompanyScheduleComponent {
 
   // Array to store company open hours
   companyOpenHours: CompanyOpenHours[] = [];
+  displayedColumns: string[] = ['exceptionDate', 'isClose', 'reason', 'isOnce', 'id'];
+  companyScheduleException = new MatTableDataSource<CompanyScheduleException>([]);
 
   // Array representing days of the week
   week: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  constructor(private http: HttpClient, private auth: AuthService, private router: Router, private toast: ToastrService, private translationService: TranslationService, private dialogRef : MatDialog,) {
+  constructor(private cdRef: ChangeDetectorRef, private http: HttpClient, private auth: AuthService, private router: Router, private toast: ToastrService, private translationService: TranslationService, private dialogRef : MatDialog,) {
     this.loadCompanyOpenHours();// Load company open hours on component initialization
+    this.loadCompanyScheduleException();
   }
 
   // Function to format open hours for a specific day
@@ -67,14 +77,50 @@ export class CompanyScheduleComponent {
     })
   }
 
+
+  public addScheduleEx(){
+    this.dialogRef.open(ScheduleExceptionDialogComponent, {
+      data: {},
+      width: "550px",
+    }).afterClosed().subscribe((result:ScheduleExceptionResult) => {
+      switch (result.status){
+        case 'add':
+          if(result.value == undefined){
+            this.toast.error("Unexpected error");
+            return;
+          }
+          this.refreshScheduleExceptions([...this.companyScheduleException.data, result.value]);
+          break;
+        case 'delete':
+          break;
+        case 'none':
+        case 'close':
+      }
+
+    })
+  }
+
   // Load company open hours from the API
   private loadCompanyOpenHours(){
     this.http.get<CompanyOpenHours[]>(`/api/CompanyOpenHours?companyId=${this.auth.getUserFromLocalStorage()?.companyId}`).subscribe(res => {
       this.companyOpenHours = res;// Assign retrieved open hours to companyOpenHours array
-      console.log(this.companyOpenHours);
     }, er => {
       console.log(er)// Log error if loading open hours fails
     })
   }
 
+  private loadCompanyScheduleException(){
+    this.http.get<CompanyScheduleException[]>('/api/ScheduleException', {
+      headers: this.auth.getHeadersWithToken()
+    }).subscribe(res => {
+      this.refreshScheduleExceptions(res);
+    }, ex => {
+      console.log(ex);
+    })
+  }
+
+  private refreshScheduleExceptions(list: CompanyScheduleException[]){
+    this.companyScheduleException.data = list;
+    this.cdRef.detectChanges();
+  }
 }

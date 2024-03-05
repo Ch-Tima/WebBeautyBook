@@ -2,7 +2,33 @@
     display: flex;
 }
 
+.plus{
+    background-color: #88F2A2;
+    border-radius: 100%;
+    padding: 0.21em;
+    width: 50px;
+    
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 88;
+}
+
+.list-schedule-exception{
+    position: relative;
+    z-index: 87;
+    flex-grow: 1;
+    margin: 0 5px 8px 5px;
+    height: 80vh;
+    overflow-y: auto;
+}
+
 .schedule-exception{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+
     width: 62%;
     height: 80vh;
     margin: 5px;
@@ -36,6 +62,14 @@
     margin: 0 .85em;
 }
 
+.reason{
+    max-width: 12em; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0;
+}
+
 .schedule-data .schedule-item{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -64,5 +98,8 @@
     }
     .schedule-exception{
         min-height: 50vh;
+    }
+    .reason{
+        max-width: 8em; 
     }
 }

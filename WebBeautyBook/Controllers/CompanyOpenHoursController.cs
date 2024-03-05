@@ -3,6 +3,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.Design;
 using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
@@ -39,6 +40,12 @@ namespace WebBeautyBook.Controllers
         public async Task<IEnumerable<CompanyOpenHours>> Get(string companyId)
         {
             return await _companyOpenHoursService.FindAsync(companyId);
+        }
+
+        [HttpGet("GetWithException")]
+        public async Task<IEnumerable<CompanyOpenHours>> GetWithException(string companyId)
+        {
+            return await _companyOpenHoursService.FindWithExeceptionAsync(companyId);
         }
 
         /// <summary>

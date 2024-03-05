@@ -62,6 +62,9 @@ const PROXY_CONFIG = [
 
       //CompanyOpenHours
       "/api/CompanyOpenHours",
+
+      //ScheduleException
+      "/api/ScheduleException",
    ],
     target: target,
     secure: false,

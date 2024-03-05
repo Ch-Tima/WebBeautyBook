@@ -92,6 +92,7 @@ export class AppointmentDialogComponent implements OnInit{
   }
 
   private create(){
+    console.log(this.mForm.value);
     this.http.put<any>('api/Appointment/CreateAppointmentViaClient', this.mForm.value, {
       headers: this.auth.getHeadersWithToken()
     }).subscribe(val => {

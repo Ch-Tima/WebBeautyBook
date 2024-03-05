@@ -25,6 +25,7 @@ builder.Services.AddTransient<CompanyService>();
 builder.Services.AddTransient<CompanyOpenHoursService>();
 builder.Services.AddTransient<CompanyImageService>();
 builder.Services.AddTransient<CompanyLikeService>();
+builder.Services.AddTransient<CompanyScheduleExceptionService>();
 
 //Fixes looping navigation fields.
 //[JsonIgnore]
