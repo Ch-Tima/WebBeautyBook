@@ -91,6 +91,7 @@ import { SettingsPanelComponent } from './components/company/settings-panel/sett
 import { CompanyScheduleComponent } from './components/company/settings/company-schedule/company-schedule.component';
 import { CompanyContactsComponent } from './components/company/settings/company-contacts/company-contacts.component';
 import { CompanyPhotosComponent } from './components/company/settings/company-photos/company-photos.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 const routes: Routes = [
   //Public
@@ -162,6 +163,7 @@ const routes: Routes = [
     EditScheduleTimeDialogComponent,
     CompanyPhotosComponent,
     ScheduleExceptionDialogComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,

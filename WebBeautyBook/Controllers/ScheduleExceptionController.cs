@@ -77,7 +77,12 @@ namespace WebBeautyBook.Controllers
         {
             try
             {
-                var result = await _companyScheduleExceptionService.DeleteAsynce(id);
+                var worker = (await HasWorkerProfile());
+                // Check if the user has a worker profile.
+                if (!(await HasWorkerProfile()).has)
+                    return BadRequest("Most likely, you do not belong to any company.");
+
+                var result = await _companyScheduleExceptionService.DeleteAsynce(id, worker.worker.CompanyId);
 
                 return Ok();
             }

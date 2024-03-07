@@ -44,7 +44,7 @@ namespace BLL.Services
             }
         }
 
-        public async Task<ServiceResponse> DeleteAsynce(string id)
+        public async Task<ServiceResponse> DeleteAsynce(string id, string  companyId)
         {
 
             try
@@ -53,6 +53,9 @@ namespace BLL.Services
 
                 if (sE == null)
                     return new ServiceResponse(false, "Not found ");
+
+                if (sE.CompanyId != companyId)
+                    return new ServiceResponse(false, "Sorry, you can't do that.");
 
                 await _scheduleExceptionRepository.DeleteAsync(id);
 

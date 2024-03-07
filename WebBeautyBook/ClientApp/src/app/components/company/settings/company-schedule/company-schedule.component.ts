@@ -14,6 +14,8 @@ import {
 import { ScheduleExceptionDialogComponent, ScheduleExceptionResult } from '../schedule-exception-dialog/schedule-exception-dialog.component';
 import { CompanyScheduleException } from 'src/app/models/CompanyScheduleException';
 import { MatTableDataSource } from '@angular/material/table';
+import { runInThisContext } from 'vm';
+import { ConfirmDialogComponent, ConfirmDialogData } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-company-schedule',
@@ -98,6 +100,29 @@ export class CompanyScheduleComponent {
       }
 
     })
+  }
+
+  public removeScheduleException(id:string){
+    console.log("id: " + id)
+    const dialog = this.dialogRef.open(ConfirmDialogComponent, {
+      width: '550px',
+      data: {
+        question: "Are you sure you want to delete?",
+        warning: "warning-text"
+      } as ConfirmDialogData
+    });
+    dialog.afterClosed().subscribe((result:boolean) => {
+      if(!result){//cancel
+        return;
+      }//remove
+      this.http.delete(`/api/ScheduleException?id=${id}`, {
+        headers: this.auth.getHeadersWithToken()
+      }).subscribe(res => {
+        this.refreshScheduleExceptions([...this.companyScheduleException.data].filter(x => x.id !== id))
+      }, ex => {
+        console.log(ex);
+      });
+    });
   }
 
   // Load company open hours from the API
