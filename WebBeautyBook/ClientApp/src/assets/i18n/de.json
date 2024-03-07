@@ -58,7 +58,6 @@
 
     "Date": "Datum",
     "Service": "Dienstleistung",
-    "Status": "Status",
     "Time": "Uhrzeit",
 
     "Settings": "Einstellungen",
@@ -144,11 +143,23 @@
     "PriceLength": "Die Länge des 'Preises' muss zwischen 1 und 50000 Zeichen liegen.",
     "TitileIsRequired": "Titel ist erforderlich.",
     "TitleLength": "Die Länge des 'Titels' muss zwischen 3 und 100 Zeichen liegen.",
-    "Time": "Zeit",
     "Categories": "Kategorien",
     "DescriptionsLength": "Die 'Beschreibung' darf nicht mehr als 500 Zeichen enthalten.",
     "Create": "Erstellen",
     "Close": "Schließen",
     "SelectedWorkers": "Ausgewählte Mitarbeiter",
-    "Workers": "Mitarbeiter"
+    "Workers": "Mitarbeiter",
+
+    "OpeningClosingTimes": "Öffnungs- und Schließzeiten können nicht gleich sein.",
+    "WeDontWork": "Wir arbeiten nicht.",
+    "JustOneTime": "Nur einmal.",
+    "TextUnder100Chars": "Text muss unter 100 Zeichen sein.",
+    "WriteReason": "Schreiben Sie den Grund.",
+    "WrongFormat": "Falsches Format.",
+    "ChooseYear": "Wählen Sie ein Jahr, das nicht später als das aktuelle ist, sonst wird das Ereignis nicht bis zum festgelegten Jahr akzeptiert.",
+    "DefaultSchedule": "Standardplan",
+    "Exception": "Ausnahme",
+    "Repeat": "Wiederholen",
+    "Reason": "Grund",
+    "AreYouSureYouWantToDelete": "Sind Sie sicher, dass Sie löschen möchten?"
 }

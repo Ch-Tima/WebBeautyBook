@@ -1,29 +1,29 @@
 <div class="container">
 
     <div class="schedule-exception">
-      <p class="title">Exception</p>
+      <p class="title">{{'Exception'|translate}}</p>
       <div class="list-schedule-exception">
 
         <table mat-table [dataSource]="companyScheduleException" matSort>
 
           <ng-container matColumnDef="exceptionDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>date</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Date'|translate}}</th>
             <td mat-cell *matCellDef="let element"> {{element.exceptionDate.slice(0, 10)}} </td>
           </ng-container>
 
           <ng-container matColumnDef="isClose">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
-            <td mat-cell *matCellDef="let element"> {{element.isClosed?"Closed" : element.openFrom.slice(0,5) + "-" + element.openUntil.slice(0,5)}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{"Time"|translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.isClosed ? ("Closed"|translate) : element.openFrom.slice(0,5) + "-" + element.openUntil.slice(0,5)}} </td>
           </ng-container>
 
           <ng-container matColumnDef="reason">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Reason</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{"Reason"|translate}}</th>
             <td mat-cell *matCellDef="let element"><div class="reason" matTooltip="{{element.reason}}">{{element.reason}}</div></td>
           </ng-container>
 
           <ng-container matColumnDef="isOnce">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Repeat</th>
-            <td mat-cell *matCellDef="let element"> {{!element.isOnce ? "YES" : "NO"}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Repeat'|translate}}</th>
+            <td mat-cell *matCellDef="let element"> {{!element.isOnce ? ("Yes"|translate) : ("No"|translate)}} </td>
           </ng-container>
 
 
@@ -44,7 +44,7 @@
     </div>
     
     <div class="schedule">
-        <p class="title">Default schedule</p>
+        <p class="title">{{'DefaultSchedule'|translate}}</p>
         <div class="schedule-data">
             <div class="schedule-item" *ngFor="let item of week; index as i">
               <p>{{item|translate}}</p>

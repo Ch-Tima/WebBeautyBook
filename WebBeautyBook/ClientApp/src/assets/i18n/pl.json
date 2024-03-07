@@ -58,7 +58,6 @@
 
     "Date": "Data",
     "Service": "Usługa",
-    "Status": "Status",
     "Time": "Czas",
 
     "Settings": "Ustawienia",
@@ -144,11 +143,23 @@
     "PriceLength": "Długość 'Ceny' musi wynosić od 1 do 50000 znaków.",
     "TitileIsRequired": "Tytuł jest wymagany.",
     "TitleLength": "Długość 'Tytułu' musi wynosić od 3 do 100 znaków.",
-    "Time": "Czas",
     "Categories": "Kategorie",
     "DescriptionsLength": "Długość 'Opisu' nie może przekraczać 500 znaków.",
     "Create": "Utwórz",
     "Close": "Zamknij",
     "SelectedWorkers": "Wybrani pracownicy",
-    "Workers": "Pracownicy"
+    "Workers": "Pracownicy",
+
+    "OpeningClosingTimes": "Czasy otwarcia i zamknięcia nie mogą być takie same.",
+    "WeDontWork": "Nie pracujemy.",
+    "JustOneTime": "Tylko jeden raz.",
+    "TextUnder100Chars": "Tekst musi zawierać mniej niż 100 znaków.",
+    "WriteReason": "Napisz przyczynę.",
+    "WrongFormat": "Zły format.",
+    "ChooseYear": "Wybierz rok nie późniejszy niż bieżący, w przeciwnym razie wydarzenie nie zostanie zaakceptowane do ustawionego roku.",
+    "DefaultSchedule": "Domyślny harmonogram",
+    "Exception": "Wyjątek",
+    "Repeat": "Powtórz",
+    "Reason": "Powód",
+    "AreYouSureYouWantToDelete": "Czy na pewno chcesz usunąć?"
 }

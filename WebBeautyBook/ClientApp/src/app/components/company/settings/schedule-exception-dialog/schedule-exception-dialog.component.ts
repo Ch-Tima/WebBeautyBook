@@ -31,6 +31,7 @@ export class ScheduleExceptionDialogComponent {
     });
   }
 
+  // Function to handle slide toggle change
   public onChangedSlideToggle(event:MatSlideToggleChange){
     if(!event.checked){
       this.mForm.controls.openFrom.setValue('10:00');
@@ -41,6 +42,7 @@ export class ScheduleExceptionDialogComponent {
     }
   }
 
+  // Function to handle form submission
   public onSubmit(){
     this.http.put('/api/ScheduleException', this.mForm.value, {
       headers: this.auth.getHeadersWithToken()
@@ -56,12 +58,14 @@ export class ScheduleExceptionDialogComponent {
 
 }
 
+// Class to represent the result of a schedule exception
 export class ScheduleExceptionResult{
 
   public status: "close"|"add"|"delete"|"none" = "none";
   public value: CompanyScheduleException|undefined;
 }
 
+// Function to compare two form controls
 export function CompareValidator(nameControlFirst: string, nameControlSecond: string, isClosed: string) {
 
   // Return a validator function that takes a FormGroup as input

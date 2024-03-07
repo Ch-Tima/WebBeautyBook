@@ -79,7 +79,7 @@ export class CompanyScheduleComponent {
     })
   }
 
-
+  // Function to add a schedule exception
   public addScheduleEx(){
     this.dialogRef.open(ScheduleExceptionDialogComponent, {
       data: {},
@@ -102,13 +102,13 @@ export class CompanyScheduleComponent {
     })
   }
 
+  // Function to remove a schedule exception
   public removeScheduleException(id:string){
     console.log("id: " + id)
     const dialog = this.dialogRef.open(ConfirmDialogComponent, {
       width: '550px',
       data: {
-        question: "Are you sure you want to delete?",
-        warning: "warning-text"
+        question: this.translationService.getTranslate("AreYouSureYouWantToDelete"),
       } as ConfirmDialogData
     });
     dialog.afterClosed().subscribe((result:boolean) => {
@@ -144,6 +144,7 @@ export class CompanyScheduleComponent {
     })
   }
 
+  // Function to refresh schedule exceptions
   private refreshScheduleExceptions(list: CompanyScheduleException[]){
     this.companyScheduleException.data = list;
     this.cdRef.detectChanges();

@@ -4,27 +4,27 @@
   <form [formGroup]="mForm" (ngSubmit)="onSubmit()">
 
     <div>
-      <mat-form-field [matTooltipPositionAtOrigin]="true" matTooltip="Choose a year not later than the current one, otherwise the event won't be accepted until the set year.">
-        <mat-label >Choose a date</mat-label>
+      <mat-form-field [matTooltipPositionAtOrigin]="true" matTooltip="{{'ChooseYear'|translate}}">
+        <mat-label>{{'ChooseDate'|translate}}</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="exceptionDate">
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="mForm.controls['exceptionDate'].errors != null && mForm.controls['exceptionDate'].touched">This is the wrong format</mat-error>
+        <mat-error *ngIf="mForm.controls['exceptionDate'].errors != null && mForm.controls['exceptionDate'].touched">{{'WrongFormat'|translate}}</mat-error>
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
-        <mat-label>Write the reason</mat-label>
+        <mat-label>{{"WriteReason"|translate}}</mat-label>
         <input matInput placeholder="reason" formControlName="reason">
-        <mat-error>Text must be under 100 chars.</mat-error>
+        <mat-error>{{"TextUnder100Chars"|translate}}</mat-error>
       </mat-form-field>
     </div>
   
     <div class="slide-toggle-grid-2x1">
-      <p>We don't work</p><mat-slide-toggle (change)="onChangedSlideToggle($event)" #isShortDay formControlName="isClosed"/>
-      <p>Just one time</p><mat-slide-toggle #isOnce formControlName="isOnce"/>
+      <p>{{"WeDontWork"|translate}}</p><mat-slide-toggle (change)="onChangedSlideToggle($event)" #isShortDay formControlName="isClosed"/>
+      <p>{{"JustOneTime"|translate}}</p><mat-slide-toggle #isOnce formControlName="isOnce"/>
     </div>
 
     <ng-container *ngIf="!mForm.controls.isClosed.value">
@@ -47,13 +47,13 @@
       
 
       <div *ngIf="mForm.controls['openUntil'].errors != null && mForm.controls['openUntil'].touched">
-        <mat-error *ngIf="mForm.controls['openUntil'].errors['compareValidator']">Opening and closing times cannot be the same.</mat-error>
+        <mat-error *ngIf="mForm.controls['openUntil'].errors['compareValidator']">{{"OpeningClosingTimes"|translate}}</mat-error>
       </div>
 
       
     </ng-container>
 
-    <button mat-raised-button color="primary" disabled="{{!mForm.valid}}" type="submit">add</button>
+    <button mat-raised-button color="primary" disabled="{{!mForm.valid}}" type="submit">{{"Add"|translate}}</button>
 
   </form>
 

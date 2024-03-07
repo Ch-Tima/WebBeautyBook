@@ -14,5 +14,5 @@ table {
 
 .slide-toggle-grid-2x1{
     display: grid;
-    grid-template-columns: 0.35fr 1fr;
+    grid-template-columns: 0.5fr 1fr;
 }

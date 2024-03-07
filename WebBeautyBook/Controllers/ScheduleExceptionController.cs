@@ -7,6 +7,9 @@ using WebBeautyBook.Models;
 
 namespace WebBeautyBook.Controllers
 {
+    /// <summary>
+    /// Controller for managing schedule exceptions.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -17,6 +20,7 @@ namespace WebBeautyBook.Controllers
         private readonly CompanyScheduleExceptionService _companyScheduleExceptionService;
 
 
+        //Constructor for initializing services
         public ScheduleExceptionController(CompanyScheduleExceptionService companyScheduleExceptionService, WorkerService workerService, UserManager<BaseUser> userManager)
         {
             _companyScheduleExceptionService = companyScheduleExceptionService;
