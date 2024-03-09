@@ -20,28 +20,39 @@ namespace WebBeautyBook.Controllers
 
         private readonly UserManager<BaseUser> _userManager;
         private readonly CompanyService _companyService;
+        private readonly CompanyOpenHoursService _companyOpenHoursService;
         private readonly WorkerService _workerService;
         private readonly IEmailSender _emailService;
 
         public CompanyController(UserManager<BaseUser> userManager, CompanyService companyService, 
-            WorkerService workerService, IEmailSender emailSender)
+            WorkerService workerService, IEmailSender emailSender, CompanyOpenHoursService companyOpenHoursService)
         {
             _userManager = userManager;
             _companyService = companyService;
             _workerService = workerService;
             _emailService = emailSender;
+            _companyOpenHoursService = companyOpenHoursService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get(string id)
         {
-            if (id == null) return BadRequest("Id cannot null");
+            try
+            {
+                if (id == null) return BadRequest("Id cannot null");
 
-            var company = await _companyService.GetIncludeForClientAsync(id);
+                var company = await _companyService.GetIncludeForClientAsync(id);
 
-            if (company == null) return BadRequest("Comapny not found");
+                if (company == null) return BadRequest("Comapny not found");
 
-            return Ok(company);
+                company.CompanyOpenHours = (await _companyOpenHoursService.FindWithExeceptionAsync(id)).ToList();
+
+                return Ok(company);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("getAll")]

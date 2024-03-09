@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {AuthService} from "../../../../services/auth/auth.service";
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { CompanyScheduleException } from 'src/app/models/CompanyScheduleException';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-schedule-exception-dialog',
@@ -15,7 +16,7 @@ export class ScheduleExceptionDialogComponent {
 
   public mForm:FormGroup;
 
-  constructor(private auth: AuthService, private http: HttpClient, private formBuilder: FormBuilder, private dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : any){
+  constructor(private toast: ToastrService, private auth: AuthService, private http: HttpClient, private formBuilder: FormBuilder, private dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data : any){
     //Override close for sending results
     this.dialog.backdropClick().subscribe(() => this.dialog.close(new ScheduleExceptionResult()))
     // Initialize the form with data or empty values based on update mode
@@ -53,6 +54,7 @@ export class ScheduleExceptionDialogComponent {
       } as ScheduleExceptionResult)
     }, er => {
       console.log(er)
+      this.toast.error(er.error);
     })
   }
 

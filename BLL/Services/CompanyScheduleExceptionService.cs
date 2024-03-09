@@ -45,6 +45,10 @@ namespace BLL.Services
                 if (company == null)
                     return new ServiceResponse(false, "Company not found");
 
+                var isCopy = await _scheduleExceptionRepository.AnyAsync(x => x.CompanyId == company.Id && x.ExceptionDate.Day == model.ExceptionDate.Day && x.ExceptionDate.Month == model.ExceptionDate.Month);
+
+                if (isCopy) return new ServiceResponse(false, "This exception already exists");
+
                 await _scheduleExceptionRepository.InsertAsync(model);
 
                 return new ServiceResponse(true, "Ok");

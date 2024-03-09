@@ -160,5 +160,7 @@ namespace DAL.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<CompanyImage> CompanyImages { get; set; }
         public DbSet<CompanyLike> CompanyLikes { get; set; }
+        public DbSet<CompanyScheduleException> CompanyScheduleExceptions { get; set; }
+        public DbSet<CompanyOpenHours> CompanyOpenHours { get; set; }
     }
 }

@@ -34,16 +34,14 @@ namespace BLL.Services
             return await _companyOpenHoursRepository.GetAllFindAsync(x => x.CompanyId == companyId);
         }
 
+        /// <summary>
+        /// Retrieves the company's schedule with exceptions asynchronously.
+        /// </summary>
+        /// <param name="companyId">The identifier of the company.</param>
+        /// <returns>A collection of CompanyOpenHours objects representing the company's schedule.</returns>
         public async Task<IEnumerable<CompanyOpenHours>> FindWithExeceptionAsync(string companyId)
         {
-
-            var list = await _companyOpenHoursRepository.GetAllFindAsync(x => x.CompanyId == companyId);
-            var listEx = await _scheduleExceptionRepository.GetAllFindAsync(x => x.CompanyId == companyId);
-
-
-
-            return null;
-
+            return await _companyOpenHoursRepository.FindWithExeceptionAsync(companyId);           
         }
 
 
