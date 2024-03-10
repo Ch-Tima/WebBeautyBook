@@ -5,6 +5,7 @@
     "TurnOnLocationServicesToFindTheBestSalonsInYourArea": "Włącz usługi lokalizacyjne, aby znaleźć najlepsze salony w Twojej okolicy.",
     "Yes": "Tak",
     "No": "Nie",
+    "Save": "Zapisz",
     "Login": "Zaloguj się",
     "Register": "Zarejestruj się",
     "Profile": "Profil",
@@ -57,8 +58,12 @@
 
     "Date": "Data",
     "Service": "Usługa",
-    "Status": "Status",
     "Time": "Czas",
+
+    "Settings": "Ustawienia",
+    "Schedule": "Harmonogram",
+    "Contacts": "Kontakty",
+    "Photos": "Zdjęcia",
 
     "FirstNameIsRequired": "Imię jest wymagane.",
     "FirstNameLength": "Długość 'Imienia' musi wynosić od 4 do 100 znaków.",
@@ -124,6 +129,8 @@
     "History": "Historia",
     "StartTime": "Czas rozpoczęcia",
     "EndTime": "Czas zakończenia",
+    "StartWorkTime": "Początek godzin pracy:",
+    "EndWorkTime": "Koniec godzin pracy:",
     "Description": "Opis",
 
     "Customer": "Klient",
@@ -136,11 +143,23 @@
     "PriceLength": "Długość 'Ceny' musi wynosić od 1 do 50000 znaków.",
     "TitileIsRequired": "Tytuł jest wymagany.",
     "TitleLength": "Długość 'Tytułu' musi wynosić od 3 do 100 znaków.",
-    "Time": "Czas",
     "Categories": "Kategorie",
     "DescriptionsLength": "Długość 'Opisu' nie może przekraczać 500 znaków.",
     "Create": "Utwórz",
     "Close": "Zamknij",
     "SelectedWorkers": "Wybrani pracownicy",
-    "Workers": "Pracownicy"
+    "Workers": "Pracownicy",
+
+    "OpeningClosingTimes": "Czasy otwarcia i zamknięcia nie mogą być takie same.",
+    "WeDontWork": "Nie pracujemy.",
+    "JustOneTime": "Tylko jeden raz.",
+    "TextUnder100Chars": "Tekst musi zawierać mniej niż 100 znaków.",
+    "WriteReason": "Napisz przyczynę.",
+    "WrongFormat": "Zły format.",
+    "ChooseYear": "Wybierz rok nie późniejszy niż bieżący, w przeciwnym razie wydarzenie nie zostanie zaakceptowane do ustawionego roku.",
+    "DefaultSchedule": "Domyślny harmonogram",
+    "Exception": "Wyjątek",
+    "Repeat": "Powtórz",
+    "Reason": "Powód",
+    "AreYouSureYouWantToDelete": "Czy na pewno chcesz usunąć?"
 }

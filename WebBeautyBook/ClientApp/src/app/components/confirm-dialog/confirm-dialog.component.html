@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>{{data.question}}</h2>
+
+<mat-dialog-content>
+   <p>{{data.warning}}</p>
+
+
+   <div class="btn">
+      <button mat-button [mat-dialog-close]="false" cdkFocusInitial>{{'Cancel'|translate}}</button>
+      <button mat-button [mat-dialog-close]="true"  color="warn">{{'Yes'|translate}}</button>   
+   </div>
+
+</mat-dialog-content>

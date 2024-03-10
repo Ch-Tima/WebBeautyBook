@@ -1,0 +1,60 @@
+
+<div class="container py-3">
+
+  <form [formGroup]="mForm" (ngSubmit)="onSubmit()">
+
+    <div>
+      <mat-form-field [matTooltipPositionAtOrigin]="true" matTooltip="{{'ChooseYear'|translate}}">
+        <mat-label>{{'ChooseDate'|translate}}</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="exceptionDate">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="mForm.controls['exceptionDate'].errors != null && mForm.controls['exceptionDate'].touched">{{'WrongFormat'|translate}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <mat-label>{{"WriteReason"|translate}}</mat-label>
+        <input matInput placeholder="reason" formControlName="reason">
+        <mat-error>{{"TextUnder100Chars"|translate}}</mat-error>
+      </mat-form-field>
+    </div>
+  
+    <div class="slide-toggle-grid-2x1">
+      <p>{{"WeDontWork"|translate}}</p><mat-slide-toggle (change)="onChangedSlideToggle($event)" #isShortDay formControlName="isClosed"/>
+      <p>{{"JustOneTime"|translate}}</p><mat-slide-toggle #isOnce formControlName="isOnce"/>
+    </div>
+
+    <ng-container *ngIf="!mForm.controls.isClosed.value">
+      <div class="container-time">
+        <div class="timepicker">
+          <label>{{"StartTime"|translate}}:</label>
+          <mat-form-field>
+            <input matInput [format]="24" [ngxMatTimepicker]="timeStart" formControlName="openFrom" placeholder="09:00" readonly />
+          </mat-form-field>
+          <ngx-mat-timepicker color="accent" #timeStart></ngx-mat-timepicker>
+        </div>
+        <div class="timepicker">
+          <label>{{"EndTime"|translate}}:</label>
+          <mat-form-field>
+            <input matInput [format]="24" [ngxMatTimepicker]="timeEnd" formControlName="openUntil" placeholder="09:00" readonly />
+          </mat-form-field>
+          <ngx-mat-timepicker color="accent" #timeEnd></ngx-mat-timepicker>
+        </div>
+      </div>
+      
+
+      <div *ngIf="mForm.controls['openUntil'].errors != null && mForm.controls['openUntil'].touched">
+        <mat-error *ngIf="mForm.controls['openUntil'].errors['compareValidator']">{{"OpeningClosingTimes"|translate}}</mat-error>
+      </div>
+
+      
+    </ng-container>
+
+    <button mat-raised-button color="primary" disabled="{{!mForm.valid}}" type="submit">{{"Add"|translate}}</button>
+
+  </form>
+
+</div>

@@ -1,0 +1,5 @@
+mat-dialog-content .btn{
+    float: right;
+    justify-content: center;
+    align-items: center;
+}

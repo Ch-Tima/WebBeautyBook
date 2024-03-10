@@ -1,5 +1,6 @@
 using AspNetCoreRateLimit;
 using Azure.Identity;
+using BLL;
 using BLL.Infrastructure;
 using BLL.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -25,6 +26,9 @@ builder.Services.AddTransient<CompanyService>();
 builder.Services.AddTransient<CompanyOpenHoursService>();
 builder.Services.AddTransient<CompanyImageService>();
 builder.Services.AddTransient<CompanyLikeService>();
+builder.Services.AddTransient<CompanyScheduleExceptionService>();
+
+builder.Services.AddHostedService<ScheduleExceptionCleanerBackgroundService>();
 
 //Fixes looping navigation fields.
 //[JsonIgnore]
@@ -100,4 +104,4 @@ app.UseEndpoints(endpoints =>
 
 app.MapFallbackToFile("index.html");
 
-app.Run();
+await app.RunAsync();

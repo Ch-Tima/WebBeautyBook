@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavMenuItem } from 'src/app/models/NavMenuItem';
 import {AuthService} from "../../../services/auth/auth.service";
+import { title } from 'process';
 
 @Component({
   selector: 'app-my-company-panel',
@@ -39,5 +40,12 @@ export class MyCompanyPanelComponent {
     this.navMenuItems.push(new NavMenuItem("/assets/svg/services.svg", "Services", "Services"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/clients.svg", "Clients", "Clients"));
     this.navMenuItems.push(new NavMenuItem("/assets/svg/list.svg", "History", "History"));
+
+    let setting = new NavMenuItem("/assets/svg/settings.svg", "Settings", "Settings");
+    setting.sublist.push(new NavMenuItem("/assets/svg/dot.svg", "Schedule", "Schedule"));
+    setting.sublist.push(new NavMenuItem("/assets/svg/dot.svg", "Contacts", "Contacts"));
+    setting.sublist.push(new NavMenuItem("/assets/svg/dot.svg", "Photos", "Photos"));
+    
+    this.navMenuItems.push(setting);
   }
 }

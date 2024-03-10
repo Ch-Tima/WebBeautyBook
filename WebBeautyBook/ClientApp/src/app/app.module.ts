@@ -28,6 +28,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip'
 //@ngx-translate
 import { TranslateModule, TranslateLoader, TranslateModuleConfig } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -67,6 +70,8 @@ import { InvitationEmployeeComponent } from './components/company/invitation-emp
 import { AcceptInvitationPageComponent } from './components/company/accept-invitation-page/accept-invitation-page.component';
 import { CompanyCardComponent } from './components/company/company-card/company-card.component';
 import { ReservationDialogComponent } from './components/company/reservation-dialog/reservation-dialog.component';
+import { EditScheduleTimeDialogComponent } from './components/company/settings/edit-schedule-time-dialog/edit-schedule-time-dialog.component';
+import { ScheduleExceptionDialogComponent } from './components/company/settings/schedule-exception-dialog/schedule-exception-dialog.component';
 //PublicCompany
 import { CompanyPageComponent } from './components/publicCompany/company-page/company-page.component';
 import { AppointmentDialogComponent } from './components/publicCompany/appointment-dialog/appointment-dialog.component';
@@ -82,6 +87,11 @@ import { SearchCompanyInputComponent } from './components/search/search-company-
 import { ImageSliderComponent } from './components/image-slider/image-slider.component';
 //LanguagePacksDialogComponent
 import { LanguagePacksDialogComponent } from './components/language-packs-dialog/language-packs-dialog.component';
+import { SettingsPanelComponent } from './components/company/settings-panel/settings-panel.component';
+import { CompanyScheduleComponent } from './components/company/settings/company-schedule/company-schedule.component';
+import { CompanyContactsComponent } from './components/company/settings/company-contacts/company-contacts.component';
+import { CompanyPhotosComponent } from './components/company/settings/company-photos/company-photos.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 const routes: Routes = [
   //Public
@@ -147,6 +157,13 @@ const routes: Routes = [
     SearchCompanyInputComponent,
     PrivacyPolicyComponent,
     LanguagePacksDialogComponent,
+    SettingsPanelComponent,
+    CompanyScheduleComponent,
+    CompanyContactsComponent,
+    EditScheduleTimeDialogComponent,
+    CompanyPhotosComponent,
+    ScheduleExceptionDialogComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -167,6 +184,7 @@ const routes: Routes = [
     MatCheckboxModule, MatSelectModule, MatChipsModule,
     MatRadioModule, MatTableModule, MatPaginatorModule,
     MatSortModule, MatProgressSpinnerModule, MatIconModule,
+    MatSlideToggleModule, MatBadgeModule, MatTooltipModule,
     //ngx-translate
     TranslateModule.forRoot({
       loader:{

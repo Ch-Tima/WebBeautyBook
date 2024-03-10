@@ -16,6 +16,13 @@ namespace DAL.Initializers
         private List<string> firstNames = new List<string>(new[] { "John", "Mary", "David", "Anna", "Michael", "Alice", "Bob", "Catherine", "Daniel", "Ella", "Benito", "Salomón", "Rubén", "Sonia", "Heriber" });
         private List<string> lastNames = new List<string>(new[] { "Smith", "Johnson", "Brown", "Davis", "Williams", "Johnson", "Williams", "Smith", "Brown", "Davis", "Thomas", "Nathan", "Taylor", "Chris", "Herbert" });
 
+        private Dictionary<DateTime, string> holidays = new Dictionary<DateTime, string>() {
+            { new DateTime(1985, 12, 31), "New Year" },
+            { new DateTime(1985, 2, 14), "Valentine's Day" },
+            { new DateTime(1985, 3, 8), "International Women's Day" },
+            { new DateTime(1985, 12, 25), "Christmas" },
+        };
+
         private List<string> beautySalonNames = new List<string>
         {
             "Radiant Elegance Beauty Salon", "Serene Splendor Beauty Studio", "Glamour Glow Beauty Hub", "Opulent Oasis Beauty Spa", "Chic Charm Beauty Boutique",
@@ -280,6 +287,21 @@ namespace DAL.Initializers
                     UserId = item.Id
                 });
             });
+
+            //Holidays
+            List<CompanyScheduleException> exceptions = new List<CompanyScheduleException>();
+            foreach(var item in holidays)
+            {
+                exceptions.Add(new CompanyScheduleException()
+                {
+                    CompanyId = company.Id,
+                    IsClosed = true,
+                    IsOnce = false,
+                    Reason = item.Value,
+                    ExceptionDate = item.Key
+                });
+            }
+
             //Save employee (worker) data
             _modelBuilder.Entity<BaseUser>().HasData(employees);
             _modelBuilder.Entity<Worker>().HasData(workerProfiles);
@@ -288,6 +310,8 @@ namespace DAL.Initializers
             var service = GenerateRandomServices(company.Id);
             _modelBuilder.Entity<Service>().HasData(service);
             _modelBuilder.Entity<Assignment>().HasData(GenerateRandomAssignment(workerProfiles, service));
+            //Save CompanyScheduleException
+            _modelBuilder.Entity<CompanyScheduleException>().HasData(exceptions);
         }
 
         /// <summary>

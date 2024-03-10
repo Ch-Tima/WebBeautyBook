@@ -1,0 +1,105 @@
+.container{
+    display: flex;
+}
+
+.plus{
+    background-color: #88F2A2;
+    border-radius: 100%;
+    padding: 0.21em;
+    width: 50px;
+    
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 88;
+}
+
+.list-schedule-exception{
+    position: relative;
+    z-index: 87;
+    flex-grow: 1;
+    margin: 0 5px 8px 5px;
+    height: 80vh;
+    overflow-y: auto;
+}
+
+.schedule-exception{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+
+    width: 62%;
+    height: 80vh;
+    margin: 5px;
+
+    background-color: #c4ddf26c;/* #f2ebd529 #f2f2f280 #B3F8C3;*/
+    border-radius: 0.375em;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+}
+
+.schedule{
+    width: 38%;
+    height: 80vh;
+    margin: 5px;
+    background-color: #c4ddf2ab;/*#E9FCE0*/
+    border-radius: 0.375em;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+}
+.schedule-item p{
+    color: #007bff;
+}
+
+.title{
+    text-align: center;
+    margin: 0.25em 0 0.45em 0;
+    font-size: larger;
+    color: #007bff;/*878a99*/
+}
+
+.schedule-data{
+    display: block;
+    margin: 0 .85em;
+}
+
+.reason{
+    max-width: 12em; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0;
+}
+
+.schedule-data .schedule-item{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: .5fr .2fr;
+}
+
+.schedule-item p{
+    margin: auto 0;
+}
+
+.underline{
+    text-decoration: underline;
+}
+
+@media(max-width: 768px){
+    .schedule-data{
+        margin: .75em .45em;
+    }
+    .container{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .schedule-exception, .schedule{
+        width: 100%;
+        height: max-content;
+    }
+    .schedule-exception{
+        min-height: 50vh;
+    }
+    .reason{
+        max-width: 8em; 
+    }
+}

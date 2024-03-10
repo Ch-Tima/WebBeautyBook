@@ -5,6 +5,6 @@ export class UserDataModel {
     photo: string = "";
     phoneNumber:string = "";
     roles: string[] = [];
-    companyId: string|null = null;
-    workerId: string|null = null;
+    companyId: string|undefined;
+    workerId: string|undefined;
   }

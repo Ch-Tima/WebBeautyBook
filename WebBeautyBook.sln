@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBeautyBook", "WebBeautyBook\WebBeautyBook.csproj", "{0FEE532C-C487-401A-9292-EF5DCD941DC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebBeautyBook", "WebBeautyBook\WebBeautyBook.csproj", "{0FEE532C-C487-401A-9292-EF5DCD941DC7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{F676172A-0910-4B83-B5FD-3A4E7B44C73C}"
 EndProject

@@ -12,8 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.Text;
-using AspNetCoreRateLimit;
-using Microsoft.Extensions.Options;
 
 namespace BLL.Infrastructure
 {
@@ -30,10 +28,10 @@ namespace BLL.Infrastructure
         public static void Configure(this IServiceCollection services, IConfiguration configuration)
         {
             // Database Configuration
-            //var local = configuration.GetConnectionString("local");//appsettings
+            var local = configuration.GetConnectionString("local");//appsettings
             //var realDatabse = configuration.GetValue<string>("BeautyBookDatabase");//Azure secret key
-            //services.AddDbContext<BeautyBookDbContext>(opt => opt.UseSqlServer(realDatabse));
-            services.AddDbContext<BeautyBookDbContext>(options => options.UseInMemoryDatabase(nameof(BeautyBookDbContext)));//InMemory
+            services.AddDbContext<BeautyBookDbContext>(opt => opt.UseSqlServer(local));
+            //services.AddDbContext<BeautyBookDbContext>(options => options.UseInMemoryDatabase(nameof(BeautyBookDbContext)));//InMemory
 
             // Add Repository Services
             services.AddTransient<BaseUserRepository>();
@@ -49,6 +47,7 @@ namespace BLL.Infrastructure
             services.AddTransient<CompanyOpenHoursRepository>();
             services.AddTransient<CompanyImagesRepository>();
             services.AddTransient<CompanyLikeRepository>();
+            services.AddTransient<CompanyScheduleExceptionRepository>();
             
             // Set settings Identity
             services.AddIdentity<BaseUser, IdentityRole>(opt =>

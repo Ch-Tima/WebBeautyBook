@@ -129,6 +129,17 @@ namespace DAL.Context
             builder.Entity<Category>().Property(x => x.Name).IsRequired().HasColumnType("varchar").HasMaxLength(100);
             builder.Entity<Category>().HasMany(x => x.Categories).WithOne(x => x.Categors).HasForeignKey(x => x.CategoryId);
 
+            //CompanyScheduleException
+            builder.Entity<CompanyScheduleException>().HasIndex(x => x.Id).IsUnique();
+            builder.Entity<CompanyScheduleException>().Property(x => x.ExceptionDate).HasColumnType("DATE").IsRequired();
+            builder.Entity<CompanyScheduleException>().Property(x => x.OpenFrom).HasColumnType("Time").HasDefaultValue(TimeSpan.Zero);
+            builder.Entity<CompanyScheduleException>().Property(x => x.OpenUntil).HasColumnType("Time").HasDefaultValue(TimeSpan.Zero);
+            builder.Entity<CompanyScheduleException>().Property(x => x.Reason).HasColumnType("VARCHAR").HasMaxLength(100).IsRequired(false);
+            builder.Entity<CompanyScheduleException>().Property(x => x.IsClosed).HasColumnType("BIT").IsRequired();
+            builder.Entity<CompanyScheduleException>().Property(x => x.IsOnce).HasColumnType("BIT").IsRequired();
+            builder.Entity<CompanyScheduleException>().HasOne(x => x.Company).WithMany(x => x.CompanyScheduleExceptions).HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Cascade).IsRequired();
+
+
             //Default Initialization
             BeautyBookDbInitializer.Build(builder).Initializer();
 
@@ -149,5 +160,7 @@ namespace DAL.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<CompanyImage> CompanyImages { get; set; }
         public DbSet<CompanyLike> CompanyLikes { get; set; }
+        public DbSet<CompanyScheduleException> CompanyScheduleExceptions { get; set; }
+        public DbSet<CompanyOpenHours> CompanyOpenHours { get; set; }
     }
 }

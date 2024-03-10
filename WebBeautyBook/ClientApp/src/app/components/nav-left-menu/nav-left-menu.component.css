@@ -1,5 +1,4 @@
 .my-menu {
-    /*top: calc(75px + 1.5rem);*/
     top: 0;
     bottom: -1.5rem;
     left: 0;
@@ -20,21 +19,48 @@
     margin: 0 5px;
 }
 
+.sub-container{
+    opacity: 0;
+}
+
+.nav-item-sub:hover .sub-container{
+    display: block;
+    position: absolute;
+    right: 0;
+    left: 100%;
+    top: 60%;
+    opacity: 1;
+    transition: opacity 1s ease ;
+}
+
+.sub-list{
+    position: fixed;
+    background-color: #f0f8ffff;
+    width: 175px;
+    min-height: 10px;
+    padding: 4px 5px;
+}
+
 .text-lightgrey{
     color: #878a99;
 }
 
 .li-hover{
     margin: 5px 0;
+    border-radius: 5px;
+    background-color: #ffffff00;
+    -webkit-transition: background-color 0.75s ease-out;
+    -moz-transition: background-color 0.75s ease-out;
+    -o-transition: background-color 0.75s ease-out;
+    transition: background-color 0.75s ease-out;
 }
 
 .li-hover:hover
 {
     background: #007bff30;
-    border-radius: 5px;
 }
 
-.li-hover:hover :not(div)
+.li-hover:hover :not(div), .li-select :not(div)
 {
     color: #007bff;
     fill: #007bff;
@@ -46,10 +72,6 @@
     border-radius: 5px;
 }
 
-.li-select :not(div){
-    color: #007bff;
-    fill: #007bff;
-}
 
 .my-menu img, span{
     user-select: none;
