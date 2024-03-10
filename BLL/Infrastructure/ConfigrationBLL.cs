@@ -12,8 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.Text;
-using AspNetCoreRateLimit;
-using Microsoft.Extensions.Options;
 
 namespace BLL.Infrastructure
 {
