@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Linq.Expressions;
 using System.Text;
 using WebBeautyBook.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebBeautyBook.Controllers
 {

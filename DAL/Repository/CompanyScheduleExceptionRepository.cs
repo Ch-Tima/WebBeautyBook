@@ -1,7 +1,6 @@
 ﻿using DAL.Context;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace DAL.Repository
