@@ -42,6 +42,10 @@ To ensure security, I use JWT and ASP.NET Core Identity.
 
 I have successfully integrated the SendGrid service for quick message sending. I also utilize the Microsoft Azure cloud platform for deploying and scaling the application.
 
+## How to run a project:
+  - [Visual Studio](https://github.com/Ch-Tima/WebBeautyBook/wiki/How-to-run-a-project#visual-studio)
+
+
 ## Activity
 ![Alt](https://repobeats.axiom.co/api/embed/33c7eba0395b029383be1af49fcbcd15242a6f53.svg "Repobeats analytics image")
 
