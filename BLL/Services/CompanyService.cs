@@ -1,10 +1,11 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 using System.Linq.Expressions;
 
 namespace BLL.Services
 {
-    public class CompanyService
+    public class CompanyService : ServiceBase
     {
         private readonly CompanyRepository _companyRepository;
         private readonly WorkerService _workerService;
@@ -91,8 +92,8 @@ namespace BLL.Services
         /// </summary>
         /// <param name="company">The company to create.</param>
         /// <param name="own">The user who owns the company.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> CreateCompany(Company company, BaseUser own)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<IServiceResponse> CreateCompany(Company company, BaseUser own)
         {
             try
             {
@@ -101,11 +102,11 @@ namespace BLL.Services
                 //create Worker for own
                 await _workerService.InsertAsync(company.Id, own);
 
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 

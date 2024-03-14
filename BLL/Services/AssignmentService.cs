@@ -1,10 +1,11 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 using System.Linq.Expressions;
 
 namespace BLL.Services
 {
-    public class AssignmentService
+    public class AssignmentService : ServiceBase
     {
 
         private readonly WorkerRepository _workerRepository;
@@ -50,30 +51,30 @@ namespace BLL.Services
         /// </summary>
         /// <param name="companyId">The ID of the company to which the assignment should belong.</param>
         /// <param name="assignment">The assignment to insert.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the insertion operation.</returns>
-        public async Task<ServiceResponse> InsertAsync(string companyId, Assignment assignment)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the insertion operation.</returns>
+        public async Task<IServiceResponse> InsertAsync(string companyId, Assignment assignment)
         {
             try
             {
                 var worker = await _workerRepository.GetFirstAsync(x => x.Id == assignment.WorkerId && x.CompanyId == companyId);
                 if (worker == null)//Check if the worker is owned by the specified company
-                    return new ServiceResponse(false, $"This Worker does not belong to this company.");
+                    return BadResult($"This Worker does not belong to this company.");
 
                 var serviec = await _serviceRepository.GetFirstAsync(x => x.Id == assignment.ServiceId && x.CompanyId == companyId);
                 if(serviec == null)//Check if the service is owned by the specified company
-                    return new ServiceResponse(false, $"This Serviec does not belong to this company.");
+                    return BadResult($"This Serviec does not belong to this company.");
 
                 //Check for duplicate assignments (worker having the same service).
                 var assignmentDuplicate = await _assignmentRepository.GetFirstAsync(x => x.ServiceId == assignment.ServiceId && x.WorkerId == assignment.WorkerId);
                 if (assignmentDuplicate != null)
-                    return new ServiceResponse(false, "Worker has this service.");
+                    return BadResult("Worker has this service.");
 
                 await _assignmentRepository.InsertAsync(assignment);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -83,32 +84,32 @@ namespace BLL.Services
         /// <param name="companyId">The ID of the company for which the assignment is being deleted.</param>
         /// <param name="workerId">The ID of the worker associated with the assignment.</param>
         /// <param name="serviceId">The ID of the service associated with the assignment.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the deletion operation.</returns>
-        public async Task<ServiceResponse> DeleteAsync(string companyId, string workerId, string serviceId)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the deletion operation.</returns>
+        public async Task<IServiceResponse> DeleteAsync(string companyId, string workerId, string serviceId)
         {
             try
             {
                 //find assignment in database
                 var assignment = await _assignmentRepository.FirstIncludeAsync(x => x.ServiceId == serviceId &&  x.WorkerId == workerId);
                 if (assignment == null) 
-                    return new ServiceResponse(false, "This worker does not own this service.");
+                    return BadResult("This worker does not own this service.");
 
                 //Check if this service and worker belong to the same company
                 if (assignment.Worker.CompanyId != companyId)//Check if the "Worker" is owned by the specified company
-                    return new ServiceResponse(false, $"This Worker does not belong to this company.");
+                    return BadResult($"This Worker does not belong to this company.");
 
                 if (assignment.Service.CompanyId != companyId)//Check if the "Service" is owned by the specified company
-                    return new ServiceResponse(false, $"This Service does not belong to this company.");
+                    return BadResult($"This Service does not belong to this company.");
 
                 // TODO: Check for open records (you may want to implement this check).
 
                 //Delete the assignment from the repository
                 await _assignmentRepository.DeleteAsync(assignment);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 

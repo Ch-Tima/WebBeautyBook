@@ -1,4 +1,5 @@
 ﻿using DAL.Repository;
+using BLL.Response;
 using Domain.Models;
 using System.Linq.Expressions;
 
@@ -7,7 +8,7 @@ namespace BLL.Services
     /// <summary>
     /// Service class responsible for managing service-related "<see cref="Service"/>" operations.
     /// </summary>
-    public class ServiceService
+    public class ServiceService : ServiceBase
     {
 
         private readonly ServiceRepository _serviceRepository;
@@ -53,28 +54,28 @@ namespace BLL.Services
         /// </summary>
         /// <param name="service">The service to insert.</param>
         /// <returns>A service response indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> InsertAsync(Service service)
+        public async Task<IServiceResponse> InsertAsync(Service service)
         {
             try
             {
                 //Check if the company exists
                 if ((await _companyRepository.GetAsync(service.CompanyId)) == null) 
-                    return new ServiceResponse(false, $"We cannot find a company with id: {service.CompanyId}");
+                    return BadResult($"We cannot find a company with id: {service.CompanyId}");
 
                 //Check for duplicate service names
                 var serviceCopy = await _serviceRepository.GetFirstAsync(x => x.Name.ToUpper() == service.Name.ToUpper() && x.CompanyId == service.CompanyId);
-                if (serviceCopy != null) return new ServiceResponse(false, $"Service named: {service.Name} exists.");
+                if (serviceCopy != null) return BadResult($"Service named: {service.Name} exists.");
 
                 //Check if the category exists
                 if ((await _categoryRepository.GetAsync(service.CategoryId)) == null) 
-                    return new ServiceResponse(false, $"We cannot find a category with id: {service.CategoryId}");
+                    return BadResult($"We cannot find a category with id: {service.CategoryId}");
 
                 await _serviceRepository.InsertAsync(service);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -92,22 +93,22 @@ namespace BLL.Services
         /// </summary>
         /// <param name="newService">The updated service.</param>
         /// <returns>A service response indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> UpdataAsync(Service newService)
+        public async Task<IServiceResponse> UpdataAsync(Service newService)
         {
             try
             {
                 //Check if the service exists
                 var oldService = await _serviceRepository.GetAsync(newService.Id);
                 if (oldService == null)
-                    return new ServiceResponse(false, $"We cannot find a Service with id: {newService.Id}.");
+                    return BadResult($"We cannot find a Service with id: {newService.Id}.");
 
                 //Check if the company exists
                 if ((await _companyRepository.GetAsync(newService.CompanyId)) == null)
-                    return new ServiceResponse(false, $"We cannot find a Company with id: {newService.CompanyId}");
+                    return BadResult($"We cannot find a Company with id: {newService.CompanyId}");
 
                 //Check if this service is owned by this company
                 if (oldService.CompanyId != newService.CompanyId)
-                    return new ServiceResponse(false, "This service is not owned by this company.");
+                    return BadResult("This service is not owned by this company.");
 
                 //Check for duplicate names
                 var serviceCopy = await _serviceRepository.GetFirstAsync(x => 
@@ -116,14 +117,14 @@ namespace BLL.Services
                     x.Id != newService.Id
                 );
 
-                if (serviceCopy != null) return new ServiceResponse(false, $"Service named: {newService.Name} exists.");
+                if (serviceCopy != null) return BadResult($"Service named: {newService.Name} exists.");
 
                 await _serviceRepository.UpdateAsync(newService.Id, newService);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 

@@ -1,10 +1,11 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 using System.Linq.Expressions;
 
 namespace BLL.Services
 {
-    public class BaseUserService
+    public class BaseUserService : ServiceBase
     {
 
         private readonly BaseUserRepository _baseUserRepository;
@@ -47,8 +48,8 @@ namespace BLL.Services
         /// Update a base user's information.
         /// </summary>
         /// <param name="baseUser">The updated base user information.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the update operation.</returns>
-        public async Task<ServiceResponse> UpdateAsync(BaseUser baseUser)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the update operation.</returns>
+        public async Task<IServiceResponse> UpdateAsync(BaseUser baseUser)
         {
             try
             {
@@ -56,15 +57,15 @@ namespace BLL.Services
                 {
                     var duplicatePhoneNumber = await _baseUserRepository.GetFirstAsync(x => x.PhoneNumber == baseUser.PhoneNumber && x.Id != baseUser.Id);
                     if(duplicatePhoneNumber != null)
-                        return new ServiceResponse(false, "This phone number is already in use.");
+                        return BadResult("This phone number is already in use.");
                 }
                 //Update the base user information in the repository.
                 await _baseUserRepository.UpdateAsync(baseUser.Id, baseUser);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 

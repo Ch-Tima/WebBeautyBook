@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 
 namespace BLL.Services
@@ -6,7 +7,7 @@ namespace BLL.Services
     /// <summary>
     /// Service class for managing user likes on companies.
     /// </summary>
-    public class CompanyLikeService
+    public class CompanyLikeService : ServiceBase
     {
         private readonly CompanyLikeRepository _companyLike;
         private readonly CompanyRepository _company;
@@ -33,29 +34,29 @@ namespace BLL.Services
         /// Add a company to a user's liked list.
         /// </summary>
         /// <param name="companyLike">The company like to add.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> AddAsync(CompanyLike companyLike)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<IServiceResponse> AddAsync(CompanyLike companyLike)
         {
             try
             {
                 if (companyLike.CompanyId == null || companyLike.UserId == null)
-                    return new ServiceResponse(false, "Fields CompanyId and UserIdb cannot be null");
+                    return BadResult("Fields CompanyId and UserIdb cannot be null");
 
                 var company = await _company.GetAsync(companyLike.CompanyId);
                 if (company == null)
-                    return new ServiceResponse(false, "Not found compny");
+                    return BadResult("Not found compny");
 
                 var duplicate = await _companyLike.GetFirstAsync(x => x.CompanyId == companyLike.CompanyId && x.UserId == companyLike.UserId);
                 if (duplicate != null)
-                    return new ServiceResponse(false, "You have already added this company to your favorites");
+                    return BadResult("You have already added this company to your favorites");
 
                 await _companyLike.InsertAsync(companyLike);
 
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -64,21 +65,21 @@ namespace BLL.Services
         /// </summary>
         /// <param name="companyId">The ID of the company to delete.</param>
         /// <param name="userId">The ID of the user.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> DeleteAsync(string companyId, string userId)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<IServiceResponse> DeleteAsync(string companyId, string userId)
         {
             try
             {
                 var item = await _companyLike.GetFirstAsync(x => x.UserId == userId && x.CompanyId == companyId);
                 if (item is null)
-                    return new ServiceResponse(false, "Not found");
+                    return BadResult("Not found");
 
                 await _companyLike.DeleteAsync(item.Id);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 

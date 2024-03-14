@@ -1,10 +1,11 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 using System.Linq.Expressions;
 
 namespace BLL.Services
 {
-    public class ReservationService
+    public class ReservationService : ServiceBase
     {
         private readonly ReservationRepository _reservationRepository;
         private readonly WorkerRepository _workerRepository;
@@ -44,15 +45,15 @@ namespace BLL.Services
         /// Inserts a new reservation asynchronously.
         /// </summary>
         /// <param name="reservation">The reservation to insert.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the insertion.</returns>
-        public async Task<ServiceResponse> InsertAsync(Reservation reservation)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the insertion.</returns>
+        public async Task<IServiceResponse> InsertAsync(Reservation reservation)
         {
             try
             {
                 //find worker profile
                 var worker = await _workerRepository.GetAsync(reservation.WorkerId);
                 if (worker == null) 
-                    return new ServiceResponse(false, "Most likely you do not belong to any company.");
+                    return BadResult("Most likely you do not belong to any company.");
 
                 //swap, if TimeEnd more than TimeStart
                 if (reservation.TimeStart > reservation.TimeEnd)
@@ -61,15 +62,15 @@ namespace BLL.Services
                 //search for intersections in time
                 var reservations = await _reservationRepository.GetAllFindAsync(x => x.WorkerId == reservation.WorkerId && x.Date.Date == reservation.Date.Date);
                 if (reservations != null && HasOverlappingReservations(reservations.ToList(), reservation))
-                    return new ServiceResponse(false, "The Reservation cannot overlap with another reservation.");
+                    return BadResult("The Reservation cannot overlap with another reservation.");
 
                 await _reservationRepository.InsertAsync(reservation);
 
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -77,19 +78,19 @@ namespace BLL.Services
         /// Deletes a reservation by its ID asynchronously.
         /// </summary>
         /// <param name="id">The ID of the reservation to delete.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the deletion.</returns>
-        public async Task<ServiceResponse> DeleteAsync(string id)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the deletion.</returns>
+        public async Task<IServiceResponse> DeleteAsync(string id)
         {
             try
             {
-                if (!await IsExistAsync(id)) return new ServiceResponse(false, "Not found reservation.");
+                if (!await IsExistAsync(id)) return BadResult("Not found reservation.");
 
                 await _reservationRepository.DeleteAsync(id);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -97,19 +98,19 @@ namespace BLL.Services
         /// Updates an existing reservation asynchronously.
         /// </summary>
         /// <param name="reservation">The updated reservation.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the update.</returns>
-        public async Task<ServiceResponse> UpdataAsync(Reservation reservation)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the update.</returns>
+        public async Task<IServiceResponse> UpdataAsync(Reservation reservation)
         {
             try
             {
                 //find worker profile
                 var worker = await _workerRepository.GetAsync(reservation.WorkerId);
                 if (worker == null)
-                    return new ServiceResponse(false, "Most likely you do not belong to any company.");
+                    return BadResult("Most likely you do not belong to any company.");
 
                 //find reservation
                 if (!await IsExistAsync(reservation.Id))
-                    return new ServiceResponse(false, "Not found reservation.");
+                    return BadResult("Not found reservation.");
 
                 //swap, if TimeEnd more than TimeStart
                 if (reservation.TimeStart > reservation.TimeEnd)
@@ -118,15 +119,15 @@ namespace BLL.Services
                 //search for intersections in time
                 var reservations = await _reservationRepository.GetAllFindAsync(x => x.WorkerId == reservation.WorkerId && x.Date.Date == reservation.Date.Date && x.Id != reservation.Id);
                 if (reservations != null && HasOverlappingReservations(reservations.ToList(), reservation))
-                    return new ServiceResponse(false, "The Reservation cannot overlap with another reservation.");
+                    return BadResult("The Reservation cannot overlap with another reservation.");
 
                 await _reservationRepository.UpdateAsync(reservation.Id, reservation);
 
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 

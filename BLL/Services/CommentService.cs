@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace BLL.Services
 {
-    public class CommentService
+    public class CommentService : ServiceBase
     {
 
         private readonly CommentRepository _commentRepository;

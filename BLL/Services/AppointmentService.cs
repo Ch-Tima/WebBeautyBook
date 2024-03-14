@@ -1,15 +1,15 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 using System.Linq.Expressions;
 
 namespace BLL.Services
 {
-    public class AppointmentService
+    public class AppointmentService : ServiceBase
     {
         private readonly AppointmentRepository _appointmentRepository;
         private readonly AssignmentRepository _assignmentRepository;
         private readonly ReservationRepository _reservationRepository;
-        private readonly ServiceRepository _serviceRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppointmentService"/> class.
@@ -18,12 +18,11 @@ namespace BLL.Services
         /// <param name="assignmentRepository">The repository for assignment data.</param>
         /// <param name="reservationRepository">The repository for reservation data.</param>
         /// <param name="serviceRepository">The repository for service data.</param>
-        public AppointmentService(AppointmentRepository appointmentRepository, AssignmentRepository assignmentRepository, ReservationRepository reservationRepository, ServiceRepository serviceRepository)
+        public AppointmentService(AppointmentRepository appointmentRepository, AssignmentRepository assignmentRepository, ReservationRepository reservationRepository)
         {
             _appointmentRepository = appointmentRepository;
             _assignmentRepository = assignmentRepository;
             _reservationRepository = reservationRepository;
-            _serviceRepository = serviceRepository;
         }
 
         /// <summary>
@@ -72,27 +71,27 @@ namespace BLL.Services
         /// </summary>
         /// <param name="appointment">The appointment to insert.</param>
         /// <returns>A <see cref="ServiceResponse"/> indicating the result of the insertion operation.</returns>
-        public async Task<ServiceResponse> InsertAsync(Appointment appointment)
+        public async Task<IServiceResponse> InsertAsync(Appointment appointment)
         {
             try
             {
                 var assignment = await _assignmentRepository.FirstIncludeAsync(x => x.WorkerId ==  appointment.WorkerId && x.ServiceId == appointment.ServiceId);
-                if (assignment == null) return new ServiceResponse(false, "Not found service or worker.");
+                if (assignment == null) return BadResult("Not found service or worker.");
 
                 appointment.TimeEnd = appointment.TimeStart + assignment.Service.Time;
 
                 var appointments = await _appointmentRepository.GetAllFindAsync(a => a.Date.Date == appointment.Date.Date && a.WorkerId == appointment.WorkerId);
                 var reservations = await _reservationRepository.GetAllFindAsync(a => a.Date.Date == appointment.Date.Date && a.WorkerId == appointment.WorkerId);
                 if (HasOverlappingAppointments(appointments, appointment, reservations))
-                    return new ServiceResponse(false, "Busy at this time.");
+                    return BadResult("Busy at this time.");
 
 
                 await _appointmentRepository.InsertAsync(appointment);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -100,17 +99,16 @@ namespace BLL.Services
         /// Deletes an appointment by its ID.
         /// </summary>
         /// <param name="id">The ID of the appointment to delete.</param>
-        public async Task<ServiceResponse> DeleteAsync(string id)
+        public async Task<IServiceResponse> DeleteAsync(string id)
         {
             try
             {
-
                 await _appointmentRepository.DeleteAsync(id);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 

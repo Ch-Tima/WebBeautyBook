@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace BLL.Services
 {
-    public class CompanyImageService
+    public class CompanyImageService : ServiceBase
     {
         private readonly CompanyImagesRepository _imagesRepository;
 
