@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 
 namespace BLL.Services
@@ -6,7 +7,7 @@ namespace BLL.Services
     /// <summary>
     /// Service for managing company open hours.
     /// </summary>
-    public class CompanyOpenHoursService
+    public class CompanyOpenHoursService : ServiceBase
     {
         private readonly CompanyOpenHoursRepository _companyOpenHoursRepository;
         private readonly CompanyRepository _companyRepository;
@@ -50,28 +51,28 @@ namespace BLL.Services
         /// </summary>
         /// <param name="companyOpenHours">The open hours to add.</param>
         /// <param name="companyId">The ID of the company to add open hours for.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> AddAsync(CompanyOpenHours companyOpenHours)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<IServiceResponse> AddAsync(CompanyOpenHours companyOpenHours)
         {
             try
             {
                 // Check if the day of the week is valid.
                 if (companyOpenHours.DayOfWeek < 0 || companyOpenHours.DayOfWeek > 7)
-                    return new ServiceResponse(false, "There is no such day");
+                    return BadResult("There is no such day");
 
                 // Check if the company ID is null.
                 if (companyOpenHours.CompanyId is null)
-                    return new ServiceResponse(false, "Company ID cannot be null");
+                    return BadResult("Company ID cannot be null");
 
                 // Retrieve the company by its ID.
                 var company = await _companyRepository.GetAsync(companyOpenHours.CompanyId);
                 if (company is null)
-                    return new ServiceResponse(false, "Not found company");
+                    return BadResult("Not found company");
 
                 // Check for duplicate open hours for the same day and company.
                 var findDuplicate = await _companyOpenHoursRepository.GetFirstAsync(x => x.DayOfWeek == companyOpenHours.DayOfWeek && x.CompanyId == companyOpenHours.CompanyId);
                 if (findDuplicate is not null)
-                    return new ServiceResponse(false, "There is a schedule for the day");
+                    return BadResult("There is a schedule for the day");
 
                 // Ensure the open from time is earlier than the open until time.
                 if (companyOpenHours.OpenFrom > companyOpenHours.OpenUntil) 
@@ -80,11 +81,11 @@ namespace BLL.Services
                 // Insert the new open hours into the repository.
                 await _companyOpenHoursRepository.InsertAsync(companyOpenHours);
 
-                return new ServiceResponse(true, "OK");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -92,8 +93,8 @@ namespace BLL.Services
         /// Delete company open hours by ID.
         /// </summary>
         /// <param name="id">The ID of the company open hours to delete.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> DeleteAsynce(string id)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<IServiceResponse> DeleteAsynce(string id)
         {
             try
             {
@@ -101,16 +102,16 @@ namespace BLL.Services
                 var item = await _companyOpenHoursRepository.GetFirstAsync(x => x.Id ==  id);
 
                 // If the item is not found, return a corresponding error response.
-                if (item == null) return new ServiceResponse(false, "Not found");
+                if (item == null) return BadResult("Not found");
 
                 // Delete the company open hours from the repository.
                 await _companyOpenHoursRepository.DeleteAsync(id);
 
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -120,14 +121,14 @@ namespace BLL.Services
         /// <param name="id">The ID of the company open hours to update.</param>
         /// <param name="openFrom">The new opening time.</param>
         /// <param name="openUntil">The new closing time.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> UpdateHoursAsync(string id, TimeSpan openFrom, TimeSpan openUntil)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<IServiceResponse> UpdateHoursAsync(string id, TimeSpan openFrom, TimeSpan openUntil)
         {
             try
             {
                 // Find the company open hours by ID.
                 var item = await _companyOpenHoursRepository.GetFirstAsync(x => x.Id == id);
-                if (item is null) return new ServiceResponse(false, "Not Found");
+                if (item is null) return BadResult("Not Found");
 
                 // Ensure the open from time is earlier than the open until time.
                 if (openFrom > openUntil) (openFrom, openUntil) = (openUntil, openFrom);
@@ -137,11 +138,11 @@ namespace BLL.Services
                 item.OpenUntil = openUntil;
 
                 await _companyOpenHoursRepository.UpdateAsync(id, item);
-                return new ServiceResponse(true, "OK");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 

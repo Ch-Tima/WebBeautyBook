@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 
 namespace BLL.Services
@@ -6,7 +7,7 @@ namespace BLL.Services
     /// <summary>
     /// Service class for managing company schedule exceptions.
     /// </summary>
-    public class CompanyScheduleExceptionService
+    public class CompanyScheduleExceptionService : ServiceBase
     {
         private readonly CompanyScheduleExceptionRepository _scheduleExceptionRepository;
         private readonly CompanyRepository _companyRepository;
@@ -36,26 +37,26 @@ namespace BLL.Services
         /// </summary>
         /// <param name="model">The company schedule exception to add.</param>
         /// <returns>A service response indicating the outcome of the operation.</returns>
-        public async Task<ServiceResponse> AddAsync(CompanyScheduleException model)
+        public async Task<IServiceResponse> AddAsync(CompanyScheduleException model)
         {
             try
             {
 
                 var company = await _companyRepository.GetAsync(model.CompanyId);
                 if (company == null)
-                    return new ServiceResponse(false, "Company not found");
+                    return BadResult("Company not found");
 
                 var isCopy = await _scheduleExceptionRepository.AnyAsync(x => x.CompanyId == company.Id && x.ExceptionDate.Day == model.ExceptionDate.Day && x.ExceptionDate.Month == model.ExceptionDate.Month);
 
-                if (isCopy) return new ServiceResponse(false, "This exception already exists");
+                if (isCopy) return BadResult("This exception already exists");
 
                 await _scheduleExceptionRepository.InsertAsync(model);
 
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -66,7 +67,7 @@ namespace BLL.Services
         /// <param name="id">The ID of the company schedule exception to delete.</param>
         /// <param name="companyId">The ID of the company that owns the schedule exception.</param>
         /// <returns>A service response indicating the outcome of the operation.</returns>
-        public async Task<ServiceResponse> DeleteAsynce(string id, string  companyId)
+        public async Task<IServiceResponse> DeleteAsynce(string id, string  companyId)
         {
 
             try
@@ -74,19 +75,19 @@ namespace BLL.Services
                 var sE = await _scheduleExceptionRepository.GetAsync(id);
 
                 if (sE == null)
-                    return new ServiceResponse(false, "Not found ");
+                    return BadResult("Not found ");
 
                 if (sE.CompanyId != companyId)
-                    return new ServiceResponse(false, "Sorry, you can't do that.");
+                    return BadResult("Sorry, you can't do that.");
 
                 await _scheduleExceptionRepository.DeleteAsync(id);
 
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
 
         }

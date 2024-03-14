@@ -1,10 +1,11 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 using System.Linq.Expressions;
 
 namespace BLL.Services
 {
-    public class CategoryService
+    public class CategoryService : ServiceBase
     {
 
         private readonly CategoryRepository _categoryRepository;
@@ -47,25 +48,25 @@ namespace BLL.Services
         /// Insert a new category into the repository.
         /// </summary>
         /// <param name="category">The category to insert.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> InsertAsync(Category category)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<IServiceResponse> InsertAsync(Category category)
         {
             try
             {
                 if (category.CategoryId == String.Empty) category.CategoryId = null;
                 //Is there a subcategory
                 if (category.CategoryId != null && !(await IsExist(category.CategoryId)))
-                    return new ServiceResponse(false, "Not found sub category");
+                    return BadResult("Not found sub category");
 
                 if ((await _categoryRepository.GetFirstAsync(x => x.Name == category.Name)) != null)
-                    return new ServiceResponse(false, $"Name {category.Name} is taken");
+                    return BadResult($"Name {category.Name} is taken");
 
                 await _categoryRepository.InsertAsync(category);
-                return new ServiceResponse(true, "Ok");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
@@ -79,34 +80,34 @@ namespace BLL.Services
         /// Update a category with new information.
         /// </summary>
         /// <param name="newCategory">The updated category information.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the update operation.</returns>
-        public async Task<ServiceResponse> UpdataAsync(Category newCategory)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the update operation.</returns>
+        public async Task<IServiceResponse> UpdataAsync(Category newCategory)
         {
             try
             {
                 //Check if the newCategory parameter is null
-                if (newCategory is null) return new ServiceResponse(false, "Parameter newCategory is null.");
+                if (newCategory is null) return BadResult( "Parameter newCategory is null.");
                 //Check if a category with the specified ID exists
                 if (!await IsExist(newCategory.Id))
-                    return new ServiceResponse(false, $"Category with id: {newCategory.Id} not found.");
+                    return BadResult( $"Category with id: {newCategory.Id} not found.");
                 //Check if a category is trying to refer to itself (circular reference)
                 if (newCategory.CategoryId == newCategory.Id)
-                    return new ServiceResponse(false, "A category cannot refer to itself.");
+                    return BadResult( "A category cannot refer to itself.");
                 //Handle special case where CategoryId is an empty string and set it to null
                 if (newCategory.CategoryId == "") newCategory.CategoryId = null;
                 //Check if the referenced subcategory exists.
                 if (newCategory.CategoryId != null && !(await IsExist(newCategory.CategoryId)))
-                    return new ServiceResponse(false, "Not found sub category.");
+                    return BadResult( "Not found sub category.");
 
                 await _categoryRepository.UpdateAsync(newCategory.Id, newCategory);//Update
                 var item = await _categoryRepository.GetAsync(newCategory.Id);//Retrieve the updated category from the repository
                 //Check if the update was successful by comparing fields
-                if (item.CategoryId == newCategory.CategoryId && item.Name == newCategory.Name) return new ServiceResponse(true, "Ok");
-                else return new ServiceResponse(false, "Something went wrong during the update.");
+                if (item.CategoryId == newCategory.CategoryId && item.Name == newCategory.Name) return OkResult();
+                else return BadResult( "Something went wrong during the update.");
             }
             catch(Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult( ex.Message);
             }
 
         }

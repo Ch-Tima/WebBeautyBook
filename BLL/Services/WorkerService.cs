@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using BLL.Response;
+using DAL.Repository;
 using Domain.Models;
 using System.Linq.Expressions;
 
@@ -7,7 +8,7 @@ namespace BLL.Services
     /// <summary>
     /// Service class responsible for managing worker-related operations.
     /// </summary>
-    public class WorkerService
+    public class WorkerService : ServiceBase
     {
         private readonly WorkerRepository _repositoryWorker;
         private readonly BaseUserRepository _baseUserRepository;
@@ -74,16 +75,16 @@ namespace BLL.Services
         /// </summary>
         /// <param name="companyId">The id of the company to associate the worker with.</param>
         /// <param name="baseUser">The base user entity associated with the worker.</param>
-        /// <returns>A <see cref="ServiceResponse"/> indicating the result of the operation.</returns>
-        public async Task<ServiceResponse> InsertAsync(string companyId, BaseUser baseUser)
+        /// <returns>A <see cref="IServiceResponse"/> indicating the result of the operation.</returns>
+        public async Task<IServiceResponse> InsertAsync(string companyId, BaseUser baseUser)
         {
             try
             {
                if ((await _companyRepository.GetAsync(companyId)) == null)
-                    return new ServiceResponse(false, $"Company with id: {companyId} was not found.");
+                    return BadResult($"Company with id: {companyId} was not found.");
 
                 if (baseUser == null || (await _baseUserRepository.GetAsync(baseUser.Id)) == null)
-                    return new ServiceResponse(false, "User not found.");
+                    return BadResult("User not found.");
 
                 //create new Worker
                 var worker = new Worker()
@@ -98,11 +99,11 @@ namespace BLL.Services
                 baseUser.WorkerId = worker.Id;
                 await _baseUserRepository.UpdateAsync(baseUser.Id, baseUser);
 
-                return new ServiceResponse(true, "Completed.");
+                return OkResult();
             }
             catch (Exception ex)
             {
-                return new ServiceResponse(false, ex.Message);
+                return BadResult(ex.Message);
             }
         }
 
